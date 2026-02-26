@@ -38,7 +38,7 @@ export default function Header() {
       >
         <div className="max-w-7xl mx-auto w-full px-4 md:px-6 flex items-center justify-between">
 
-          <Link href="/" className="flex items-center gap-3 shrink-0 active:scale-95 transition-transform">
+          <Link href="/" className="flex items-center gap-3 shrink-0">
             <div className="relative w-10 h-10">
               <Image src="/login-logo.png" alt="Logo" fill className="object-contain" priority />
             </div>
