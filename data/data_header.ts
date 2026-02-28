@@ -1,12 +1,14 @@
 export interface NavChild {
   label: string;
   href: string;
+  isExternal?: boolean;
+  group?: "Pelajaran" | "Asesmen"; // Pembeda grup di dalam Akademik
 }
 
 export interface NavItem {
   label: string;
-  href?: string; 
-  children?: NavChild[]; 
+  href?: string;
+  children?: NavChild[];
 }
 
 export const navigationData: NavItem[] = [
@@ -14,47 +16,43 @@ export const navigationData: NavItem[] = [
   {
     label: "Profil",
     children: [
-      { label: "Sambutan Kepala Sekolah", href: "/profil" },
+      { label: "Sambutan Kepala Sekolah", href: "/profil/sambutan" },
       { label: "Mars Sekolah", href: "/profil/mars" },
       { label: "Visi & Misi", href: "/profil/visi-misi" },
-      { label: "Struktural GTK", href: "/profil/struktur" },
+      { label: "Struktural GTK", href: "/profil/struktur-gtk" },
     ],
   },
   {
     label: "Akademik",
     children: [
-      { label: "Kurikulum", href: "/akademik/kurikulum" },
-      { label: "Kalender Akademik", href: "/akademik/kalender" },
-      { label: "Jadwal Sekolah", href: "/akademik/ekskul" },
-      { label: "Perangkat Pembelajaran", href: "/akademik/ekskul" },
-      { label: "Karya Siswa/Siswi", href: "/akademik/ekskul" },
-    ],
-  },
-  {
-    label: "Asesmen",
-    children: [
-      { label: "ASAS", href: "/akademik/kurikulum" },
-      { label: "ASJ", href: "/akademik/jurusan" },
-      { label: "TKA", href: "/akademik/ekskul" },
-      { label: "Supervisi Guru", href: "/akademik/ekskul" },
+      { label: "Kurikulum", href: "/akademik/kurikulum", group: "Pelajaran" },
+      { label: "Kalender Akademik", href: "/akademik/kalender", group: "Pelajaran" },
+      { label: "Jadwal Sekolah", href: "/akademik/jadwal", group: "Pelajaran" },
+      { label: "Perangkat Pembelajaran", href: "/akademik/perangkat", group: "Pelajaran" },
+      { label: "Karya Siswa/Siswi", href: "/akademik/karya", group: "Pelajaran" },
+      { label: "ASAS", href: "/asesmen/asas", group: "Asesmen" },
+      { label: "ASJ", href: "/asesmen/asj", group: "Asesmen" },
+      { label: "TKA", href: "/asesmen/tka", group: "Asesmen" },
+      { label: "Supervisi Guru", href: "/asesmen/supervisi", group: "Asesmen" },
     ],
   },
   {
     label: "Kesiswaan",
     children: [
-      { label: "Struktural", href: "/akademik/kurikulum" },
-      { label: "Osis/MPK", href: "/akademik/jurusan" },
-      { label: "Ekstrakurikuler", href: "/akademik/ekskul" },
-      { label: "Double Track", href: "/akademik/ekskul" },
+      { label: "Dispo SMANKA", href: "https://dispo.sman1ketapang.sch.id", isExternal: true },
+      { label: "Struktural", href: "/kesiswaan/struktural" },
+      { label: "Osis/MPK", href: "/osis" },
+      { label: "Ekstrakurikuler", href: "/#ekstra" },
+      { label: "Double Track", href: "/double-track" },
     ],
   },
   {
     label: "Informasi",
     children: [
-      { label: "Humas & Komite", href: "/akademik/kurikulum" },
-      { label: "Kemitraan", href: "/akademik/jurusan" },
-      { label: "Galeri Prestasi", href: "/akademik/ekskul" },
-      { label: "Kegiatan", href: "/akademik/ekskul" },
+      { label: "Humas & Komite", href: "/humas-komite" },
+      { label: "Kemitraan", href: "/kemitraan" },
+      { label: "Galeri Prestasi", href: "/prestasi" },
+      { label: "Kegiatan", href: "/kegiatan" },
     ],
   },
   { label: "Fasilitas", href: "/fasilitas" },

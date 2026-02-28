@@ -7,7 +7,7 @@ import { ChevronRight, ArrowDown } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden pt-16">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden pt-16">
       {/* --- BACKGROUND OPTIMIZATION --- */}
       <div className="absolute inset-0 z-0">
         <Image

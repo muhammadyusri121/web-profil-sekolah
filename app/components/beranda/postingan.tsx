@@ -8,7 +8,7 @@ export default function PostSection({ posts = [] }: { posts: any[] }) {
   if (posts.length === 0) return null;
 
   return (
-    <section className="py-12 bg-slate-50 overflow-hidden">
+    <section id="postingan" className="py-12 bg-slate-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         
         {/* Header Section Compact */}

@@ -5,7 +5,7 @@ import Footer from '@/components/layout/footer';
 import Hero from '@/app/components/beranda/hero';
 import About from '@/app/components/beranda/about';
 import Gallery from '@/app/components/beranda/gallery';
-import Extra from '@/app/components/beranda/ektra';
+import Exstra from '@/app/components/beranda/ekstra';
 import PostSection from '@/app/components/beranda/postingan';
 
 // Impor fungsi data fetching
@@ -33,7 +33,7 @@ export default async function Home() {
         
         {/* 3. KRUSIAL: Kirim data teachers ke komponen Gallery */}
         <Gallery teachers={teachers} />
-        <Extra />
+        <Exstra />
         <PostSection posts={posts} />
       </div>
 

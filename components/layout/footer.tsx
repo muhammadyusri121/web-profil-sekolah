@@ -96,7 +96,7 @@ export default function Footer() {
             </div>
 
             {/* Embed Google Maps */}
-            <div className="w-full h-64 rounded-xl overflow-hidden border border-slate-700 bg-slate-800 shadow-inner">
+            <div className="w-full h-64 rounded-xl overflow-hidden border border-slate-700 bg-slate-800">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15888.6672322421!2d105.7831!3d-5.8!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwNDgnMDAuMCJTIDEwNcKwNDcnMDAuMCJF!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
                 width="100%"
@@ -105,7 +105,7 @@ export default function Footer() {
                 allowFullScreen={true}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="opacity-80 hover:opacity-100 transition-opacity duration-500"
+                className="opacity-100 transition-opacity duration-500"
               ></iframe>
             </div>
           </div>

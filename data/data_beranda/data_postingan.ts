@@ -1,17 +1,12 @@
 // src/lib/data/post-data.ts
-import { prisma } from "@/lib/prisma";
+import { query } from "@/lib/db";
 
 export async function getLatestPosts() {
   try {
-    const data = await prisma.post.findMany({
-      where: {
-        is_published: true, // Hanya ambil yang true
-      },
-      orderBy: {
-        createdAt: "desc", // Urutkan dari yang terbaru
-      },
-      take: 5, // Ambil 3 postingan terbaru saja untuk beranda
-    });
+    const result = await query(
+      `SELECT * FROM "Post" WHERE is_published = true ORDER BY "createdAt" DESC LIMIT 5`
+    );
+    const data = result.rows;
     console.log("Postingan berhasil ditarik:", data.length);
     return data;
   } catch (error) {

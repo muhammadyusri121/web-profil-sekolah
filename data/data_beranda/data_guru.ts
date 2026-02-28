@@ -1,13 +1,12 @@
 // src/lib/data/teacher-data.ts
-import { prisma } from "@/lib/prisma";
+import { query } from "@/lib/db";
 
 export async function getStructuralPersonnel() {
   try {
-    const data = await prisma.educationPersonnel.findMany({
-      orderBy: {
-        sort_order: "asc", 
-      },
-    });
+    const result = await query(
+      `SELECT * FROM "EducationPersonnel" ORDER BY sort_order ASC`
+    );
+    const data = result.rows;
     console.log("Data berhasil ditarik dari VPS:", data.length); // Cek di terminal server
     return data;
   } catch (error) {
