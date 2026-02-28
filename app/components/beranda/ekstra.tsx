@@ -6,71 +6,68 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 // --- DATA STATIS ---
+// Menggunakan nama file foto, diarahkan ke folder /ekstra/
 const EXTRA_DATA = [
-  { name: "Pramuka", icon: "pramuka.svg", href: "/ekstrakurikuler/pramuka" },
-  { name: "Paskibra", icon: "paskibra.svg", href: "/ekstrakurikuler/paskibra" },
-  { name: "Sains Club", icon: "sains.svg", href: "/ekstrakurikuler/sains" },
-  { name: "Basket", icon: "basket.svg", href: "/ekstrakurikuler/basket" },
-  { name: "Voli", icon: "voli.svg", href: "/ekstrakurikuler/voli" },
-  { name: "Seni Tari", icon: "tari.svg", href: "/ekstrakurikuler/tari" },
-  { name: "Paduan Suara", icon: "padus.svg", href: "/ekstrakurikuler/padus" },
-  { name: "PMR", icon: "pmr.svg", href: "/ekstrakurikuler/pmr" },
+  { name: "Pramuka", image: "/login-logo.png", href: "/ekstrakurikuler/pramuka" },
+  { name: "Paskibra", image: "paskibra.jpg", href: "/ekstrakurikuler/paskibra" },
+  { name: "Sains Club", image: "sains.jpg", href: "/ekstrakurikuler/sains" },
+  { name: "Basket", image: "basket.jpg", href: "/ekstrakurikuler/basket" },
+  { name: "Voli", image: "voli.jpg", href: "/ekstrakurikuler/voli" },
+  { name: "Seni Tari", image: "tari.jpg", href: "/ekstrakurikuler/tari" },
+  { name: "Paduan Suara", image: "padus.jpg", href: "/ekstrakurikuler/padus" },
+  { name: "PMR", image: "pmr.jpg", href: "/ekstrakurikuler/pmr" },
 ];
 
 export default function ExtracurricularSection() {
   return (
-    <section id="ekstra" className="py-10 bg-white">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
-        
-        {/* Header Section Compact */}
-        <div className="mb-6 space-y-1">
-          <h2 className="text-xl md:text-2xl font-black text-slate-900 uppercase tracking-tight">
-            Kegiatan <span className="text-[#F3C623]">Ekstrakurikuler</span>
-          </h2>
-          <div className="h-1 w-16 bg-[#F3C623] rounded-full" />
+    <section id="ekstra" className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="mb-10 max-w-2xl space-y-4">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-tight">
+              Kegiatan <span className="text-[#F3C623]">Ekstrakurikuler</span>
+            </h2>
+            <div className="h-1.5 w-16 bg-[#F3C623] rounded-full mt-3" />
+          </div>
+          <p className="text-slate-500 text-sm md:text-base font-medium leading-relaxed">
+            Kembangkan potensi, bakat, dan minatmu di luar jam pelajaran akademik. 
+            Pilih ekstrakurikuler favoritmu dan raih prestasi bersama SMAN 1 Ketapang.
+          </p>
         </div>
 
-        {/* Horizontal Scroll Container */}
-        <div className="flex flex-nowrap gap-3 md:gap-4 overflow-x-auto pb-6 scrollbar-hide snap-x">
-          {EXTRA_DATA.map((item, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ y: -5 }}
-              whileTap={{ scale: 0.95 }}
-              className="snap-center shrink-0"
-            >
-              <Link 
-                href={item.href}
-                className="flex flex-col items-center justify-center gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-[#F3C623]/40 hover:bg-white hover:shadow-xl transition-all w-28 h-28 md:w-36 md:h-36"
+        <div className="-mx-6 px-6 md:mx-0 md:px-0">
+          <div className="flex flex-nowrap gap-4 md:gap-5 overflow-x-auto pb-8 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {EXTRA_DATA.map((item, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                className="snap-start shrink-0"
               >
-                {/* Ikon dari public/ikon_ekstra/ */}
-                <div className="relative w-10 h-10 md:w-14 md:h-14">
-                  <Image
-                    src={`/ikon_ekstra/${item.icon}`}
-                    alt={item.name}
-                    fill
-                    className="object-contain grayscale hover:grayscale-0 transition-all duration-300"
-                  />
-                </div>
-                <span className="text-[10px] md:text-xs font-black text-slate-700 uppercase text-center leading-tight tracking-tighter">
-                  {item.name}
-                </span>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+                <Link 
+                  href={item.href}
+                  className="group flex flex-col items-center justify-center p-5 bg-white rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(243,198,35,0.15)] hover:border-[#F3C623]/30 transition-all duration-300 w-32 h-36 md:w-40 md:h-44"
+                >
+                  <div className="relative w-16 h-16 md:w-20 md:h-20 mb-3 rounded-2xl overflow-hidden transition-transform duration-300 group-hover:-translate-y-1">
+                    <Image
+                      src={`/ekstra/${item.image}`}
+                      alt={item.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="80px"
+                    />
+                  </div>
 
-      {/* CSS untuk menyembunyikan scrollbar agar clean */}
-      <style jsx global>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+                  <h3 className="text-xs md:text-sm font-bold text-slate-700 text-center uppercase tracking-wide group-hover:text-[#F3C623] transition-colors duration-300">
+                    {item.name}
+                  </h3>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+      </div>
     </section>
   );
 }

@@ -27,7 +27,7 @@ export default function AboutSection() {
                 height={1000} 
                 className="w-full object-cover"
               />
-              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-4 md:p-6 text-white">
+              <div className="absolute bottom-0 inset-x-0 bg-linear-to-t from-slate-900/90 via-slate-900/40 to-transparent p-4 md:p-6 text-white">
                 <h3 className="text-base md:text-xl font-black uppercase tracking-tight">H. Ahmad Sudarsono, M.Pd.</h3>
                 <p className="text-[10px] md:text-xs text-[#F3C623] font-bold uppercase tracking-[0.2em] mt-1">Kepala Sekolah</p>
               </div>

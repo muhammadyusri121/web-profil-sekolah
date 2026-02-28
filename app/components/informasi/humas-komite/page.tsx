@@ -1,87 +1,112 @@
 import Link from "next/link";
-import { Calendar, Image as ImageIcon } from "lucide-react";
+import { Calendar, Tag } from "lucide-react";
 import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import BackButton from "@/components/BackButton"; 
+import ShareArticle from "@/components/ShareArticle";
 
-export default async function HumasKomitePage() {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+export default async function DetailKaryaPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-    // Ambil semua data dengan kategori HUMAS
-    const res = await fetch(`${baseUrl}/api/post?category=HUMAS`, {
-        cache: 'no-store'
-    });
+  try {
+    const res = await fetch(`${baseUrl}/api/post?slug=${slug}`, { cache: 'no-store' });
 
-    const posts = await res.json();
+    if (!res.ok) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-yellow-50">
+          <div className="text-center">
+            <h1 className="text-3xl font-black text-yellow-800">Server Error ({res.status})</h1>
+            <p className="text-yellow-500 mt-2">Gagal mengambil data dari server.</p>
+          </div>
+        </div>
+      );
+    }
+
+    const post = await res.json();
+    if (!post) {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-yellow-50">
+          <h1 className="text-2xl font-bold text-yellow-800">Halaman Tidak Ditemukan</h1>
+          <Link href="/karya" className="text-yellow-600 mt-4 font-semibold hover:underline">
+            ← Kembali
+          </Link>
+        </div>
+      );
+    }
 
     return (
-        <main className="min-h-screen bg-slate-50 py-12 px-4">
-            <div className="max-w-7xl mx-auto">
-                <Header />
-                {/* 1. Bagian Judul Atas */}
-                <header className="mb-12 text-center">
-                    <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight md:text-5xl">
-                        Humas & Komite Sekolah
-                    </h1>
-                    <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-                        Informasi, berita, dan seluruh kegiatan yang berkaitan dengan Hubungan Masyarakat serta Komite SMANKA.
-                    </p>
-                    <div className="mt-6 h-1 w-20 bg-blue-600 mx-auto rounded-full"></div>
-                </header>
+      <div className="min-h-screen flex flex-col bg-white">
+        <Header />
 
-                {/* 2. Grid Card - Menampilkan Semua Konten */}
-                {posts && posts.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {posts.map((post: any) => (
-                            <Link
-                                key={post.id}
-                                href={`/humas-komite/${post.slug}`}
-                                className="group bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-                            >
-                                {/* Bagian Gambar */}
-                                <div className="relative aspect-video overflow-hidden bg-slate-200">
-                                    {post.thumbnail ? (
-                                        <img
-                                            src={post.thumbnail}
-                                            alt={post.title}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-slate-400">
-                                            <ImageIcon className="w-12 h-12" />
-                                        </div>
-                                    )}
-                                </div>
+        <main className="grow pt-32 pb-20 px-5 md:px-8">
+          <article className="max-w-3xl mx-auto">
 
-                                {/* Bagian Konten: Judul dan Waktu */}
-                                <div className="p-6 flex flex-col grow">
-                                    <div className="flex items-center text-slate-400 text-xs mb-3 gap-2">
-                                        <Calendar className="w-3 h-3" />
-                                        <span>
-                                            {post.createdat
-                                                ? new Date(post.createdat).toLocaleDateString('id-ID', {
-                                                    day: 'numeric', month: 'long', year: 'numeric'
-                                                })
-                                                : "Februari 2026"}
-                                        </span>
-                                    </div>
-
-                                    <h2 className="text-xl font-bold text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                                        {post.title}
-                                    </h2>
-
-                                    <div className="mt-auto pt-4 flex items-center text-blue-600 font-semibold text-sm">
-                                        Baca Selengkapnya →
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                ) : (
-                    /* Tampilan jika data kosong */
-                    <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200">
-                        <p className="text-slate-500">Tidak ada data informasi Humas & Komite yang ditemukan.</p>
-                    </div>
-                )}
+            <div className="mb-8">
+              <BackButton label="Kembali" />
             </div>
+
+            <header className="mb-10 text-center md:text-left">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-4">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-50 text-yellow-600 text-xs font-black uppercase tracking-widest">
+                  <Tag size={12} />
+                  {post.category || "Karya Siswa"}
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-yellow-400 text-xs font-semibold">
+                  <Calendar size={12} />
+                  {post.createdat 
+                    ? new Date(post.createdat).toLocaleDateString('id-ID', {
+                        day: 'numeric', month: 'long', year: 'numeric'
+                      }) 
+                    : 'Februari 2026'}
+                </span>
+              </div>
+              
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-yellow-900 leading-[1.2] tracking-tight mb-6">
+                {post.title}
+              </h1>
+            </header>
+
+            <div className="mb-12 w-full h-[300px] md:h-[450px] relative bg-yellow-200 rounded-3xl overflow-hidden shadow-sm border border-yellow-100">
+              <img
+                src={post.thumbnail || "https://placehold.co/1200x600?text=Gambar+Tidak+Ada"}
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="bg-white">
+              <div
+                className="prose prose-lg md:prose-xl prose-yellow max-w-none 
+                  prose-headings:font-black prose-headings:tracking-tight prose-headings:text-yellow-900 prose-headings:mt-12 prose-headings:mb-6
+                  [&_p]:text-justify [&_div]:text-justify [&_li]:text-justify
+                  [&_p]:mb-8 [&_p]:leading-[1.8]
+                  [&_div]:mb-8 [&_div]:leading-[1.8]
+                  prose-a:text-yellow-600 hover:prose-a:text-yellow-700 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
+                  prose-strong:text-yellow-900 prose-strong:font-bold
+                  prose-img:rounded-2xl prose-img:shadow-sm prose-img:my-10
+                  prose-li:text-yellow-700 prose-li:leading-[1.8] prose-li:!mb-2
+                  prose-ul:!mb-8 prose-ol:!mb-8
+                  marker:text-yellow-600"
+                dangerouslySetInnerHTML={{ __html: post?.content || "" }}
+              />
+            </div>
+          </article>
         </main>
+        <ShareArticle title={post.title} />
+
+        <Footer />
+      </div>
     );
+  } catch (err) {
+    console.error("Detail Page Error:", err);
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-yellow-50 text-center">
+        <div>
+          <h1 className="text-3xl font-black text-red-500 mb-2">Terjadi Kesalahan</h1>
+          <p className="text-yellow-500">Gagal terhubung ke server. Silakan coba lagi nanti.</p>
+        </div>
+      </div>
+    );
+  }
 }
