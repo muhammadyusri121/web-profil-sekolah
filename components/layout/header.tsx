@@ -48,7 +48,7 @@ export default function Header() {
         variants={{ visible: { y: 0 }, hidden: { y: "-100%" } }}
         animate={isHidden ? "hidden" : "visible"}
         transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed top-0 inset-x-0 z-50 bg-white border-b border-yellow-200 shadow-sm"
+        className="fixed top-0 inset-x-0 z-50 bg-yellow-300 border-b border-yellow-200 shadow-sm"
       >
         <header className="max-w-7xl mx-auto px-6 h-16 md:h-20 flex items-center justify-between transition-all">
           <div className="flex items-center">
@@ -79,10 +79,10 @@ export default function Header() {
                 {item.children ? (
                   <button
                     className={cn(
-                      "text-[13px] font-bold tracking-wider transition-colors flex items-center gap-1.5",
+                      "text-[15px] font-bold tracking-wider transition-colors flex items-center gap-1.5",
                       activeMenu === item.label
-                        ? "text-yellow-600"
-                        : "text-yellow-600 hover:text-yellow-600"
+                        ? "text-white"
+                        : "text-white hover:text-white"
                     )}
                   >
                     {item.label}
@@ -97,7 +97,7 @@ export default function Header() {
                 ) : (
                   <Link
                     href={item.href || "/"}
-                    className="text-[13px] font-bold tracking-wider text-yellow-600 hover:text-yellow-600 transition-colors"
+                    className="text-[15px] font-bold tracking-wider text-white hover:text-white transition-colors"
                   >
                     {item.label}
                   </Link>
