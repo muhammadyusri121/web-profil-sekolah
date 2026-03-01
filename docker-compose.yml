@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: profil-sman1ketapang
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    # Jika Anda menggunakan file .env untuk variabel lingkungan (seperti DATABASE_URL),
+    # pastikan file .env berada di direktori yang sama dengan docker-compose.yml
+    env_file:
+      - .env
+    # Alternatif: Anda bisa mendefinisikan environment variable langsung di sini
+    # environment:
+    #   - NODE_ENV=production
+    #   - PORT=3000
