@@ -13,7 +13,7 @@ export default function BackButton({ label = "Kembali" }: BackButtonProps) {
   return (
     <button
       onClick={() => router.back()}
-      className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors active:scale-95"
+      className="inline-flex items-center gap-2 text-sm font-bold text-yellow-500 hover:text-yellow-600 transition-colors active:scale-95"
     >
       <ArrowLeft size={16} />
       {label}

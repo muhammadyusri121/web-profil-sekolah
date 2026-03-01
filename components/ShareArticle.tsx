@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { 
-  Link as LinkIcon, 
-  Check, 
-  Share2, 
-  Facebook, 
-  Twitter, 
+import {
+  Link as LinkIcon,
+  Check,
+  Share2,
+  Facebook,
+  Twitter,
   MessageCircle,
   Send,
   Printer,
@@ -58,7 +58,7 @@ export default function ShareArticle({ title, url }: ShareArticleProps) {
 
   const encodedUrl = encodeURIComponent(currentUrl);
   const encodedTitle = encodeURIComponent(title);
-  
+
   const waLink = `https://wa.me/?text=${encodedTitle}%20-%20Baca%20selengkapnya%20di:%20${encodedUrl}`;
   const fbLink = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
   const xLink = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
@@ -80,11 +80,10 @@ export default function ShareArticle({ title, url }: ShareArticleProps) {
         <div className="flex flex-wrap justify-center items-center gap-3">
           <button
             onClick={handleCopyLink}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-bold transition-all border ${
-              isCopied 
-                ? "bg-green-50 border-green-200 text-green-700" 
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-bold transition-all border ${isCopied
+                ? "bg-green-50 border-green-200 text-green-700"
                 : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-blue-300 hover:text-blue-600 shadow-sm"
-            }`}
+              }`}
           >
             {isCopied ? <Check size={16} /> : <LinkIcon size={16} />}
             {isCopied ? "Tersalin!" : "Salin Tautan"}

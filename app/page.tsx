@@ -15,9 +15,9 @@ import { getLatestPosts } from "@/data/data_beranda/data_postingan";
 // Wajib menggunakan 'async' agar bisa menggunakan 'await'
 export default async function Home() {
   // 1. Ambil data dari database VPS
-  const teachers = await getStructuralPersonnel(); 
+  const teachers = await getStructuralPersonnel();
   const posts = await getLatestPosts();
-  
+
   // 2. Debugging (akan muncul di terminal, bukan console browser)
   console.log("Data guru yang berhasil ditarik:", teachers.length);
   console.log("Data postingan yang berhasil ditarik:", posts.length);
@@ -30,7 +30,7 @@ export default async function Home() {
       <div className="grow">
         <Hero />
         <About />
-        
+
         {/* 3. KRUSIAL: Kirim data teachers ke komponen Gallery */}
         <Gallery teachers={teachers} />
         <Exstra />

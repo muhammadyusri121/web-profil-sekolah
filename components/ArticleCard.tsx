@@ -12,7 +12,6 @@ interface ArticleProps {
 export default function ArticleCard({ title, slug, thumbnail, category, date }: ArticleProps) {
   return (
     <div className="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full">
-      {/* Thumbnail Container */}
       <div className="relative h-48 overflow-hidden">
         <img
           src={thumbnail || "/placeholder-school.jpg"} 
@@ -26,8 +25,7 @@ export default function ArticleCard({ title, slug, thumbnail, category, date }: 
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-5 flex flex-col flex-grow">
+      <div className="p-5 flex flex-col grow">
         <div className="flex items-center text-slate-400 text-xs mb-3 gap-2">
           <Calendar className="w-3 h-3" />
           <span>{date || "Februari 2026"}</span>

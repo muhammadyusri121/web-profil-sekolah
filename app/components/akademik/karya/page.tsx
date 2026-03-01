@@ -45,8 +45,8 @@ export default async function KaryaPage() {
                       <span>
                         {post.createdat
                           ? new Date(post.createdat).toLocaleDateString('id-ID', {
-                              day: 'numeric', month: 'short', year: 'numeric'
-                            })
+                            day: 'numeric', month: 'short', year: 'numeric'
+                          })
                           : "YEAR_INFO_UPDATE"}
                       </span>
                     </div>

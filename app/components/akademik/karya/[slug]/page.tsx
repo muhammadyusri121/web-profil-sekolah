@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Calendar, Tag } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import BackButton from "@/components/BackButton"; 
+import BackButton from "@/components/BackButton";
 import ShareArticle from "@/components/ShareArticle";
 
 export default async function DetailKaryaPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -54,14 +54,14 @@ export default async function DetailKaryaPage({ params }: { params: Promise<{ sl
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-yellow-400 text-xs font-semibold">
                   <Calendar size={12} />
-                  {post.createdat 
+                  {post.createdat
                     ? new Date(post.createdat).toLocaleDateString('id-ID', {
-                        day: 'numeric', month: 'long', year: 'numeric'
-                      }) 
+                      day: 'numeric', month: 'long', year: 'numeric'
+                    })
                     : 'Februari 2026'}
                 </span>
               </div>
-              
+
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-yellow-900 leading-[1.2] tracking-tight mb-6">
                 {post.title}
               </h1>

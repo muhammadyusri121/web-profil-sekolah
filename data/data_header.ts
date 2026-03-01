@@ -41,9 +41,9 @@ export const navigationData: NavItem[] = [
     children: [
       { label: "Dispo SMANKA", href: "https://dispo.sman1ketapang.sch.id", isExternal: true },
       { label: "Struktural", href: "/components/kesiswaan/struktural" },
-      { label: "Osis/MPK", href: "/osis" },
-      { label: "Ekstrakurikuler", href: "/#ekstra" },
-      { label: "Double Track", href: "/double-track" },
+      { label: "Osis/MPK", href: "/components/kesiswaan/osis" },
+      { label: "Ekstrakurikuler", href: "/components/kesiswaan/ekstrakurikuler" },
+      { label: "Double Track", href: "/components/kesiswaan/double-track" },
     ],
   },
   {
