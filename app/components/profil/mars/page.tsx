@@ -58,20 +58,20 @@ export default function MarsPage() {
           </div>
 
           <div className="space-y-12 text-slate-800 font-bold text-base md:text-lg leading-relaxed uppercase tracking-wide">
-            <div className="pb-10">
+            <div className="mb-5">
               <p>SMA Negeri 1 Ketapang</p>
               <p>Santun dalam pekerti, unggul dalam prestasi</p>
               <p>Kondusif dalam edukasi</p>
             </div>
 
-            <div className="pb-10">
+            <div className="mb-5">
               <p>Raih semua mimpi dengan berjiwa Pancasila</p>
               <p>Wujudkan cita mulia dengan berjiwa Pancasila</p>
               <p>Taklukan dunia!</p>
             </div>
 
 
-            <div className="pb-10">
+            <div className="mb-5">
               <p>Kobarkan semangat menuju cita bangsa</p>
               <p>Kuatkan tekad, berdiri tegak</p>
               <p>Barisan kita kuat, bergerak kita hebat</p>
@@ -79,14 +79,14 @@ export default function MarsPage() {
             </div>
 
             {/* Verse 3 */}
-            <div className="pb-10">
+            <div className="mb-5">
               <p>SMA Negeri 1 Ketapang</p>
               <p>Santun dalam pekerti, unggul dalam prestasi</p>
               <p>Kondusif dalam edukasi</p>
             </div>
 
             {/* Verse 4 */}
-            <div className="pb-10">
+            <div className="mb-5">
               <p>Raih semua mimpi dengan berjiwa Pancasila</p>
               <p>Wujudkan cita mulia dengan berjiwa Pancasila</p>
               <p>Taklukkan dunia!</p>

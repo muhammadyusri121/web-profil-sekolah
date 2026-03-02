@@ -3,81 +3,74 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ChevronRight, ArrowDown } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden pt-16">
-      {/* --- BACKGROUND OPTIMIZATION --- */}
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-900">
+      
+      {/* --- LAYER 1: FOTO BACKGROUND --- */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/bg_hero.svg"
-          alt="Latar Belakang SMAN 1 Ketapang"
+          src="/bg1.jpg" // Ganti dengan foto sekolahmu
+          alt="SMAN 1 Ketapang"
           fill
-          priority // Memastikan gambar dimuat paling awal tanpa delay
-          className="object-cover opacity-30" // Atur opacity agar tetap matte dan teks terbaca
+          priority // Sangat penting untuk LCP (Super Fast)
+          className="object-cover object-center"
         />
+        {/* Overlay Gradasi agar teks terbaca jelas */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-slate-900/40 to-slate-900/90 z-10" />
       </div>
 
-      {/* Elemen Dekoratif Blur tetap dipertahankan untuk kedalaman visual */}
-      <div className="absolute top-20 left-10 w-64 h-64 bg-[#F3C623]/5 rounded-full blur-3xl z-0" />
-      <div className="absolute bottom-10 right-10 w-72 h-72 bg-slate-50 rounded-full blur-3xl z-0" />
+      {/* --- LAYER 2: DEKORATIF CLIP-PATH (The "Design Element") --- */}
+      {/* Elemen Kuning di bagian bawah yang memotong secara diagonal */}
+      <div 
+        className="absolute bottom-0 left-0 w-full h-[30vh] bg-white z-20 [clip-path:polygon(0_100%,100%_100%,100%_100%,0_0)] opacity-90"
+      />
+      
+      {/* Garis Aksen Putih Tipis */}
+      <div 
+        className="absolute bottom-0 left-0 w-full h-[31vh] bg-white/20 z-10 [clip-path:polygon(0_100%,100%_100%,100%_100%,0_0)]"
+      />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
+      {/* --- LAYER 3: KONTEN TEKS --- */}
+      <div className="container mx-auto px-6 relative z-30">
+        <div className="max-w-5xl mx-auto text-center md:text-left">
           
-          {/* Badge Kecil */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-slate-100 shadow-sm"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="mb-6 flex items-center gap-3 justify-center md:justify-start"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F3C623] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F3C623]"></span>
-            </span>
-            <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-500">
-              Selamat Datang
+            <div className="h-[2px] w-12 bg-[#F3C623]" />
+            <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] text-[#F3C623]">
+              Excellence in Education
             </span>
           </motion.div>
 
-          {/* Judul Utama */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 leading-[1.1] tracking-tight"
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-5xl md:text-8xl lg:text-9xl font-[1000] text-white leading-[0.9] tracking-[-0.04em] uppercase"
           >
-            Membangun Masa Depan<br />
-            <span className="text-[#F3C623]">SMAN 1 Ketapang</span>
+            Masa Depan <br /> 
+            <span className="text-transparent [text-stroke:1px_white] md:[text-stroke:2px_white]">Dimulai</span> <br />
+            <span className="text-[#F3C623]">Di Sini.</span>
           </motion.h1>
 
-          {/* Sub-judul */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-base md:text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed"
-          >
-            Mencetak generasi yang cerdas, berkarakter, dan siap menghadapi tantangan global dengan kurikulum inovatif dan fasilitas modern.
-          </motion.p>
-
-          {/* Tombol Aksi */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className="mt-8 max-w-xl"
           >
-            <button className="w-full sm:w-auto bg-[#F3C623] hover:bg-[#E2B612] text-slate-900 font-bold px-8 py-4 rounded-2xl shadow-lg shadow-yellow-500/20 transition-all active:scale-95 flex items-center justify-center gap-2">
-              Jelajahi Profil
-              <ChevronRight size={18} />
-            </button>
-            <button className="w-full sm:w-auto bg-white border-2 border-slate-100 hover:border-slate-200 text-slate-600 font-bold px-8 py-4 rounded-2xl transition-all active:scale-95 flex items-center justify-center gap-2">
-              Lihat Pengumuman
-            </button>
+            <p className="text-sm md:text-lg font-bold text-slate-300 uppercase tracking-widest leading-relaxed">
+              Selamat datang di <span className="text-white">SMAN 1 Ketapang</span>. <br />
+              Wadah inovasi, prestasi, dan pembentukan karakter mulia.
+            </p>
           </motion.div>
+
         </div>
       </div>
     </section>

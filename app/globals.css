@@ -100,3 +100,11 @@
     scrollbar-width: none;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+.scroll-mt-32 {
+  scroll-margin-top: 8rem;
+}

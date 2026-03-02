@@ -1,81 +1,76 @@
-import Link from "next/link";
-import { Calendar, Image as ImageIcon, ArrowRight } from "lucide-react";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
+"use client";
 
-export default async function KaryaPage() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-  const res = await fetch(`${baseUrl}/api/post?category=OSIS`, {
-    cache: 'no-store'
-  });
+import React from "react";
+import { motion } from "framer-motion";
 
-  const posts = await res.json();
+export default function PostSection({ posts = [] }: { posts: any[] }) {
+  if (!posts || posts.length === 0) return null;
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <Header />
-      <main className="grow pt-25 pb-16 px-5 md:px-8">
-        <div className="max-w-[1400px] mx-auto">
-          {posts && posts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-              {posts.map((post: any) => (
-                <Link
-                  key={post.id}
-                  href={`/osis/${post.slug}`}
-                  className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-yellow-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-tranyellow-y-1 transition-all duration-300"
-                >
-                  <div className="relative aspect-4/3 w-full overflow-hidden bg-yellow-100">
-                    {post.thumbnail ? (
-                      <img
-                        src={post.thumbnail}
-                        alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-yellow-300">
-                        <ImageIcon className="w-8 h-8" />
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-
-                  <div className="p-4 flex flex-col grow">
-                    <div className="flex items-center gap-1.5 text-yellow-400 text-[10px] font-bold uppercase tracking-wider mb-2">
-                      <Calendar className="w-3 h-3" />
-                      <span>
-                        {post.createdat
-                          ? new Date(post.createdat).toLocaleDateString('id-ID', {
-                            day: 'numeric', month: 'short', year: 'numeric'
-                          })
-                          : "YEAR_INFO_UPDATE"}
-                      </span>
-                    </div>
-
-                    <h2 className="text-sm font-bold text-yellow-800 leading-snug line-clamp-2 group-hover:text-yellow-600 transition-colors duration-300">
-                      {post.title}
-                    </h2>
-
-                    <div className="mt-auto pt-4 flex items-center gap-1.5 text-[11px] font-black text-yellow-600 uppercase tracking-widest group-hover:text-yellow-700 transition-colors">
-                      Lihat Karya Selengkapnya
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:tranyellow-x-1 transition-transform duration-300" />
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-20 px-6 bg-white rounded-3xl border border-dashed border-yellow-200">
-              <div className="w-16 h-16 bg-yellow-50 rounded-full flex items-center justify-center mb-4 text-yellow-300">
-                <ImageIcon size={32} />
-              </div>
-              <p className="text-yellow-500 font-medium text-center">Belum ada item yang dipublikasikan.</p>
-            </div>
-          )}
-
+    <section id="postingan" className="py-12 bg-slate-50 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        
+        {/* Header Section */}
+        <div className="mb-8 space-y-1">
+          <h2 className="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-tight">
+            Berita & <span className="text-[#F3C623]">Informasi</span>
+          </h2>
+          <div className="h-1 w-16 bg-[#F3C623] rounded-full" />
         </div>
-      </main>
 
-      <Footer />
-    </div>
+        {/* Horizontal Scroll Container */}
+        <div className="flex flex-nowrap gap-6 overflow-x-auto pb-8 scrollbar-hide snap-x">
+          {posts.map((post) => (
+            <motion.article 
+              key={post.id}
+              whileHover={{ y: -5 }}
+              className="snap-center shrink-0 w-[280px] md:w-[320px] bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm flex flex-col group transition-all duration-300 hover:shadow-xl"
+            >
+              {/* Thumbnail Postingan (Menggunakan logika KaryaPage) */}
+              <div className="relative aspect-video bg-slate-100 overflow-hidden">
+                {post.thumbnail ? (
+                  <img
+                    src={post.thumbnail}
+                    alt={post.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-yellow-50">
+                    <span className="text-[#F3C623] font-black text-[10px] uppercase">No Image</span>
+                  </div>
+                )}
+                
+                {/* Badge Kategori */}
+                <div className="absolute top-3 left-3 bg-[#F3C623] text-slate-900 text-[10px] font-[1000] px-3 py-1 rounded-full uppercase tracking-tighter shadow-sm z-10">
+                  {post.category || "Berita"}
+                </div>
+              </div>
+
+              {/* Konten Postingan */}
+              <div className="p-5 space-y-3 flex-grow border-t border-slate-50">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                  {/* Cek penulisan 'createdat' (lowercase) sesuai referensi DB kamu */}
+                  {post.createdat || post.createdAt
+                    ? new Date(post.createdat || post.createdAt).toLocaleDateString('id-ID', { 
+                        day: 'numeric', month: 'short', year: 'numeric' 
+                      })
+                    : "Baru saja"}
+                </p>
+                
+                <h3 className="font-black text-slate-900 leading-tight line-clamp-2 text-sm md:text-base group-hover:text-[#F3C623] transition-colors">
+                  {post.title}
+                </h3>
+                
+                <div className="pt-2">
+                   <button className="text-[10px] font-black uppercase text-[#F3C623] group-hover:text-slate-900 transition-colors tracking-widest flex items-center gap-1">
+                     Baca Selengkapnya <span>→</span>
+                   </button>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

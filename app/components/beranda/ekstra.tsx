@@ -6,16 +6,16 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 // --- DATA STATIS ---
-// Menggunakan nama file foto, diarahkan ke folder /ekstra/
+// Semua image diarahkan ke /login-logo.png agar tidak error
 const EXTRA_DATA = [
   { name: "Pramuka", image: "/login-logo.png", href: "/ekstrakurikuler/pramuka" },
-  { name: "Paskibra", image: "paskibra.jpg", href: "/ekstrakurikuler/paskibra" },
-  { name: "Sains Club", image: "sains.jpg", href: "/ekstrakurikuler/sains" },
-  { name: "Basket", image: "basket.jpg", href: "/ekstrakurikuler/basket" },
-  { name: "Voli", image: "voli.jpg", href: "/ekstrakurikuler/voli" },
-  { name: "Seni Tari", image: "tari.jpg", href: "/ekstrakurikuler/tari" },
-  { name: "Paduan Suara", image: "padus.jpg", href: "/ekstrakurikuler/padus" },
-  { name: "PMR", image: "pmr.jpg", href: "/ekstrakurikuler/pmr" },
+  { name: "Paskibra", image: "/login-logo.png", href: "/ekstrakurikuler/paskibra" },
+  { name: "Sains Club", image: "/login-logo.png", href: "/ekstrakurikuler/sains" },
+  { name: "Basket", image: "/login-logo.png", href: "/ekstrakurikuler/basket" },
+  { name: "Voli", image: "/login-logo.png", href: "/ekstrakurikuler/voli" },
+  { name: "Seni Tari", image: "/login-logo.png", href: "/ekstrakurikuler/tari" },
+  { name: "Paduan Suara", image: "/login-logo.png", href: "/ekstrakurikuler/padus" },
+  { name: "PMR", image: "/login-logo.png", href: "/ekstrakurikuler/pmr" },
 ];
 
 export default function ExtracurricularSection() {
@@ -50,15 +50,17 @@ export default function ExtracurricularSection() {
                 >
                   <div className="relative w-16 h-16 md:w-20 md:h-20 mb-3 rounded-2xl overflow-hidden transition-transform duration-300 group-hover:-translate-y-1">
                     <Image
-                      src={`/ekstra/${item.image}`}
+                      // Sekarang mengambil path yang diawali dengan '/'
+                      src={item.image}
                       alt={item.name}
                       fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                      sizes="80px"
+                      className="object-contain group-hover:scale-110 transition-transform duration-500 p-2"
+                      sizes="(max-width: 768px) 64px, 80px"
+                      priority={index < 4} // Mempercepat loading 4 item pertama
                     />
                   </div>
 
-                  <h3 className="text-xs md:text-sm font-bold text-slate-700 text-center uppercase tracking-wide group-hover:text-[#F3C623] transition-colors duration-300">
+                  <h3 className="text-[10px] md:text-xs font-bold text-slate-700 text-center uppercase tracking-wide group-hover:text-[#F3C623] transition-colors duration-300">
                     {item.name}
                   </h3>
                 </Link>
@@ -66,7 +68,6 @@ export default function ExtracurricularSection() {
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );

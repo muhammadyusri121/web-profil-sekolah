@@ -82,7 +82,7 @@ export default function Header() {
                       "text-[15px] font-bold tracking-wider transition-colors flex items-center gap-1.5",
                       activeMenu === item.label
                         ? "text-white"
-                        : "text-white hover:text-white"
+                        : "text-white hover:text-yellow-100"
                     )}
                   >
                     {item.label}
@@ -97,7 +97,7 @@ export default function Header() {
                 ) : (
                   <Link
                     href={item.href || "/"}
-                    className="text-[15px] font-bold tracking-wider text-white hover:text-white transition-colors"
+                    className="text-[15px] font-bold tracking-wider text-white hover:text-yellow-100 transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -125,7 +125,7 @@ export default function Header() {
                                   <Link
                                     key={child.label}
                                     href={child.href}
-                                    className="px-3 py-2.5 text-[13px] font-medium text-yellow-700 rounded-xl hover:bg-yellow-50 hover:text-yellow-600 transition-colors"
+                                    className="px-3 py-2.5 text-[13px] font-medium text-yellow-700 rounded-xl hover:bg-yellow-100 hover:text-yellow-600 transition-colors"
                                   >
                                     {child.label}
                                   </Link>
@@ -141,7 +141,7 @@ export default function Header() {
                                   <Link
                                     key={child.label}
                                     href={child.href}
-                                    className="px-3 py-2.5 text-[13px] font-medium text-yellow-700 rounded-xl hover:bg-yellow-50 hover:text-yellow-600 transition-colors"
+                                    className="px-3 py-2.5 text-[13px] font-medium text-yellow-700 rounded-xl hover:bg-yellow-100 hover:text-yellow-600 transition-colors"
                                   >
                                     {child.label}
                                   </Link>
@@ -155,11 +155,11 @@ export default function Header() {
                                 key={child.label}
                                 href={child.href}
                                 target={child.isExternal ? "_blank" : "_self"}
-                                className="px-4 py-3 text-[13px] font-medium text-yellow-700 rounded-xl hover:bg-yellow-50 hover:text-yellow-600 transition-colors flex items-center justify-between group"
+                                className="px-4 py-3 text-[13px] font-medium text-yellow-700 rounded-xl hover:bg-yellow-100 hover:text-yellow-600 transition-colors flex items-center justify-between group"
                               >
                                 {child.label}
                                 {child.isExternal && (
-                                  <ChevronRight size={14} className="text-yellow-300 group-hover:text-yellow-500" />
+                                  <ChevronRight size={14} className="text-yellow-100 group-hover:text-yellow-500" />
                                 )}
                               </Link>
                             ))}
