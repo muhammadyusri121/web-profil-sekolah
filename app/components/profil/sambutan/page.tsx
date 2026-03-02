@@ -35,8 +35,8 @@ export default function SambutanPage() {
               
               <h1 className="text-2xl md:text-4xl font-[1000] text-slate-900 leading-tight uppercase tracking-tighter mb-6">
                 Santun dalam pekerti, <br />
-                unggul dalam prestasi, <br />
-                <span className="text-[#F3C623]">kondusif dalam edukasi</span>
+                Unggul dalam prestasi, <br />
+                <span className="text-[#F3C623]">Kondusif dalam edukasi</span>
               </h1>
               
               <div className="space-y-1">
