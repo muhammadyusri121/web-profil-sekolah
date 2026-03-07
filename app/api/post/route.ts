@@ -8,7 +8,9 @@ export async function GET(request: Request) {
     const slug = searchParams.get('slug');
 
     let result;
-    if (slug) {
+    if (slug && kategori) {
+      result = await query('SELECT * FROM "Post" WHERE slug = $1 AND category = $2 AND is_published = true', [slug, kategori]);
+    } else if (slug) {
       result = await query('SELECT * FROM "Post" WHERE slug = $1 AND is_published = true', [slug]);
     } else if (kategori) {
       result = await query('SELECT * FROM "Post" WHERE category = $1 AND is_published = true', [kategori]);

@@ -48,6 +48,10 @@ const nextConfig: NextConfig = {
         source: '/osis/:slug*',
         destination: '/components/kesiswaan/osis/:slug*',
       },
+      {
+        source: '/kelulusan',
+        destination: '/components/layanan/kelulusan',
+      },
     ];
   },
 };

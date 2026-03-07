@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Target, CheckCircle2, Rocket, ShieldCheck, Zap, Award } from "lucide-react";
+import { Rocket, ShieldCheck, Zap, Award, Target } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
@@ -10,75 +10,77 @@ const misiData = [
   {
     id: 1,
     title: "Kualitas Akademik",
-    desc: "Menyelenggarakan proses pembelajaran yang inovatif dan efektif untuk menghasilkan lulusan yang kompetitif.",
-    icon: <Rocket className="text-[#F3C623]" size={24} />
+    desc: "Proses pembelajaran inovatif untuk lulusan kompetitif.",
+    icon: <Rocket className="text-yellow-600" size={20} />
   },
   {
     id: 2,
     title: "Karakter Bangsa",
-    desc: "Menanamkan nilai-nilai religius, budi pekerti luhur, dan jiwa nasionalisme yang kuat pada setiap siswa.",
-    icon: <ShieldCheck className="text-[#F3C623]" size={24} />
+    desc: "Menanamkan nilai religius, budi pekerti, dan nasionalisme.",
+    icon: <ShieldCheck className="text-yellow-600" size={20} />
   },
   {
     id: 3,
     title: "Wawasan Lingkungan",
-    desc: "Menciptakan lingkungan sekolah yang bersih, asri, dan nyaman sebagai sarana pendukung edukasi.",
-    icon: <Zap className="text-[#F3C623]" size={24} />
+    desc: "Menciptakan lingkungan sekolah asri dan kondusif.",
+    icon: <Zap className="text-yellow-600" size={20} />
   },
   {
     id: 4,
     title: "Prestasi Non-Akademik",
-    desc: "Mengembangkan bakat dan minat siswa melalui kegiatan ekstrakurikuler yang terprogram dan berprestasi.",
-    icon: <Award className="text-[#F3C623]" size={24} />
+    desc: "Mengembangkan bakat siswa melalui ekskul terprogram.",
+    icon: <Award className="text-yellow-600" size={20} />
   }
 ];
 
 export default function VisiMisiPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
+    <div className="flex flex-col min-h-screen bg-white">
       <Header />
 
-      <main className="grow pt-28 pb-20">
-        <div className="max-w-4xl mx-auto px-6">
+      <main className="grow pt-24 pb-16 md:pt-32 md:pb-24">
+        <div className="max-w-5xl mx-auto px-6">
+
           <motion.section 
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="mb-10"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-12 relative"
           >
-            <div className="bg-slate-900 rounded-[24px] md:rounded-[32px] p-6 md:p-10 text-center text-white relative overflow-hidden shadow-xl">
-              <h2 className="text-[9px] font-black uppercase tracking-[0.3em] text-[#F3C623] mb-2">Visi Sekolah</h2>
-              <p className="text-lg md:text-2xl font-bold leading-tight italic max-w-2xl mx-auto">
-                "Santun dalam pekerti, unggul dalam pretasi, dan kondusif dalam edukasi."
+            <div className="flex items-center gap-4 mb-8">
+              <h2 className="text-sm font-black text-slate-900 uppercase tracking-widest shrink-0">Visi Sekolah</h2>
+              <div className="grow h-px bg-slate-400"></div>
+            </div>
+            
+            <div className="relative p-6 md:p-10 bg-slate-50 rounded-[2rem] border-l-8 border-[#F3C623] overflow-hidden">
+              <p className="text-xl md:text-3xl font-black text-slate-900 leading-[1.2] uppercase italic tracking-tighter">
+                "Santun dalam pekerti, <br />
+                unggul dalam pretasi, <br />
+                <span className="text-[#F3C623]">kondusif dalam edukasi."</span>
               </p>
             </div>
           </motion.section>
 
-          <section className="space-y-3">
-            <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-lg font-black text-slate-900 uppercase tracking-widest">Misi Sekolah</h2>
-              <div className="grow h-px bg-slate-200"></div>
+          <section>
+            <div className="flex items-center gap-4 mb-8">
+              <h2 className="text-sm font-black text-slate-900 uppercase tracking-widest shrink-0">Misi Sekolah</h2>
+              <div className="grow h-px bg-slate-400"></div>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {misiData.map((misi, idx) => (
                 <motion.div
                   key={misi.id}
-                  initial={{ opacity: 0, x: -15 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.05 }}
-                  className="group flex flex-row items-center gap-4 bg-white p-5 md:p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-[#F3C623] transition-all"
+                  className="group flex items-start gap-4 p-5 bg-white rounded-2xl border border-slate-100 hover:border-[#F3C623]/50 hover:bg-slate-50 transition-all"
                 >
-                  {/* ICON: Hanya muncul di Desktop (md) */}
-                  <div className="hidden md:flex shrink-0 w-12 h-12 bg-slate-50 rounded-xl items-center justify-center group-hover:bg-yellow-50 transition-colors">
-                    {misi.icon}
-                  </div>
-
-                  <div className="grow">
-                    <h3 className="text-sm md:text-base font-black text-slate-800 uppercase tracking-tight mb-0.5">
+                  <div>
+                    <h3 className="text-[13px] font-black text-slate-900 uppercase tracking-tight mb-1">
                       {misi.title}
                     </h3>
-                    <p className="text-slate-500 text-xs md:text-sm font-medium leading-relaxed">
+                    <p className="text-slate-500 text-[12px] font-medium leading-relaxed">
                       {misi.desc}
                     </p>
                   </div>

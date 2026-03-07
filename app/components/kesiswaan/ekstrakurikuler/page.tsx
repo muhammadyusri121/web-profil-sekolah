@@ -2,65 +2,65 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, LayoutGrid } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
 const ekskulData = [
-    { nama: "Pramuka", slug: "pramuka", icon: "/login-logo.png" },
     { nama: "PMR", slug: "pmr", icon: "/login-logo.png" },
+    { nama: "Voli", slug: "voli", icon: "/login-logo.png" },
+    { nama: "Basket", slug: "basket", icon: "/login-logo.png" },
+    { nama: "Pramuka", slug: "pramuka", icon: "/login-logo.png" },
     { nama: "Paskibra", slug: "paskibra", icon: "/login-logo.png" },
     { nama: "Seni Tari", slug: "tari", icon: "/login-logo.png" },
-    { nama: "Basket", slug: "basket", icon: "/login-logo.png" },
-    { nama: "Voli", slug: "voli", icon: "/login-logo.png" },
+    { nama: "Jurnalistik", slug: "jurnalistik", icon: "/login-logo.png" },
     { nama: "Paduan Suara", slug: "padus", icon: "/login-logo.png" },
 ];
 
 export default function EkskulPage() {
     return (
-        <div className="flex flex-col min-h-screen bg-slate-50">
+        <div className="flex flex-col min-h-screen bg-[#F8FAFC]">
             <Header />
 
-            <main className="grow pt-32 pb-32">
-                <div className="max-w-5xl mx-auto px-5">
-
-                    <header className="mb-12">
-                        <h1 className="text-3xl md:text-4xl font-[1000] text-slate-900 uppercase tracking-tight">
-                            Daftar <span className="text-[#F3C623]">Ekstrakurikuler </span>
+            <main className="grow pt-24 pb-20 md:pt-32 md:pb-32">
+                <div className="max-w-5xl mx-auto px-4 md:px-6">
+                    <header className="mb-8 md:mb-12">
+                        <h1 className="text-2xl md:text-4xl font-[1000] text-slate-900 uppercase tracking-tight">
+                            Daftar <span className="text-[#F3C623]">Ekstrakurikuler</span>
                         </h1>
-                        <p className="text-slate-500 text-sm mt-2 font-medium">
-                            Masuk untuk melihat detail informasi setiap ekstrakurikuler.
-                        </p>
                     </header>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                         {ekskulData.map((ekskul, idx) => (
                             <motion.div
                                 key={ekskul.slug}
-                                initial={{ opacity: 0, y: 15 }}
+                                initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: idx * 0.05 }}
+                                transition={{ delay: idx * 0.03 }}
                             >
                                 <Link
                                     href={`/jenis/${ekskul.slug}`}
-                                    className="group flex flex-col items-center p-8 bg-white rounded-[32px] border border-slate-200 hover:border-[#F3C623] hover:shadow-xl transition-all active:scale-95"
+                                    className="group relative flex items-center gap-4 p-3 md:p-4 bg-white rounded-2xl border border-slate-200 hover:border-[#F3C623] hover:shadow-md transition-all active:scale-[0.98]"
                                 >
-                                    <img
-                                        src={ekskul.icon}
-                                        alt={ekskul.nama}
-                                        className="w-20 h-20 object-contain mb-6 group-hover:scale-110 transition-transform duration-300"
-                                        onError={(e) => {
-                                            (e.target as any).src = "https://placehold.co/200x200?text=Icon";
-                                        }}
-                                    />
+                                    <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-xl bg-slate-50 group-hover:bg-yellow-50 transition-colors overflow-hidden">
+                                        <img
+                                            src={ekskul.icon}
+                                            alt={ekskul.nama}
+                                            className="w-8 h-8 md:w-10 md:h-10 object-contain group-hover:scale-110 transition-transform duration-300"
+                                            onError={(e) => {
+                                                (e.target as any).src = "https://placehold.co/100x100?text=Logo";
+                                            }}
+                                        />
+                                    </div>
 
-                                    <div className="flex items-center justify-between w-full px-2">
-                                        <span className="text-base font-black text-slate-800 uppercase tracking-wide">
+                                    <div className="flex-1 pr-6">
+                                        <h2 className="text-sm md:text-base font-black text-slate-800 uppercase tracking-tight leading-tight group-hover:text-[#F3C623] transition-colors">
                                             {ekskul.nama}
-                                        </span>
-                                        <div className="bg-slate-50 p-2 rounded-full group-hover:bg-[#F3C623] group-hover:text-white transition-colors">
-                                            <ChevronRight size={18} />
-                                        </div>
+                                        </h2>
+                                    </div>
+
+                                    <div className="absolute top-3 right-3 text-slate-300 group-hover:text-[#F3C623] transition-colors">
+                                        <ChevronRight size={16} strokeWidth={3} />
                                     </div>
                                 </Link>
                             </motion.div>

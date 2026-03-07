@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { Play, Pause, Music } from "lucide-react";
+import { motion } from "framer-motion";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
@@ -24,31 +25,29 @@ export default function MarsPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
 
-      <main className="grow pt-32 pb-24">
-        <div className="max-w-2xl mx-auto px-6 text-center">
-          <div className="mb-12">
-            <h1 className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter mb-2">
-              Mars
+      <main className="grow pt-28 pb-20 md:pt-36 md:pb-24">
+        <div className="max-w-xl mx-auto px-6">
+          
+          {/* --- COMPACT HEADER & PLAYER --- */}
+          <div className="flex flex-col items-center text-center mb-16">
+            <h1 className="text-2xl md:text-3xl font-medium text-slate-900 uppercase tracking-tighter leading-none mb-6">
+              Mars <span className="text-[#F3C623]"> SMA Negeri 1 Ketapang</span>
             </h1>
-            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em]">
-              SMA Negeri 1 Ketapang
-            </p>
-          </div>
 
-          <div className="mb-16 flex flex-col items-center">
+            {/* Simple Compact Button */}
             <button 
               onClick={togglePlay}
-              className="w-20 h-20 flex items-center justify-center bg-[#F3C623] text-slate-900 rounded-full transition-all duration-300 active:scale-90 shadow-xl shadow-yellow-500/20 hover:bg-slate-900 hover:text-white group"
+              className="group flex items-center gap-3 px-6 py-3 bg-slate-900 text-white rounded-full hover:bg-[#F3C623] hover:text-black transition-all active:scale-95 shadow-lg shadow-slate-200"
             >
               {isPlaying ? (
-                <Pause size={32} fill="currentColor" />
+                <Pause size={18} fill="currentColor" />
               ) : (
-                <Play size={32} fill="currentColor" className="ml-1" />
+                <Play size={18} fill="currentColor" />
               )}
+              <span className="text-[11px] font-black uppercase tracking-widest">
+                {isPlaying ? "Mendengarkan" : "Putar Lagu"}
+              </span>
             </button>
-            <span className="mt-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-              {isPlaying ? "Mendengarkan" : "Putar Lagu"}
-            </span>
             
             <audio 
               ref={audioRef} 
@@ -57,48 +56,44 @@ export default function MarsPage() {
             />
           </div>
 
-          <div className="space-y-12 text-slate-800 font-bold text-base md:text-lg leading-relaxed uppercase tracking-wide">
-            <div className="mb-5">
-              <p>SMA Negeri 1 Ketapang</p>
-              <p>Santun dalam pekerti, unggul dalam prestasi</p>
-              <p>Kondusif dalam edukasi</p>
-            </div>
+          {/* --- SIMPLE LYRICS --- */}
+          <div className="space-y-10">
+            {[
+              ["SMA Negeri 1 Ketapang", "Santun dalam pekerti, unggul dalam prestasi", "Kondusif dalam edukasi"],
+              ["Raih semua mimpi dengan berjiwa Pancasila", "Wujudkan cita mulia dengan berjiwa Pancasila", "Taklukan dunia!"],
+              ["Kobarkan semangat menuju cita bangsa", "Kuatkan tekad, berdiri tegak", "Barisan kita kuat, bergerak kita hebat", "SMA Negeri 1 Ketapang!"],
+              ["SMA Negeri 1 Ketapang", "Santun dalam pekerti, unggul dalam prestasi", "Kondusif dalam edukasi"],
+              ["Raih semua mimpi dengan berjiwa Pancasila", "Wujudkan cita mulia dengan berjiwa Pancasila", "Taklukkan dunia!"],
+              ["Kobarkan semangat menuju cita bangsa", "Kuatkan tekad, berdiri tegak", "Barisan kita kuat, bergerak kita hebat", "SMA Negeri 1 Ketapang!"]
+            ].map((verse, vIdx) => (
+              <motion.div 
+                key={vIdx}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <div className="space-y-1.5">
+                  {verse.map((line, lIdx) => (
+                    <p 
+                      key={lIdx} 
+                      className={`uppercase tracking-wide font-bold text-sm md:text-[15px] ${
+                        line === "SMA Negeri 1 Ketapang!" || line === "Taklukkan dunia!" 
+                        ? "text-black font-black" 
+                        : "text-black"
+                      }`}
+                    >
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
 
-            <div className="mb-5">
-              <p>Raih semua mimpi dengan berjiwa Pancasila</p>
-              <p>Wujudkan cita mulia dengan berjiwa Pancasila</p>
-              <p>Taklukan dunia!</p>
-            </div>
-
-
-            <div className="mb-5">
-              <p>Kobarkan semangat menuju cita bangsa</p>
-              <p>Kuatkan tekad, berdiri tegak</p>
-              <p>Barisan kita kuat, bergerak kita hebat</p>
-              <p>SMA Negeri 1 Ketapang!</p>
-            </div>
-
-            {/* Verse 3 */}
-            <div className="mb-5">
-              <p>SMA Negeri 1 Ketapang</p>
-              <p>Santun dalam pekerti, unggul dalam prestasi</p>
-              <p>Kondusif dalam edukasi</p>
-            </div>
-
-            {/* Verse 4 */}
-            <div className="mb-5">
-              <p>Raih semua mimpi dengan berjiwa Pancasila</p>
-              <p>Wujudkan cita mulia dengan berjiwa Pancasila</p>
-              <p>Taklukkan dunia!</p>
-            </div>
-
-            {/* Ending */}
-            <div className="pb-10">
-              <p>Kobarkan semangat menuju cita bangsa</p>
-              <p>Kuatkan tekad, berdiri tegak</p>
-              <p>Barisan kita kuat, bergerak kita hebat</p>
-              <p className="text-2xl font-black text-slate-900 mt-2">SMA Negeri 1 Ketapang!</p>
-            </div>
+          {/* Footer Logo Minimalist */}
+          <div className="mt-20 flex justify-center opacity-20">
+             <Music size={24} className="text-slate-400" />
           </div>
 
         </div>

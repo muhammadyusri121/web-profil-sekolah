@@ -1,86 +1,109 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
+import { Quote } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
 export default function SambutanPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-[#F8FAFC]">
       <Header />
 
-      <main className="grow pt-28 pb-16">
-        <div className="max-w-4xl mx-auto px-6">
+      <main className="grow pt-24 pb-12 md:pt-32 md:pb-20">
+        <div className="max-w-5xl mx-auto px-5">
           
-          {/* --- BAGIAN IDENTITAS (COMPACT) --- */}
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12 border-b border-slate-100 pb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Foto: Ukuran Diperkecil & Simple */}
-            <div className="shrink-0">
-              <img 
-                src="/foto-kepsek.jpeg"
-                alt="Sulaiman, S.E., M.Pd."
-                className="w-60 h-80 md:w-80 md:h-100 object-cover rounded-2xl shadow-md border-4 border-slate-50"
-                onError={(e) => { 
-                  (e.target as any).src = "https://placehold.co/400x500/F3C623/333?text=Kepala+Sekolah"; 
-                }}
-              />
-            </div>
-
-            {/* Nama & Slogan */}
-            <div className="text-center md:text-left">
-              <div className="inline-block px-3 py-1 bg-yellow-100 text-[#F3C623] text-[10px] font-black uppercase tracking-[0.2em] rounded-md mb-4">
-                Sambutan Kepala Sekolah
+            {/* --- SISI KIRI: FOTO & IDENTITAS (STICKY DI DESKTOP) --- */}
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="lg:col-span-4 lg:sticky lg:top-32"
+            >
+              <div className="relative group">
+                {/* Dekorasi Belakang Foto */}
+                <div className="absolute -inset-2 bg-yellow-400/20 rounded-[2rem] rotate-3 group-hover:rotate-0 transition-transform duration-500" />
+                
+                <div className="relative bg-white p-3 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+                  <img 
+                    src="/foto-kepsek.jpeg"
+                    alt="Sulaiman, S.E., M.Pd."
+                    className="w-full aspect-[3/4] object-cover rounded-[1.5rem]"
+                    onError={(e) => { 
+                      (e.target as any).src = "https://placehold.co/400x533/F3C623/333?text=Kepala+Sekolah"; 
+                    }}
+                  />
+                  
+                  <div className="mt-5 text-center pb-2">
+                    <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight">
+                      Sulaiman, S.E., M.Pd.
+                    </h2>
+                    <div className="h-1 w-12 bg-yellow-400 mx-auto my-2 rounded-full" />
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+                      NIP. 19720512 199802 1 004
+                    </p>
+                  </div>
+                </div>
               </div>
-              
-              <h1 className="text-2xl md:text-4xl font-[1000] text-slate-900 leading-tight uppercase tracking-tighter mb-6">
+            </motion.div>
+
+            {/* --- SISI KANAN: ISI SAMBUTAN --- */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="lg:col-span-8 bg-white p-6 md:p-10 rounded-[2rem] border border-slate-100 shadow-sm"
+            >
+              <h1 className="text-2xl md:text-4xl font-[1000] text-slate-900 leading-[1.1] uppercase tracking-tighter mb-8">
                 Santun dalam pekerti, <br />
                 Unggul dalam prestasi, <br />
-                <span className="text-[#F3C623]">Kondusif dalam edukasi</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-600">
+                  Kondusif dalam edukasi
+                </span>
               </h1>
-              
-              <div className="space-y-1">
-                <h2 className="text-xl font-black text-slate-800 uppercase">
-                  Sulaiman, S.E., M.Pd.
-                </h2>
-                <p className="text-slate-500 font-bold text-[11px] uppercase tracking-widest">
-                  NIP. 19720512 199802 1 004
+
+              <div className="space-y-5 text-slate-600 leading-relaxed text-sm md:text-[15px]">
+                <p className="font-bold text-slate-900 text-base italic">
+                  "Assalamu’alaikum Warahmatullahi Wabarakatuh,"
                 </p>
+
+                <p>
+                  Salam hangat bagi kita semua yang tergabung dalam keluarga besar <strong>SMAN 1 Ketapang</strong>. 
+                  Melalui halaman ini, kami ingin menyampaikan rasa syukur dan apresiasi atas dukungan 
+                  semua pihak yang telah membantu perkembangan sekolah ini hingga sekarang.
+                </p>
+                
+                <p>
+                  SMAN 1 Ketapang terus bertransformasi menjadi lembaga pendidikan yang tidak hanya 
+                  fokus pada angka-angka akademik, tetapi juga pada pembentukan karakter siswa. 
+                  Kami ingin menciptakan rumah bagi kreativitas dan inovasi bagi setiap anak didik kami.
+                </p>
+                
+                <p>
+                  Kami berupaya memastikan setiap siswa mendapatkan bimbingan terbaik untuk menghadapi 
+                  tantangan masa depan yang dinamis dengan tetap menjunjung tinggi integritas dan 
+                  akhlakul karimah.
+                </p>
+
+                <div className="pt-6 mt-6 border-t border-slate-50">
+                  <p className="font-black text-slate-900 uppercase tracking-widest text-xs mb-1">
+                    Tertanda,
+                  </p>
+                  <p className="font-bold text-yellow-600">
+                    Wassalamu’alaikum Warahmatullahi Wabarakatuh.
+                  </p>
+                  
+                  {/* Digital Signature Placeholder */}
+                  <div className="mt-4 opacity-50 grayscale hover:grayscale-0 transition-all cursor-default">
+                    <span className="font-serif italic text-2xl text-slate-400 select-none">Sulaiman M.Pd.</span>
+                  </div>
+                </div>
               </div>
-            </div>
+            </motion.div>
+
           </div>
-
-          {/* --- ISI SAMBUTAN (CLEAN) --- */}
-          <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed text-sm md:text-base">
-            <p className="font-bold text-slate-900 mb-6">
-              Assalamu’alaikum Warahmatullahi Wabarakatuh,
-            </p>
-
-            <p className="mb-4 text-justify">
-              Salam hangat bagi kita semua yang tergabung dalam keluarga besar SMAN 1 Ketapang. 
-              Melalui halaman ini, kami ingin menyampaikan rasa syukur dan apresiasi atas dukungan 
-              semua pihak yang telah membantu perkembangan sekolah ini hingga sekarang.
-            </p>
-            
-            <p className="mb-4 text-justify">
-              SMAN 1 Ketapang terus bertransformasi menjadi lembaga pendidikan yang tidak hanya 
-              fokus pada angka-angka akademik, tetapi juga pada pembentukan karakter siswa. 
-              Kami ingin menciptakan rumah bagi kreativitas dan inovasi bagi setiap anak didik kami.
-            </p>
-            
-            <p className="mb-4 text-justify">
-              Kami berupaya memastikan setiap siswa mendapatkan bimbingan terbaik untuk menghadapi 
-              tantangan masa depan yang dinamis dengan tetap menjunjung tinggi integritas dan 
-              akhlakul karimah.
-            </p>
-
-            <div className="mt-10">
-              <p className="font-black text-slate-900">
-                Wassalamu’alaikum Warahmatullahi Wabarakatuh.
-              </p>
-            </div>
-          </div>
-
         </div>
       </main>
 
