@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Play, Pause, Music } from "lucide-react";
+import Link from "next/link";
+import { Play, Pause, Music, ChevronRight, Home } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -27,11 +28,10 @@ export default function MarsPage() {
 
       <main className="grow pt-28 pb-20 md:pt-36 md:pb-24">
         <div className="max-w-xl mx-auto px-6">
-          
-          {/* --- COMPACT HEADER & PLAYER --- */}
+        
           <div className="flex flex-col items-center text-center mb-16">
-            <h1 className="text-2xl md:text-3xl font-medium text-slate-900 uppercase tracking-tighter leading-none mb-6">
-              Mars <span className="text-[#F3C623]"> SMA Negeri 1 Ketapang</span>
+            <h1 className="text-2xl md:text-3xl font-[1000] text-slate-900 uppercase tracking-tighter leading-none mb-6">
+              Mars <span className="text-[#F3C623]"> SMAN 1 Ketapang</span>
             </h1>
 
             {/* Simple Compact Button */}
@@ -79,7 +79,7 @@ export default function MarsPage() {
                       key={lIdx} 
                       className={`uppercase tracking-wide font-bold text-sm md:text-[15px] ${
                         line === "SMA Negeri 1 Ketapang!" || line === "Taklukkan dunia!" 
-                        ? "text-black font-black" 
+                        ? "text-black font-[1000]" 
                         : "text-black"
                       }`}
                     >
