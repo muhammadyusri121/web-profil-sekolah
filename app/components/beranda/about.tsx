@@ -7,7 +7,7 @@ import { Target, Music, ArrowRight } from "lucide-react";
 
 export default function AboutSection() {
   return (
-    <section id="about" className="py-12 md:py-16 bg-white overflow-hidden">
+    <section id="about" className="py-2 md:py-4 bg-gray-200 overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
           

@@ -21,7 +21,7 @@ export default async function KaryaPage() {
               {posts.map((post: any) => (
                 <Link
                   key={post.id}
-                  href={`/double-track/${post.slug}`}
+                  href={`/karya/${post.slug}`}
                   className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-yellow-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-tranyellow-y-1 transition-all duration-300"
                 >
                   <div className="relative aspect-4/3 w-full overflow-hidden bg-yellow-100">

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Link from "next/link";
 import { Calendar, Tag } from "lucide-react";
 import Header from "@/components/layout/header";

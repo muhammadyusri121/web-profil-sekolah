@@ -8,6 +8,8 @@ import Gallery from '@/app/components/beranda/gallery';
 import Exstra from '@/app/components/beranda/ekstra';
 import PostSection from '@/app/components/beranda/postingan';
 
+import BetaNotice from "@/components/PopUpNotice";
+
 // Impor fungsi data fetching
 import { getStructuralPersonnel } from "@/data/data_beranda/data_guru";
 import { getLatestPosts } from "@/data/data_beranda/data_postingan";
@@ -28,6 +30,7 @@ export default async function Home() {
 
       {/* Konten Utama */}
       <div className="grow">
+        <BetaNotice />
         <Hero />
         <About />
 

@@ -7,11 +7,31 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
-      // Jika Anda menyimpan gambar di VPS dengan domain sendiri, tambahkan juga di sini:
-      // {
-      //   protocol: "https",
-      //   hostname: "nama-domain-vps-anda.com",
-      // },
+      // VPS server — gambar guru & data sekolah
+      {
+        protocol: "http",
+        hostname: "202.52.147.214",
+        port: "5433",
+      },
+      {
+        protocol: "http",
+        hostname: "202.52.147.214",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "202.52.147.214",
+        port: "",
+      },
+      // Wildcard untuk semua hostname (fallback dev)
+      {
+        protocol: "http",
+        hostname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
+      },
     ],
   },
   async rewrites() {

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
-import { ArrowRight, Users } from "lucide-react";
+import { ArrowRight, Users, GraduationCap } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -20,124 +20,143 @@ interface Teacher {
   image_url: string | null;
 }
 
-export default function TeacherGallery({ teachers = [] }: { teachers: Teacher[] }) {
+export default function TeacherGallery({
+  teachers = [],
+}: {
+  teachers: Teacher[];
+}) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
 
   const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: false })
+    Autoplay({
+      delay: 3500,
+      stopOnInteraction: false,
+    })
   );
 
-  // Sync indikator scroll
   React.useEffect(() => {
     if (!api) return;
-    api.on("select", () => {
+
+    const onSelect = () => {
       setCurrent(api.selectedScrollSnap());
-    });
+    };
+
+    onSelect();
+    api.on("select", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+    };
   }, [api]);
 
   if (!teachers || teachers.length === 0) return null;
 
   return (
-    <section id="gallery" className="relative py-16 md:py-24 bg-[#F3C623] overflow-hidden">
-      {/* --- PATTERN OVERLAY --- */}
-      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" 
-        style={{ 
-          backgroundImage: `linear-gradient(135deg, #000 25%, transparent 25%), linear-gradient(225deg, #000 25%, transparent 25%), linear-gradient(45deg, #000 25%, transparent 25%), linear-gradient(315deg, #000 25%, #F3C623 25%)`,
-          backgroundSize: '40px 40px',
-          backgroundPosition: '20px 0, 20px 0, 0 0, 0 0'
-        }} 
-      />
-      
-      <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
-        
-        {/* --- HEADER SECTION --- */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 text-center md:text-left">
-          <div className="space-y-3 flex-grow">
-            <div className="flex items-center justify-center md:justify-start gap-2 text-slate-900/60">
-              <Users size={18} />
-              <span className="text-[10px] font-black uppercase tracking-[0.3em]">Profil Pendidik</span>
+    <section
+      id="gallery"
+      className="relative overflow-hidden bg-gray-200 py-2 md:py-4"
+    >
+      <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6">
+        {/* Header */}
+        <div className="mb-8 md:mb-10">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-slate-900 md:text-4xl">
+                Tenaga Pendidik &
+                <span className="block text-[#d4a911]">Struktural Sekolah</span>
+              </h2>
+
+              <p className="mt-3 text-sm leading-relaxed text-slate-600 md:text-base">
+                Jajaran tenaga pendidik profesional yang berdedikasi dalam
+                membimbing dan membangun generasi unggul di SMAN 1 Ketapang.
+              </p>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-none">
-              Struktural <span className="text-white drop-shadow-sm">Sekolah</span>
-            </h2>
-            <p className="text-slate-800/70 text-sm md:text-base max-w-xl mx-auto md:mx-0 leading-relaxed font-bold">
-              Jajaran tenaga pendidik profesional yang berdedikasi tinggi untuk kemajuan siswa SMAN 1 Ketapang.
-            </p>
-          </div>
-          
-          {/* Tombol Center di Mobile */}
-          <div className="flex justify-center md:justify-end">
-            <Link href="/profil/guru">
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="group flex items-center gap-3 bg-slate-900 text-white px-8 py-3.5 rounded-full hover:bg-white hover:text-slate-900 transition-all duration-300 shadow-xl"
-              >
-                <span className="text-[10px] font-black uppercase tracking-widest">Selengkapnya</span>
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+
+            {/* Badge + Button sejajar */}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-white shadow-sm">
+                <Users className="h-4 w-4" />
+                <span className="text-xs font-semibold">
+                  {teachers.length} Pendidik
+                </span>
+              </div>
+
+              <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  href="/profil/guru"
+                  className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-800 shadow-sm transition-all duration-300 hover:border-slate-900 hover:bg-slate-900 hover:text-white"
+                >
+                  Lihat Selengkapnya
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
               </motion.div>
-            </Link>
+            </div>
           </div>
         </div>
 
-        {/* --- CAROUSEL --- */}
-        <Carousel
-          setApi={setApi}
-          plugins={[plugin.current]}
-          className="w-full"
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-        >
-          <CarouselContent className="-ml-4">
-            {teachers.map((teacher, index) => (
-              <CarouselItem 
-                key={teacher.id} 
-                className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/5" 
-              >
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group relative aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl bg-white border-4 border-white/20"
+        {/* Carousel */}
+        <div className="rounded-[24px] border border-slate-200/80 bg-white/80 p-3 shadow-[0_15px_50px_rgba(15,23,42,0.06)] backdrop-blur-sm md:p-4">
+          <Carousel
+            setApi={setApi}
+            plugins={[plugin.current]}
+            className="w-full"
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+          >
+            <CarouselContent className="-ml-3 md:-ml-4">
+              {teachers.map((teacher, index) => (
+                <CarouselItem
+                  key={teacher.id}
+                  className="pl-3 basis-1/2 sm:basis-1/3 md:basis-1/4 xl:basis-1/5 md:pl-4"
                 >
-                  {/* FOTO CERAH (No Grayscale) */}
-                  <Image
-                    src={teacher.image_url || "/placeholder-user.png"}
-                    alt={teacher.full_name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  
-                  {/* INFO DI DALAM CARD */}
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-5 pt-10">
-                    <h4 className="text-white font-black text-[13px] uppercase leading-tight tracking-tight drop-shadow-md">
-                      {teacher.full_name}
-                    </h4>
-                    <p className="text-[#F3C623] text-[9px] font-bold uppercase mt-1 tracking-widest opacity-90">
-                      {teacher.position}
-                    </p>
-                  </div>
-                </motion.div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+                  <motion.div
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, delay: index * 0.05 }}
+                    viewport={{ once: true }}
+                    className="group overflow-hidden rounded-[20px] border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    <div className="relative aspect-[3/4] overflow-hidden bg-slate-100">
+                      <Image
+                        src={teacher.image_url || "/placeholder-user.png"}
+                        alt={teacher.full_name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
 
-        {/* --- INDIKATOR SCROLL (Dots) --- */}
-        <div className="flex justify-center gap-2 mt-10">
-          {teachers.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => api?.scrollTo(i)}
-              className={`h-1.5 transition-all duration-300 rounded-full ${
-                current === i ? "w-8 bg-slate-900" : "w-2 bg-slate-900/30"
-              }`}
-            />
-          ))}
+                    <div className="p-3 text-center">
+                      <h3 className="line-clamp-2 text-sm font-bold leading-snug text-slate-900">
+                        {teacher.full_name}
+                      </h3>
+                      <p className="mt-1 line-clamp-2 text-[11px] font-medium uppercase tracking-wide text-slate-500">
+                        {teacher.position}
+                      </p>
+                    </div>
+                  </motion.div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+
+          {/* Indicators */}
+          <div className="mt-5 flex justify-center gap-2">
+            {teachers.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => api?.scrollTo(i)}
+                aria-label={`Pergi ke slide ${i + 1}`}
+                className={`rounded-full transition-all duration-300 ${
+                  current === i
+                    ? "h-2 w-6 bg-slate-900"
+                    : "h-2 w-2 bg-slate-300 hover:bg-slate-400"
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

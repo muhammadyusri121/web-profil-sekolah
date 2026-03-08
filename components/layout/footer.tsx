@@ -16,6 +16,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-yellow-700 text-white border-t border-yellow-300">
+
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
           <div className="space-y-10">
@@ -81,15 +82,13 @@ export default function Footer() {
                 Alamat Sekolah
               </h4>
               <p className="text-sm text-white">
-                Jl. Raya Ketapang No. 123, <br />
-                Kec. Ketapang, Kab. Lampung Selatan, <br />
-                Lampung 35592.
+                Ledik, Rabiyan, Kec. Ketapang, Kabupaten Sampang, Jawa Timur 69261
               </p>
             </div>
 
             <div className="w-full h-64 rounded-xl overflow-hidden border border-white bg-white">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15888.6672322421!2d105.7831!3d-5.8!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwNDgnMDAuMCJTIDEwNcKwNDcnMDAuMCJF!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.941374490324!2d113.23827637483517!3d-6.897615593101619!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd836e1c9b67e5f%3A0x1b695a2f929ff228!2sSMA%20Negeri%201%20Ketapang!5e0!3m2!1sid!2sid!4v1772950111919!5m2!1sid!2sid"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

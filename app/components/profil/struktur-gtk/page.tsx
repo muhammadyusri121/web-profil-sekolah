@@ -1,23 +1,34 @@
 "use client";
 
 import React, { useState } from "react";
-import { Tree, TreeNode } from "react-organizational-chart";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, User, Phone, Mail } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
+// Harus dynamic import dengan ssr: false karena library ini
+// mengakses `document` langsung saat module dievaluasi (tidak kompatibel SSR)
+const Tree = dynamic(
+  () => import("react-organizational-chart").then((m) => m.Tree),
+  { ssr: false }
+);
+const TreeNode = dynamic(
+  () => import("react-organizational-chart").then((m) => m.TreeNode),
+  { ssr: false }
+);
+
 // --- KOMPONEN KOTAK NAMA (NODE) ---
 const MemberNode = ({ member, onClick }: { member: any; onClick: () => void }) => (
-  <div 
+  <div
     onClick={onClick}
     className="inline-block cursor-pointer group"
   >
     <div className="bg-white border-2 border-slate-100 group-hover:border-[#F3C623] p-3 rounded-2xl shadow-sm transition-all active:scale-95 min-w-[140px] md:min-w-[180px]">
       <div className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-2 rounded-xl bg-slate-50 flex items-center justify-center overflow-hidden border border-slate-100">
-        <img 
-          src={member.foto || "/login-logo.png"} 
-          alt={member.nama} 
+        <img
+          src={member.foto || "/login-logo.png"}
+          alt={member.nama}
           className="w-full h-full object-cover"
           onError={(e) => { (e.target as any).src = "https://placehold.co/100x100?text=GTK"; }}
         />
@@ -56,7 +67,7 @@ export default function StrukturGTKPage() {
 
       <main className="grow pt-32 pb-24 overflow-x-auto">
         <div className="max-w-6xl mx-auto px-6 min-w-[800px] md:min-w-full">
-          
+
           <div className="text-center mb-16">
             <h1 className="text-3xl md:text-5xl font-[1000] text-slate-900 uppercase tracking-tighter">
               Struktur <span className="text-[#F3C623]">GTK</span>
@@ -71,32 +82,32 @@ export default function StrukturGTKPage() {
               lineColor={'#E2E8F0'} // Warna slate-200 agar clean
               lineBorderRadius={'15px'}
               label={
-                <MemberNode 
-                  member={data.pimpinan} 
-                  onClick={() => setSelectedMember(data.pimpinan)} 
+                <MemberNode
+                  member={data.pimpinan}
+                  onClick={() => setSelectedMember(data.pimpinan)}
                 />
               }
             >
               {data.wakasek.map((waka, index) => (
-                <TreeNode 
-                  key={index} 
+                <TreeNode
+                  key={index}
                   label={
-                    <MemberNode 
-                      member={waka} 
-                      onClick={() => setSelectedMember(waka)} 
+                    <MemberNode
+                      member={waka}
+                      onClick={() => setSelectedMember(waka)}
                     />
                   }
                 >
                   {/* Contoh Guru di bawah Wakasek tertentu jika ingin hirarki lebih dalam */}
                   {index === 0 && data.guru.map((guru, gIndex) => (
-                    <TreeNode 
-                      key={gIndex} 
+                    <TreeNode
+                      key={gIndex}
                       label={
-                        <MemberNode 
-                          member={guru} 
-                          onClick={() => setSelectedMember(guru)} 
+                        <MemberNode
+                          member={guru}
+                          onClick={() => setSelectedMember(guru)}
                         />
-                      } 
+                      }
                     />
                   ))}
                 </TreeNode>
@@ -110,17 +121,17 @@ export default function StrukturGTKPage() {
       <AnimatePresence>
         {selectedMember && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setSelectedMember(null)}
               className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
             />
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
               className="relative bg-white w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl"
             >
               <div className="bg-[#F3C623] p-8 flex flex-col items-center text-center">
-                <button 
+                <button
                   onClick={() => setSelectedMember(null)}
                   className="absolute top-4 right-4 p-2 bg-black/10 rounded-full hover:bg-black/20"
                 >
@@ -135,14 +146,14 @@ export default function StrukturGTKPage() {
                 </p>
               </div>
               <div className="p-8 space-y-4">
-                 <div className="flex items-center gap-4 text-slate-600">
-                    <User size={18} className="text-[#F3C623]" />
-                    <span className="text-xs font-bold uppercase">NIP: {selectedMember.nip || "-"}</span>
-                 </div>
-                 <div className="flex items-center gap-4 text-slate-600">
-                    <Phone size={18} className="text-[#F3C623]" />
-                    <span className="text-xs font-bold uppercase">Kontak via Sekolah</span>
-                 </div>
+                <div className="flex items-center gap-4 text-slate-600">
+                  <User size={18} className="text-[#F3C623]" />
+                  <span className="text-xs font-bold uppercase">NIP: {selectedMember.nip || "-"}</span>
+                </div>
+                <div className="flex items-center gap-4 text-slate-600">
+                  <Phone size={18} className="text-[#F3C623]" />
+                  <span className="text-xs font-bold uppercase">Kontak via Sekolah</span>
+                </div>
               </div>
             </motion.div>
           </div>

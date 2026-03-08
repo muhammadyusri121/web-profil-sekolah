@@ -26,7 +26,7 @@ export const navigationData: NavItem[] = [
     label: "Akademik",
     children: [
       { label: "Kalender Akademik", href: "/components/akademik/kalender-akademik", group: "Kurikulum" },
-      { label: "Jadwal Pembelajaran", href: "/components/akademik/jadwal", group: "Kurikulum" },
+      { label: "Jadwal Pembelajaran", href: "/components/akademik/jadwal-sekolah", group: "Kurikulum" },
       { label: "Perangkat Pembelajaran", href: "/components/akademik/perangkat", group: "Kurikulum" },
       { label: "Karya Siswa/Siswi", href: "/components/akademik/karya", group: "Kurikulum" },
       { label: "ASAS", href: "/components/asesmen/asas", group: "Asesmen" },

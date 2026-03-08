@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Link from "next/link";
 import { Calendar, Image as ImageIcon, ArrowRight, ClipboardCheck } from "lucide-react";
 import Header from "@/components/layout/header";

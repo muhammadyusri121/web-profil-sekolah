@@ -87,12 +87,13 @@ export default function SambutanPage() {
                   akhlakul karimah.
                 </p>
 
-                <div className="pt-6 mt-6 border-t border-slate-50">
-                  <p className="font-black text-slate-900 uppercase tracking-widest text-xs mb-1">
-                    Tertanda,
-                  </p>
+                <div className="mt-6 border-t border-slate-50">
                   <p className="font-bold text-yellow-600">
                     Wassalamu’alaikum Warahmatullahi Wabarakatuh.
+                  </p>
+
+                  <p className="pt-10 mb-10 font-black text-slate-900 uppercase tracking-widest text-xs mb-1">
+                    Tertanda,
                   </p>
                   
                   {/* Digital Signature Placeholder */}

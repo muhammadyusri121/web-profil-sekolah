@@ -20,7 +20,7 @@ const EXTRA_DATA = [
 
 export default function ExtracurricularSection() {
   return (
-    <section id="ekstra" className="py-16 bg-white">
+    <section id="ekstra" className="py-2 md:py-4 bg-gray-200">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-10 max-w-2xl space-y-4">
           <div>
