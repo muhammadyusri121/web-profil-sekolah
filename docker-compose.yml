@@ -6,6 +6,6 @@ services:
     container_name: profil-sman1ketapang
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000" # Hanya Nginx di VPS Anda yang bisa "melihat" port ini
     env_file:
       - .env
