@@ -27,7 +27,6 @@ export async function getStructuralPersonnel() {
       image_url: resolveImageUrl(person.image_url),
     }));
 
-    console.log("Data Pendidik:", data.length, "— Contoh image_url:", data[0]?.image_url);
     return data;
   } catch (error) {
     console.error("Gagal mengambil data dari VPS:", error);

@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+.gitignore
+*.md
+Dockerfile
+docker-compose.yml
+# .env (removed from ignore to allow build-time NEXT_PUBLIC_ variables)
+.vscode
+npm-debug.log
+README.md

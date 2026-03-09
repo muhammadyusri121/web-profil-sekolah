@@ -1,0 +1,17 @@
+CATATAN UPDATE - 10 MARET 2026
+
+1. OPTIMASI DOCKER (DEPLOYMENT)
+   - Ukuran aplikasi jauh lebih kecil dan ringan (Next.js Standalone Mode).
+   - Proses build lebih cepat karena sudah mengabaikan file sampah (.dockerignore).
+   - Keamanan lebih terjaga (aplikasi tidak lagi berjalan sebagai root).
+
+2. PEMBARUAN FRONTEND & UI
+   - Sinkronisasi Menu: Semua link di navigasi sudah sesuai dengan folder aplikasi.
+   - Halaman Baru: Membuat halaman untuk Fasilitas (Sarpras), ASAS, TKA, ANBK, dan Kemitraan.
+   - Perbaikan 404: Tidak ada lagi halaman "Not Found" saat mengklik menu utama.
+   - Fallback Gambar: Foto guru/staf yang kosong otomatis diganti dengan ikon user standar.
+
+3. PERBAIKAN DATA & KONEKSI
+   - Dynamic Layout: Beranda sekarang mengikuti data terbaru dari database (tidak statis).
+   - API Security: Memastikan koneksi ke database VPS lebih stabil.
+   - Environment Fix: Menstabilkan variabel NEXT_PUBLIC untuk integrasi frontend-backend yang lebih mulus.

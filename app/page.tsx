@@ -1,4 +1,5 @@
 // src/app/page.tsx
+export const dynamic = 'force-dynamic';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 
@@ -16,9 +17,6 @@ import { getLatestPosts } from "@/data/data_beranda/data_postingan";
 export default async function Home() {
   const teachers = await getStructuralPersonnel();
   const posts = await getLatestPosts();
-
-  console.log("Data guru yang berhasil ditarik:", teachers.length);
-  console.log("Data postingan yang berhasil ditarik:", posts.length);
 
   return (
     <main className="min-h-screen flex flex-col">
