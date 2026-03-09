@@ -1,11 +1,11 @@
 services:
-  web:
+  web-profil:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./web-profil-sekolah
     container_name: profil-sman1ketapang
-    restart: unless-stopped
+    restart: always
+    env_file: ./web-profil-sekolah/.env
     ports:
-      - "127.0.0.1:3000:3000" # Hanya Nginx di VPS Anda yang bisa "melihat" port ini
-    env_file:
-      - .env
+      - "3000:3000"
+    volumes:
+      - ./web-profil-sekolah/prisma:/app/prisma

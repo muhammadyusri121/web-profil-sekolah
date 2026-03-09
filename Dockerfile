@@ -1,37 +1,38 @@
-FROM node:20-alpine AS builder
-
-# Set working directory
+# Stage 1: Build
+FROM node:18-alpine AS builder
 WORKDIR /app
 
-# Install dependencies
+# Salin fail package dan folder prisma
 COPY package*.json ./
-# Menggunakan npm install (atau npm ci)
+COPY prisma ./prisma/
+
+# Install dependencies (termasuk Prisma)
 RUN npm install
 
-# Copy all files
+# Salin semua kod sumber
 COPY . .
 
-# Generate Prisma client (jika file prisma/schema.prisma digunakan
+
 # RUN npx prisma generate
 
-# Build Next.js
+# Build aplikasi
 RUN npm run build
 
-# Production image
-FROM node:20-alpine AS runner
+# Stage 2: Runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=3000
-EXPOSE 3000
 
-# Copy necessary files from builder
+# Salin fail yang diperlukan sahaja dari stage builder
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/.next ./.next 2>/dev/null || true
+COPY --from=builder /app/dist ./dist 2>/dev/null || true
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.ts ./next.config.ts
-COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/next.config.* ./ 2>/dev/null || true
 
-# Start the Next.js app
-CMD ["npm", "start"]
+EXPOSE 3000
+
+# Start aplikasi (sesuaikan dengan script di package.json)
+CMD ["npm", "run", "start"]
