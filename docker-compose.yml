@@ -1,11 +1,15 @@
 services:
-  web-profil:
+  cms-app:
     build:
-      context: ./web-profil-sekolah
-    container_name: profil-sman1ketapang
+      context: .
+      dockerfile: Dockerfile
+    container_name: smanka-cms-app
     restart: always
-    env_file: ./web-profil-sekolah/.env
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
-      - ./web-profil-sekolah/prisma:/app/prisma
+      - ./prisma:/app/prisma
