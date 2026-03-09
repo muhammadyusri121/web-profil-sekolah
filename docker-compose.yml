@@ -1,7 +1,7 @@
 services:
   cms-app:
     build:
-      context: .
+      context: .  # Titik artinya "Gunakan folder tempat file ini berada"
       dockerfile: Dockerfile
     container_name: smanka-cms-app
     restart: always
