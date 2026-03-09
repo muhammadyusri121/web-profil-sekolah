@@ -1,22 +1,48 @@
 services:
-  cms-app:
+  smanka-school-profile:
     build:
-      context: .  # Titik artinya "Gunakan folder tempat file ini berada"
+      context: .
       dockerfile: Dockerfile
-    container_name: smanka-cms-app
+    container_name: smanka-school-profile
     restart: always
     env_file:
       - .env
     environment:
       - PORT=3000
-      - HOSTNAME=0.0.0.0
-      - NEXT_PUBLIC_API_URL=http://127.0.0.1:3000
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
     ports:
-      - "127.0.0.1:3000:3000"
-    volumes:
-      - ./prisma:/app/prisma
+      - "127.0.0.1:3001:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - app-network
+
+  # postgres:
+  #   image: postgres:16-alpine
+  #   container_name: smanka-postgres
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #     - POSTGRES_DB=${POSTGRES_DB}
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+    # Tidak expose port ke luar — hanya bisa diakses internal
+    # Uncomment baris ini HANYA untuk debug lokal:
+    # ports:
+    #   - "127.0.0.1:5432:5432"
+
+# volumes:
+#   postgres_data:
+#     driver: local
 
 networks:
   app-network:

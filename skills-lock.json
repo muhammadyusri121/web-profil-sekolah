@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "docker-compose-setup": {
+      "source": "pluginagentmarketplace/custom-plugin-docker",
+      "sourceType": "github",
+      "computedHash": "3634912ec73baff6cca69cc89753b6174705e1be0474805e0d57005fe41b9e58"
+    }
+  }
+}
