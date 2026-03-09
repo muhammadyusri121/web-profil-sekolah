@@ -11,7 +11,7 @@ RUN npm install
 # Copy all files
 COPY . .
 
-# Generate Prisma client (jika file prisma/schema.prisma digunakan)
+# Generate Prisma client (jika file prisma/schema.prisma digunakan
 # RUN npx prisma generate
 
 # Build Next.js
