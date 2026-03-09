@@ -72,6 +72,87 @@ const nextConfig: NextConfig = {
         source: '/kelulusan',
         destination: '/components/layanan/kelulusan',
       },
+      // Ekstrakurikuler - Pramuka
+      {
+        source: '/ekskul/pramuka',
+        destination: '/components/kesiswaan/ekstrakurikuler/Pramuka',
+      },
+      {
+        source: '/ekskul/pramuka/:slug*',
+        destination: '/components/kesiswaan/ekstrakurikuler/Pramuka/:slug*',
+      },
+      // Ekstrakurikuler - Paskibraka
+      {
+        source: '/ekskul/paskibraka',
+        destination: '/components/kesiswaan/ekstrakurikuler/Paskibraka',
+      },
+      {
+        source: '/ekskul/paskibraka/:slug*',
+        destination: '/components/kesiswaan/ekstrakurikuler/Paskibraka/:slug*',
+      },
+      // Ekstrakurikuler - Sains Club
+      {
+        source: '/ekskul/sains-club',
+        destination: '/components/kesiswaan/ekstrakurikuler/Sains_Club',
+      },
+      {
+        source: '/ekskul/sains-club/:slug*',
+        destination: '/components/kesiswaan/ekstrakurikuler/Sains_Club/:slug*',
+      },
+      // Ekstrakurikuler - Basket
+      {
+        source: '/ekskul/basket',
+        destination: '/components/kesiswaan/ekstrakurikuler/Basket',
+      },
+      {
+        source: '/ekskul/basket/:slug*',
+        destination: '/components/kesiswaan/ekstrakurikuler/Basket/:slug*',
+      },
+      // Ekstrakurikuler - Voli
+      {
+        source: '/ekskul/voli',
+        destination: '/components/kesiswaan/ekstrakurikuler/Voli',
+      },
+      {
+        source: '/ekskul/voli/:slug*',
+        destination: '/components/kesiswaan/ekstrakurikuler/Voli/:slug*',
+      },
+      // Ekstrakurikuler - Seni Tari
+      {
+        source: '/ekskul/seni-tari',
+        destination: '/components/kesiswaan/ekstrakurikuler/Seni_Tari',
+      },
+      {
+        source: '/ekskul/seni-tari/:slug*',
+        destination: '/components/kesiswaan/ekstrakurikuler/Seni_Tari/:slug*',
+      },
+      // Ekstrakurikuler - Paduan Suara
+      {
+        source: '/ekskul/paduan-suara',
+        destination: '/components/kesiswaan/ekstrakurikuler/Paduan_Suara',
+      },
+      {
+        source: '/ekskul/paduan-suara/:slug*',
+        destination: '/components/kesiswaan/ekstrakurikuler/Paduan_Suara/:slug*',
+      },
+      // Ekstrakurikuler - PMR
+      {
+        source: '/ekskul/pmr',
+        destination: '/components/kesiswaan/ekstrakurikuler/PMR',
+      },
+      {
+        source: '/ekskul/pmr/:slug*',
+        destination: '/components/kesiswaan/ekstrakurikuler/PMR/:slug*',
+      },
+      // Ekstrakurikuler - Jurnalistik
+      {
+        source: '/ekskul/jurnalistik',
+        destination: '/components/kesiswaan/ekstrakurikuler/Jurnalistik',
+      },
+      {
+        source: '/ekskul/jurnalistik/:slug*',
+        destination: '/components/kesiswaan/ekstrakurikuler/Jurnalistik/:slug*',
+      },
     ];
   },
 };

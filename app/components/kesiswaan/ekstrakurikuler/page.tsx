@@ -11,11 +11,13 @@ const ekskulData = [
     { nama: "Voli", slug: "voli", icon: "/login-logo.png" },
     { nama: "Basket", slug: "basket", icon: "/login-logo.png" },
     { nama: "Pramuka", slug: "pramuka", icon: "/login-logo.png" },
-    { nama: "Paskibra", slug: "paskibra", icon: "/login-logo.png" },
-    { nama: "Seni Tari", slug: "tari", icon: "/login-logo.png" },
+    { nama: "Paskibraka", slug: "paskibraka", icon: "/login-logo.png" },
+    { nama: "Seni Tari", slug: "seni-tari", icon: "/login-logo.png" },
     { nama: "Jurnalistik", slug: "jurnalistik", icon: "/login-logo.png" },
-    { nama: "Paduan Suara", slug: "padus", icon: "/login-logo.png" },
+    { nama: "Paduan Suara", slug: "paduan-suara", icon: "/login-logo.png" },
+    { nama: "Sains Club", slug: "sains-club", icon: "/login-logo.png" },
 ];
+
 
 export default function EkskulPage() {
     return (
@@ -39,7 +41,7 @@ export default function EkskulPage() {
                                 transition={{ delay: idx * 0.03 }}
                             >
                                 <Link
-                                    href={`/jenis/${ekskul.slug}`}
+                                    href={`/ekskul/${ekskul.slug}`}
                                     className="group relative flex items-center gap-4 p-3 md:p-4 bg-white rounded-2xl border border-slate-200 hover:border-[#F3C623] hover:shadow-md transition-all active:scale-[0.98]"
                                 >
                                     <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-xl bg-slate-50 group-hover:bg-yellow-50 transition-colors overflow-hidden">

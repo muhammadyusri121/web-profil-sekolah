@@ -4,63 +4,68 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ArrowRight, LayoutGrid } from "lucide-react";
 
-// --- DATA STATIS ---
-// Semua image diarahkan ke /login-logo.png agar tidak error
 const EXTRA_DATA = [
-  { name: "Pramuka", image: "/login-logo.png", href: "/ekstrakurikuler/pramuka" },
-  { name: "Paskibra", image: "/login-logo.png", href: "/ekstrakurikuler/paskibra" },
-  { name: "Sains Club", image: "/login-logo.png", href: "/ekstrakurikuler/sains" },
-  { name: "Basket", image: "/login-logo.png", href: "/ekstrakurikuler/basket" },
-  { name: "Voli", image: "/login-logo.png", href: "/ekstrakurikuler/voli" },
-  { name: "Seni Tari", image: "/login-logo.png", href: "/ekstrakurikuler/tari" },
-  { name: "Paduan Suara", image: "/login-logo.png", href: "/ekstrakurikuler/padus" },
-  { name: "PMR", image: "/login-logo.png", href: "/ekstrakurikuler/pmr" },
+  { name: "Pramuka", image: "/login-logo.png", href: "/ekskul/pramuka" },
+  { name: "Paskibraka", image: "/login-logo.png", href: "/ekskul/paskibraka" },
+  { name: "Sains Club", image: "/login-logo.png", href: "/ekskul/sains-club" },
+  { name: "Basket", image: "/login-logo.png", href: "/ekskul/basket" },
+  { name: "Voli", image: "/login-logo.png", href: "/ekskul/voli" },
+  { name: "Seni Tari", image: "/login-logo.png", href: "/ekskul/seni-tari" },
+  { name: "Paduan Suara", image: "/login-logo.png", href: "/ekskul/paduan-suara" },
+  { name: "PMR", image: "/login-logo.png", href: "/ekskul/pmr" },
+  { name: "Jurnalistik", image: "/login-logo.png", href: "/ekskul/jurnalistik" },
 ];
 
 export default function ExtracurricularSection() {
   return (
-    <section id="ekstra" className="py-2 md:py-4 bg-gray-200">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-10 max-w-2xl space-y-4">
+    <section id="ekstra" className="py-12 md:py-16 bg-gray-100">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+
+        {/* Header: judul, deskripsi, dan tombol ke halaman ekskul */}
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-tight">
-              Kegiatan <span className="text-[#F3C623]">Ekstrakurikuler</span>
+            <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tighter md:text-4xl">
+              Kegiatan <span className="text-yellow-400">Ekstrakurikuler</span>
             </h2>
-            <div className="h-1.5 w-16 bg-[#F3C623] rounded-full mt-3" />
+            <p className="mt-2 max-w-lg text-sm text-slate-500 font-medium leading-relaxed">
+              Kembangkan potensi, bakat, dan minat di luar jam pelajaran.
+              Pilih ekskul favoritmu dan raih prestasi bersama SMAN 1 Ketapang.
+            </p>
           </div>
-          <p className="text-slate-500 text-sm md:text-base font-medium leading-relaxed">
-            Kembangkan potensi, bakat, dan minatmu di luar jam pelajaran akademik. 
-            Pilih ekstrakurikuler favoritmu dan raih prestasi bersama SMAN 1 Ketapang.
-          </p>
+
+          {/* Tombol menuju halaman daftar ekskul lengkap */}
+          <Link
+            href="/components/kesiswaan/ekstrakurikuler"
+            className="inline-flex shrink-0 items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-[11px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-400 hover:text-slate-900"
+          >
+            <LayoutGrid size={14} />
+            Semua Ekskul
+            <ArrowRight size={13} />
+          </Link>
         </div>
 
-        <div className="-mx-6 px-6 md:mx-0 md:px-0">
-          <div className="flex flex-nowrap gap-4 md:gap-5 overflow-x-auto pb-8 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        {/* Mobile: 1 baris scroll, 3 kartu terlihat | Desktop: grid 10 kolom */}
+        <div className="overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="grid grid-rows-1 grid-flow-col gap-3 auto-cols-[calc((100vw-56px)/3)] sm:grid-flow-row sm:grid-cols-10 sm:auto-cols-auto">
             {EXTRA_DATA.map((item, index) => (
-              <motion.div
-                key={index}
-                whileHover={{ y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="snap-start shrink-0"
-              >
-                <Link 
+              <motion.div key={item.name} whileTap={{ scale: 0.95 }}>
+                <Link
                   href={item.href}
-                  className="group flex flex-col items-center justify-center p-5 bg-white rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(243,198,35,0.15)] hover:border-[#F3C623]/30 transition-all duration-300 w-32 h-36 md:w-40 md:h-44"
+                  className="group flex flex-col items-center justify-center gap-2 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm hover:border-yellow-400 hover:shadow-md transition-all duration-300 aspect-square"
                 >
-                  <div className="relative w-16 h-16 md:w-20 md:h-20 mb-3 rounded-2xl overflow-hidden transition-transform duration-300 group-hover:-translate-y-1">
+                  <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden transition-transform duration-300 group-hover:-translate-y-0.5">
                     <Image
-                      // Sekarang mengambil path yang diawali dengan '/'
                       src={item.image}
                       alt={item.name}
                       fill
-                      className="object-contain group-hover:scale-110 transition-transform duration-500 p-2"
-                      sizes="(max-width: 768px) 64px, 80px"
-                      priority={index < 4} // Mempercepat loading 4 item pertama
+                      className="object-contain p-1.5 group-hover:scale-110 transition-transform duration-500"
+                      sizes="48px"
+                      priority={index < 5}
                     />
                   </div>
-
-                  <h3 className="text-[10px] md:text-xs font-bold text-slate-700 text-center uppercase tracking-wide group-hover:text-[#F3C623] transition-colors duration-300">
+                  <h3 className="text-[8px] sm:text-[9px] font-black text-slate-700 text-center uppercase tracking-wide leading-tight group-hover:text-yellow-500 transition-colors duration-300 line-clamp-2">
                     {item.name}
                   </h3>
                 </Link>
@@ -68,6 +73,7 @@ export default function ExtracurricularSection() {
             ))}
           </div>
         </div>
+
       </div>
     </section>
   );

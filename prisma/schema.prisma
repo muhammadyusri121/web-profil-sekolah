@@ -29,33 +29,40 @@ model EducationPersonnel {
   id         String   @id @default(cuid())
   full_name  String
   nip        String?  @unique
+  email      String?
   position   String
   image_url  String?
   sort_order Int      @default(0)
   createdAt  DateTime @default(now())
+
+  // Relations
+  schedules  SchoolSchedule[]
 }
 
 // --- Modul: Articles & Content (Innovation, News, Student Work, etc.) ---
 model Post {
-  id           String   @id @default(cuid())
+  id           String       @id @default(cuid())
   title        String
-  slug         String   @unique
-  content      String   @db.Text
+  slug         String       @unique
+  content      String       @db.Text
   category     PostCategory
-  thumbnail    String?
-  is_published Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  images       String[] // Gambar galeri / slider (banyak gambar)
+  is_published Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 }
 
 enum PostCategory {
-  INNOVATION
-  NEWS
-  STUDENT_WORK
-  DOUBLE_TRACK
-  HUMAS
-  OSIS
   SUPERVISI_GURU
+  ASAS
+  ASAJ
+  TKA
+  KARYA_SISWA
+  HUMAS
+  KOMITE
+  KEMITRAAN
+  DOUBLE_TRACK
+  OSIS_MPK
 }
 
 // --- Modul: Graduation (Search Feature) ---
@@ -82,18 +89,32 @@ model AcademicDocument {
 
 enum DocType {
   REGULATION
-  SCHEDULE
-  CALENDAR
   TEACHING_MATERIAL
 }
 
-// --- Modul: Extracurricular ---
+// --- Modul: Extracurricular (Articles) ---
 model Extracurricular {
-  id        String   @id @default(cuid())
-  name      String
-  coach     String?
-  image_url String?
-  createdAt DateTime @default(now())
+  id           String     @id @default(cuid())
+  title        String
+  slug         String     @unique
+  ekskul_name  EkskulName
+  content      String     @db.Text
+  thumbnail    String?
+  is_published Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+enum EkskulName {
+  Pramuka
+  Paskibraka
+  Sains_Club
+  Basket
+  Voli
+  Seni_Tari
+  Paduan_Suara
+  PMR
+  Jurnalistik
 }
 
 // --- Modul: Facilities (Sarpras) ---
@@ -103,4 +124,27 @@ model Facility {
   quantity  Int      @default(1)
   image_url String?
   createdAt DateTime @default(now())
+}
+
+// --- Modul: Calendar (Holidays) ---
+model Holiday {
+  id          String   @id @default(cuid())
+  date        DateTime // Tanggal perayaan
+  description String   // Nama perayaan/libur
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// --- Modul: Jadwal Pelajaran (School Schedule) ---
+model SchoolSchedule {
+  id          String   @id @default(cuid())
+  class_name  String
+  period      String
+  time        String
+  subject     String
+  day_of_week String
+  teacher_nip String?
+  teacher     EducationPersonnel? @relation(fields: [teacher_nip], references: [nip], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
