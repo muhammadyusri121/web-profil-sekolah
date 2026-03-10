@@ -30,12 +30,15 @@ COPY --from=deps /app/prisma ./prisma
 # Copy semua source code
 COPY . .
 
+# Set DNS agar bisa download Google Fonts saat build
+RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf
+
 # Set environment untuk build
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 ENV NODE_OPTIONS="--max-old-space-size=512"
 
-# Build Next.js (tanpa Turbopack — hemat RAM)
+# Build Next.js
 RUN npm run build
 
 # ================================
