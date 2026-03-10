@@ -1,0 +1,49 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js build output
+.next
+out
+build
+dist
+
+# Environment files (JANGAN masuk ke Docker image)
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.yml
+docker-compose.*.yml
+Dockerfile
+
+# Documentation & CI
+README.md
+LICENSE
+.github
+.agents
+
+# Testing
+coverage
+__tests__
+
+# Misc
+*.pem
+*.tsbuildinfo

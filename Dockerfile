@@ -7,12 +7,12 @@ WORKDIR /app
 # Install libc6-compat untuk kompatibilitas Alpine
 RUN apk add --no-cache libc6-compat
 
-# Copy package files
+# Copy package files dan prisma schema
 COPY package*.json ./
 COPY prisma ./prisma/
 
 # Install semua dependencies (termasuk devDeps untuk build)
-RUN npm ci
+RUN npm ci --ignore-scripts
 
 # Generate Prisma Client
 RUN npx prisma generate
@@ -34,11 +34,11 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
-# Build Next.js
+# Build Next.js (standalone output)
 RUN npm run build
 
 # ================================
-# Stage 3: Runner
+# Stage 3: Runner (Production)
 # ================================
 FROM node:20-alpine AS runner
 WORKDIR /app
@@ -47,20 +47,24 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Buat user non-root untuk keamanan
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
-# Copy file yang diperlukan sahaja
+# Copy file yang diperlukan saja dari builder
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/package.json ./package.json
 
-# Copy Next.js build output
+# Copy Next.js standalone build output
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Install production dependencies + generate Prisma Client
-RUN npm ci --omit=dev && npx prisma generate
+# Install HANYA production dependencies + Prisma client
+# Menggunakan --ignore-scripts untuk keamanan dan kecepatan
+RUN npm ci --omit=dev --ignore-scripts && \
+    npx prisma generate && \
+    npm cache clean --force && \
+    rm -rf /tmp/*
 
 # Gunakan user non-root
 USER nextjs
@@ -69,5 +73,9 @@ EXPOSE 3000
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+
+# Healthcheck untuk Docker
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
 
 CMD ["node", "server.js"]

@@ -4,43 +4,56 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: smanka-school-profile
-    restart: always
+    restart: unless-stopped
     env_file:
       - .env
     environment:
       - PORT=3000
-      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5433/${POSTGRES_DB}?schema=public
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5433/${POSTGRES_DB}?schema=public
     ports:
-      - "127.0.0.1:3001:3000"
+      - "127.0.0.1:3000:3000"
     depends_on:
       postgres:
         condition: service_healthy
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.50"
+        reservations:
+          memory: 256M
 
-  # postgres:
-  #   image: postgres:16-alpine
-  #   container_name: smanka-postgres
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  #     - POSTGRES_DB=${POSTGRES_DB}
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
+  postgres:
+    image: postgres:16-alpine
+    container_name: smanka-postgres
+    restart: unless-stopped
+    command: -p 5433
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -p 5433"]
       interval: 10s
       timeout: 5s
       retries: 5
-    # Tidak expose port ke luar — hanya bisa diakses internal
+      start_period: 30s
+    networks:
+      - app-network
+    # Tidak expose port ke luar — postgres hanya diakses oleh app via internal network
     # Uncomment baris ini HANYA untuk debug lokal:
     # ports:
-    #   - "127.0.0.1:5432:5432"
-
-# volumes:
-#   postgres_data:
-#     driver: local
+    #   - "127.0.0.1:5433:5433"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.25"
+        reservations:
+          memory: 128M
 
 networks:
   app-network:
