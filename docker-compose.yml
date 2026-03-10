@@ -4,21 +4,34 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: smanka-school-profile
-    restart: always
+    # 'unless-stopped' adalah standar yang lebih baik dalam docker-compose (tidak restart jika sengaja di-stop)
+    restart: unless-stopped
     env_file:
       - .env
     environment:
       - PORT=3000
       - NODE_ENV=production
-      # Gunakan IP gateway docker default (172.17.0.1) atau localhost host
+      # Gunakan IP gateway docker default (172.17.0.1) untuk akses database di host VPS
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@172.17.0.1:5433/${POSTGRES_DB}?schema=public&sslmode=disable&connect_timeout=30
     ports:
-      - "3000:3000"
+      # Ikat hanya ke 127.0.0.1 karena port publik ditangani NGINX VPS
+      # Ini penting untuk keamanan agar port 3000 tidak bisa diakses langsung via IP:3000
+      - "127.0.0.1:3000:3000"
+    # Batasi log file agar tidak memenuhi SSD VPS seiring waktu
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
+    # Membatasi sumber daya (Resource Limits) agar tidak memonopoli CPU saat build/runtime
+    # Karena sudah ada SWAP, limit RAM 1GB aman digunakan
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "1.0"
+        reservations:
+          memory: 512M
     networks:
       - app-network
 
