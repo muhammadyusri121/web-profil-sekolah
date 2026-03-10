@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  experimental: {
+    // Membatasi penggunaan CPU agar VPS tidak beku saat build
+    cpus: 1,
+    workerThreads: false,
+  },
   typescript: {
     // TypeScript dicek saat dev, skip saat build untuk hemat RAM di VPS
     ignoreBuildErrors: true,
