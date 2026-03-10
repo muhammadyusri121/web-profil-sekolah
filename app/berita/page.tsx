@@ -1,4 +1,5 @@
 import React from "react";
+export const dynamic = 'force-dynamic';
 import Link from "next/link";
 import { ArrowRight, Calendar, ArrowLeft } from "lucide-react";
 import Header from "@/components/layout/header";

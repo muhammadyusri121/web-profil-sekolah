@@ -1,4 +1,5 @@
 import React from "react";
+export const dynamic = 'force-dynamic';
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { getHolidays } from "@/data/data_holiday";
