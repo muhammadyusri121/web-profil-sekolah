@@ -35,6 +35,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 ENV NODE_OPTIONS="--max-old-space-size=1024"
+ENV NEXT_DISABLE_SOURCEMAPS=1
 
 # Build Next.js
 RUN npm run build
