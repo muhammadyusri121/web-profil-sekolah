@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  typescript: {
+    // TypeScript dicek saat dev, skip saat build untuk hemat RAM di VPS
+    ignoreBuildErrors: true,
+  },
   images: {
     remotePatterns: [
       {
