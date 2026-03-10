@@ -33,8 +33,9 @@ COPY . .
 # Set environment untuk build
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=512"
 
-# Build Next.js (standalone output)
+# Build Next.js (tanpa Turbopack — hemat RAM)
 RUN npm run build
 
 # ================================

@@ -45,8 +45,8 @@ services:
       - app-network
     # Tidak expose port ke luar — postgres hanya diakses oleh app via internal network
     # Uncomment baris ini HANYA untuk debug lokal:
-    # ports:
-    #   - "127.0.0.1:5433:5433"
+    ports:
+      - "127.0.0.1:5433:5433"
     deploy:
       resources:
         limits:
