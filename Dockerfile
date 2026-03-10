@@ -1,85 +1,63 @@
 # ================================
-# Stage 1: Dependencies
+# Stage 1: Builder
 # ================================
-FROM node:20-alpine AS deps
+FROM node:20-slim AS builder
+
+# Debian slim butuh library tambahan untuk Prisma & build process
+RUN apt-get update && apt-get install -y \
+    openssl \
+    python3 \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
-# Install libc6-compat untuk kompatibilitas Alpine
-RUN apk add --no-cache libc6-compat
-
-# Copy package files dan prisma schema
+# Copy package files
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Install semua dependencies (termasuk devDeps untuk build)
-RUN npm ci --ignore-scripts
+# Install dependencies (menggunakan npm install sesuai CMS Anda)
+RUN npm install
 
 # Generate Prisma Client
 RUN npx prisma generate
 
-# ================================
-# Stage 2: Builder
-# ================================
-FROM node:20-alpine AS builder
-WORKDIR /app
-
-# Copy node_modules dari stage deps
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/prisma ./prisma
-
 # Copy semua source code
 COPY . .
-
 
 # Set environment untuk build
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+# Batasi RAM agar tetap aman di VPS
 ENV NODE_OPTIONS="--max-old-space-size=1024"
-ENV NEXT_DISABLE_SOURCEMAPS=1
 
 # Build Next.js
 RUN npm run build
 
 # ================================
-# Stage 3: Runner (Production)
+# Stage 2: Runner
 # ================================
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
+
+# Install runtime dependency (OpenSSL) yang dibutuhkan Prisma
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
 
-# Buat user non-root untuk keamanan
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
-
-# Copy file yang diperlukan saja dari builder
+# Next.js standalone optimization
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/package-lock.json ./package-lock.json
-
-# Copy Next.js standalone build output
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# Install HANYA production dependencies + Prisma client
-# Menggunakan --ignore-scripts untuk keamanan dan kecepatan
-RUN npm ci --omit=dev --ignore-scripts && \
-    npx prisma generate && \
-    npm cache clean --force && \
-    rm -rf /tmp/*
-
-# Gunakan user non-root
-USER nextjs
 
 EXPOSE 3000
 
-ENV PORT=3000
+# Pastikan Prisma menggunakan engine library yang stabil di Debian
+ENV PRISMA_CLIENT_ENGINE_TYPE="library"
 ENV HOSTNAME="0.0.0.0"
 
-# Healthcheck untuk Docker
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
-
+# Menjalankan aplikasi (server.js dihasilkan oleh output: 'standalone')
 CMD ["node", "server.js"]

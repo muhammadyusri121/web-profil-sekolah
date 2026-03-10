@@ -10,15 +10,18 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@host.docker.internal:5433/${POSTGRES_DB}?schema=public
+      # Gunakan IP gateway docker default (172.17.0.1) atau localhost host
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@172.17.0.1:5433/${POSTGRES_DB}?schema=public&sslmode=disable&connect_timeout=30
     ports:
-      - "127.0.0.1:3000:3000"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    deploy:
-      resources:
-        limits:
-          memory: 1G
-          cpus: "0.70"
-        reservations:
-          memory: 512M
+      - "3000:3000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
