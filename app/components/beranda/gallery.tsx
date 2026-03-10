@@ -37,7 +37,7 @@ export default function TeacherGallery({ teachers = [] }: { teachers: Teacher[] 
       <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6">
 
         {/* Header: judul, deskripsi, dan tombol ke halaman lengkap */}
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-2">
             <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tighter md:text-4xl">
               Tenaga Pendidik &{" "}
@@ -49,15 +49,16 @@ export default function TeacherGallery({ teachers = [] }: { teachers: Teacher[] 
             </p>
           </div>
 
-          {/* Tombol menuju halaman Struktur GTK */}
-          <Link
-            href="/components/profil/struktur-gtk"
-            className="inline-flex shrink-0 items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-[11px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-400 hover:text-slate-900"
-          >
-            <Users size={14} />
-            Lihat Struktur GTK
-            <ArrowRight size={13} />
-          </Link>
+          <div className="flex justify-end">
+            <Link
+              href="/components/profil/struktur-gtk"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-2 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-400 hover:text-slate-900"
+            >
+              <Users size={12} />
+              Lihat Selengkapnya
+              <ArrowRight size={11} />
+            </Link>
+          </div>
         </div>
 
         {/* Carousel daftar guru */}
@@ -78,7 +79,7 @@ export default function TeacherGallery({ teachers = [] }: { teachers: Teacher[] 
                       <img
                         src={teacher.image_url || "/placeholder-user.png"}
                         alt={teacher.full_name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-cover"
                         onError={(e) => {
                           (e.currentTarget as HTMLImageElement).src = "/placeholder-user.png";
                         }}

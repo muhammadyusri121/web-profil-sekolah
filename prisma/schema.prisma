@@ -90,6 +90,7 @@ model AcademicDocument {
 enum DocType {
   REGULATION
   TEACHING_MATERIAL
+  SCHEDULE
 }
 
 // --- Modul: Extracurricular (Articles) ---
@@ -148,3 +149,24 @@ model SchoolSchedule {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+// --- Modul: Visitor Counter ---
+model VisitorStatistic {
+  id        String   @id @default(cuid())
+  path      String   @unique // misal: "homepage"
+  count     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+// Model baru untuk pelacakan spesifik waktu & lokasi (Hari, Bulan, Tahun, Negara)
+model VisitorLog {
+  id        String   @id @default(cuid())
+  ipHash    String   // Hash alamat IP untuk keamanan/privasi
+  path      String   // misal: "homepage"
+  country   String?  // Kode negara (misal "ID", "US")
+  visitedAt DateTime @default(now()) // Waktu kunjungan
+  
+  // Memastikan 1 IP dibaca 1 kali per hari untuk path tertentu
+  // @@unique([ipHash, path], name: "daily_unique") - Akan di-handle via logic API agar lebih fleksibel
+}
+

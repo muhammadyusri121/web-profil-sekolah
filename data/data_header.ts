@@ -44,7 +44,6 @@ export const navigationData: NavItem[] = [
       { label: "OSIS/MPK", href: "/components/kesiswaan/osis" },
       { label: "Ekstrakurikuler", href: "/components/kesiswaan/ekstrakurikuler" },
       { label: "Biosmatika", href: "/components/kesiswaan/biosmatika" },
-
     ],
   },
   {

@@ -24,13 +24,13 @@ export default function SambutanPage() {
             >
               <div className="relative group">
                 {/* Dekorasi Belakang Foto */}
-                <div className="absolute -inset-2 bg-yellow-400/20 rounded-[2rem] rotate-3 group-hover:rotate-0 transition-transform duration-500" />
+                <div className="absolute -inset-2 bg-yellow-400 rounded-[2rem] rotate-3 group-hover:rotate-0 transition-transform duration-500" />
                 
-                <div className="relative bg-white p-3 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+                <div className="relative bg-white p-3 rounded-[2rem] shadow-xl shadow-slate-700/50 border border-slate-100">
                   <img 
                     src="/foto-kepsek.jpeg"
                     alt="Sulaiman, S.E., M.Pd."
-                    className="w-full aspect-[3/4] object-cover rounded-[1.5rem]"
+                    className="w-full aspect-3/4 object-cover rounded-[1.5rem]"
                     onError={(e) => { 
                       (e.target as any).src = "https://placehold.co/400x533/F3C623/333?text=Kepala+Sekolah"; 
                     }}
@@ -59,7 +59,7 @@ export default function SambutanPage() {
               <h1 className="text-2xl md:text-4xl font-[1000] text-slate-900 leading-[1.1] uppercase tracking-tighter mb-8">
                 Santun dalam pekerti, <br />
                 Unggul dalam prestasi, <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-600">
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-500 to-yellow-600">
                   Kondusif dalam edukasi
                 </span>
               </h1>
@@ -92,13 +92,13 @@ export default function SambutanPage() {
                     Wassalamu’alaikum Warahmatullahi Wabarakatuh.
                   </p>
 
-                  <p className="pt-10 mb-10 font-black text-slate-900 uppercase tracking-widest text-xs mb-1">
+                  <p className="pt-10 mb-10 font-black text-slate-900 uppercase tracking-widest text-xs">
                     Tertanda,
                   </p>
                   
                   {/* Digital Signature Placeholder */}
                   <div className="mt-4 opacity-50 grayscale hover:grayscale-0 transition-all cursor-default">
-                    <span className="font-serif italic text-2xl text-slate-400 select-none">Sulaiman M.Pd.</span>
+                    <span className="font-serif italic text-2xl text-slate-700 select-none">Sulaiman M.Pd.</span>
                   </div>
                 </div>
               </div>

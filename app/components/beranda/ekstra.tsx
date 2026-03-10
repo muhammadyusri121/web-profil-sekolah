@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, LayoutGrid } from "lucide-react";
+import { ArrowRight, LayoutGrid, Users } from "lucide-react";
 
 const EXTRA_DATA = [
   { name: "Pramuka", image: "/login-logo.png", href: "/ekskul/pramuka" },
@@ -36,14 +36,16 @@ export default function ExtracurricularSection() {
           </div>
 
           {/* Tombol menuju halaman daftar ekskul lengkap */}
-          <Link
-            href="/components/kesiswaan/ekstrakurikuler"
-            className="inline-flex shrink-0 items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-[11px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-400 hover:text-slate-900"
-          >
-            <LayoutGrid size={14} />
-            Semua Ekskul
-            <ArrowRight size={13} />
-          </Link>
+          <div className="flex justify-end">
+            <Link
+              href="/components/kesiswaan/ekstrakurikuler"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-2 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-400 hover:text-slate-900"
+            >
+              <LayoutGrid size={12} />
+              Lihat Selengkapnya
+              <ArrowRight size={11} />
+            </Link>
+          </div>
         </div>
 
         {/* Mobile: 1 baris scroll, 3 kartu terlihat | Desktop: grid 10 kolom */}

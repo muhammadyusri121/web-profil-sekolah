@@ -1,0 +1,3 @@
+Personnel: /api/files/personnel/1773064536422-6ad63d1e-e95d-4266-854b-af4096885851.png
+Post: undefined
+Ekskul: /api/files/extracurriculars/1773126029349-aad61bf8-2497-42f6-b759-b39b30a0b0bb.jpg

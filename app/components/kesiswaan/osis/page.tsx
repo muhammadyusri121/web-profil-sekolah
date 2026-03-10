@@ -47,7 +47,7 @@ export default function PostSection({ posts = [] }: { posts: any[] }) {
               </div>
 
               {/* Konten Postingan */}
-              <div className="p-5 space-y-3 flex-grow border-t border-slate-50">
+              <div className="p-5 space-y-3 grow border-t border-slate-50">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                   {/* Cek penulisan 'createdat' (lowercase) sesuai referensi DB kamu */}
                   {post.createdat || post.createdAt

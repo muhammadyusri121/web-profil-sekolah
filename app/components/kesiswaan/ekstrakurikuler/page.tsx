@@ -49,9 +49,6 @@ export default function EkskulPage() {
                                             src={ekskul.icon}
                                             alt={ekskul.nama}
                                             className="w-8 h-8 md:w-10 md:h-10 object-contain group-hover:scale-110 transition-transform duration-300"
-                                            onError={(e) => {
-                                                (e.target as any).src = "https://placehold.co/100x100?text=Logo";
-                                            }}
                                         />
                                     </div>
 

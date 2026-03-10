@@ -59,7 +59,7 @@ export default function Hero() {
 
             <div className="relative rounded-[2.5rem] border border-white/60 bg-white/50 p-3 sm:p-5 shadow-2xl shadow-slate-900/10 backdrop-blur-xl">
               <div className="overflow-hidden rounded-[2rem] bg-slate-900 p-1">
-                <div className="rounded-[1.8rem] bg-gradient-to-br from-slate-50 to-yellow-50 p-4 sm:p-6">
+                <div className="rounded-[1.8rem] bg-linear-to-br from-slate-50 to-yellow-50 p-4 sm:p-6">
 
                   {/* Kartu fitur utama */}
                   <div className="grid gap-3 sm:grid-cols-2">
