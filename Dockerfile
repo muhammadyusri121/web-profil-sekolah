@@ -1,37 +1,86 @@
-FROM node:20-alpine AS builder
-
-# Set working directory
+# ================================
+# Stage 1: Dependencies
+# ================================
+FROM node:20-alpine AS deps
 WORKDIR /app
 
-# Install dependencies
-COPY package*.json ./
-# Menggunakan npm install (atau npm ci)
-RUN npm install
+# Install libc6-compat untuk kompatibilitas Alpine
+RUN apk add --no-cache libc6-compat
 
-# Copy all files
+# Copy package files dan prisma schema
+COPY package*.json ./
+COPY prisma ./prisma/
+
+# Install semua dependencies (termasuk devDeps untuk build)
+RUN npm ci --ignore-scripts
+
+# Generate Prisma Client
+RUN npx prisma generate
+
+# ================================
+# Stage 2: Builder
+# ================================
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Copy node_modules dari stage deps
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/prisma ./prisma
+
+# Copy semua source code
 COPY . .
 
-# Generate Prisma client (jika file prisma/schema.prisma digunakan)
-# RUN npx prisma generate
+# Set DNS agar bisa download Google Fonts saat build
+RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf
+
+# Set environment untuk build
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=512"
 
 # Build Next.js
 RUN npm run build
 
-# Production image
+# ================================
+# Stage 3: Runner (Production)
+# ================================
 FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Buat user non-root untuk keamanan
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
+
+# Copy file yang diperlukan saja dari builder
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/package-lock.json ./package-lock.json
+
+# Copy Next.js standalone build output
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Install HANYA production dependencies + Prisma client
+# Menggunakan --ignore-scripts untuk keamanan dan kecepatan
+RUN npm ci --omit=dev --ignore-scripts && \
+    npx prisma generate && \
+    npm cache clean --force && \
+    rm -rf /tmp/*
+
+# Gunakan user non-root
+USER nextjs
+
 EXPOSE 3000
 
-# Copy necessary files from builder
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.ts ./next.config.ts
-COPY --from=builder /app/prisma ./prisma
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-# Start the Next.js app
-CMD ["npm", "start"]
+# Healthcheck untuk Docker
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
+
+CMD ["node", "server.js"]

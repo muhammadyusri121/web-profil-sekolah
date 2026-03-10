@@ -1,4 +1,5 @@
 // src/app/page.tsx
+export const dynamic = 'force-dynamic';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 
@@ -20,11 +21,11 @@ export default async function Home() {
   const teachers = await getStructuralPersonnel();
   const posts = await getLatestPosts();
 
-  // Ganti Channel ID ini dengan Channel Resmi Sekolah. 
-  // Bisa juga diisi via .env: process.env.YOUTUBE_CHANNEL_ID
-  const YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID || 'UCv4o3R-8v9c2qZ9kM5H6mKg';
+  // Ambil data YouTube (Penting agar komponen YouTubeSection tidak error)
+  const YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID || 'UCJ2axLq7hE_cMPgeSfQux6Q';
   const youtubeVideos = await getLatestYouTubeVideos(YOUTUBE_CHANNEL_ID, 4);
 
+  // Log untuk memantau data di terminal server
   console.log("Data guru yang berhasil ditarik:", teachers.length);
   console.log("Data postingan yang berhasil ditarik:", posts.length);
   console.log("Data video YouTube yang berhasil ditarik:", youtubeVideos.length);

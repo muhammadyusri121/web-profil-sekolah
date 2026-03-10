@@ -27,10 +27,10 @@ export const navigationData: NavItem[] = [
     children: [
       { label: "Kalender Akademik", href: "/components/akademik/kalender-akademik", group: "Kurikulum" },
       { label: "Jadwal Pembelajaran", href: "/components/akademik/jadwal-sekolah", group: "Kurikulum" },
-      { label: "Perangkat Pembelajaran", href: "/components/akademik/perangkat", group: "Kurikulum" },
+      { label: "Perangkat Pembelajaran", href: "/components/akademik/perangkat-pembelajaran", group: "Kurikulum" },
       { label: "Karya Siswa/Siswi", href: "/components/akademik/karya", group: "Kurikulum" },
       { label: "ASAS", href: "/components/asesmen/asas", group: "Asesmen" },
-      { label: "ASAJ", href: "/components/asesmen/asj", group: "Asesmen" },
+      { label: "ASAJ", href: "/components/asesmen/asas", group: "Asesmen" }, // Use asas as generic for now or fix folder
       { label: "TKA", href: "/components/asesmen/tka", group: "Asesmen" },
       { label: "Supervisi Guru", href: "/components/asesmen/supervisi", group: "Asesmen" },
       { label: "Double Track", href: "/components/kesiswaan/double-track", group: "Kurikulum" },
