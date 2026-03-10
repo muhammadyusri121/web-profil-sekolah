@@ -10,14 +10,11 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5433/${POSTGRES_DB}?schema=public
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@host.docker.internal:5433/${POSTGRES_DB}?schema=public
     ports:
       - "127.0.0.1:3000:3000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     deploy:
       resources:
         limits:
@@ -25,36 +22,3 @@ services:
           cpus: "0.50"
         reservations:
           memory: 256M
-
-  postgres:
-    image: postgres:16-alpine
-    container_name: smanka-postgres
-    restart: unless-stopped
-    command: -p 5433
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -p 5433"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    networks:
-      - app-network
-    # Tidak expose port ke luar — postgres hanya diakses oleh app via internal network
-    # Uncomment baris ini HANYA untuk debug lokal:
-    ports:
-      - "127.0.0.1:5433:5433"
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          cpus: "0.25"
-        reservations:
-          memory: 128M
-
-networks:
-  app-network:
-    driver: bridge
