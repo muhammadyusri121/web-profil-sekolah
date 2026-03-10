@@ -2,12 +2,18 @@ import { query } from "@/lib/db";
 
 const VPS_BASE = "http://202.52.147.214:9000/datasmanka";
 
-/** Normalkan path gambar ke URL penuh VPS */
+/** Normalkan path gambar ke Proxy Backend kita */
 function resolveImage(raw: string | null | undefined): string | null {
   if (!raw) return null;
   if (raw.startsWith("http")) return raw;
-  const clean = raw.replace("/api/files/", "");
-  return `${VPS_BASE}/${clean}`;
+  
+  // Bersihkan path (hilangkan /api/files/ jika sudah ada atau /datasmanka/)
+  const clean = raw
+    .replace(/^\/?api\/files\//, "")
+    .replace(/^\/?datasmanka\//, "")
+    .replace(/^\//, "");
+    
+  return `/api/files/${clean}`;
 }
 
 /**

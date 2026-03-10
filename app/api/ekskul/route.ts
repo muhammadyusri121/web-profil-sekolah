@@ -33,22 +33,39 @@ export async function GET(request: Request) {
         let data = slug ? (result.rows[0] || null) : result.rows;
 
         if (data) {
-            const transformThumbnail = (item: any) => {
-                let thumbnail = item.thumbnail;
+            const transform = (item: any) => {
+                if (!item) return item;
 
-                if (thumbnail && !thumbnail.startsWith('http')) {
-                    const rawPath = thumbnail.replace('/api/files/', '');
-                    thumbnail = `http://202.52.147.214:9000/datasmanka/${rawPath}`;
+                // 1. Transformasi Image/Thumbnail
+                const imageFields = ['thumbnail', 'image', 'thumbnail_raw', 'image_url'];
+                imageFields.forEach(field => {
+                    if (item[field] && typeof item[field] === 'string' && !item[field].startsWith('http')) {
+                        const cleanPath = item[field].startsWith('/') ? item[field] : `/${item[field]}`;
+                        
+                        // Jika SUDAH punya /api/files, jangan tambah lagi
+                        if (cleanPath.startsWith('/api/files/')) {
+                           item[field] = cleanPath;
+                           return;
+                        }
+
+                        const finalPath = cleanPath.replace(/^\/datasmanka\//, '/');
+                        item[field] = `/api/files${finalPath}`;
+                    }
+                });
+
+                // 2. Transformasi Content (HTML)
+                if (item.description && typeof item.description === 'string') {
+                    const minioRegex = /http:\/\/202\.52\.147\.214:9000\/datasmanka\//g;
+                    item.description = item.description.replace(minioRegex, '/api/files/');
+                    
+                    const relativeUploadsRegex = /src="\/uploads\//g;
+                    item.description = item.description.replace(relativeUploadsRegex, 'src="/api/files/uploads/');
                 }
-                item.thumbnail = thumbnail;
+
                 return item;
             };
 
-            if (Array.isArray(data)) {
-                data = data.map(transformThumbnail);
-            } else {
-                data = transformThumbnail(data);
-            }
+            data = Array.isArray(data) ? data.map(transform) : transform(data);
         }
 
         return NextResponse.json(data);

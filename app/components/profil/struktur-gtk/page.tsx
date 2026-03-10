@@ -11,8 +11,6 @@ import Footer from "@/components/layout/footer";
 const Tree = dynamic(() => import("react-organizational-chart").then((m) => m.Tree), { ssr: false });
 const TreeNode = dynamic(() => import("react-organizational-chart").then((m) => m.TreeNode), { ssr: false });
 
-const VPS_BASE = "http://202.52.147.214:5433";
-
 // --- KOMPONEN KOTAK NAMA ---
 const MemberNode = ({ member, onClick }: { member: any; onClick: () => void }) => (
   <motion.div
@@ -24,7 +22,7 @@ const MemberNode = ({ member, onClick }: { member: any; onClick: () => void }) =
     <div className="bg-white border-2 border-slate-100 group-hover:border-[#F3C623] p-4 rounded-[24px] shadow-xl shadow-slate-200/50 transition-all min-w-[160px] md:min-w-[200px]">
       <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-slate-50 flex items-center justify-center overflow-hidden border border-slate-100">
         <img
-          src={member.image_url ? (member.image_url.startsWith('http') ? member.image_url : `${VPS_BASE}${member.image_url}`) : "/placeholder-user.png"}
+          src={member.image_url || "/placeholder-user.png"}
           alt={member.full_name}
           className="w-full h-full object-cover"
           onError={(e) => { (e.currentTarget.src = "/placeholder-user.png"); }}

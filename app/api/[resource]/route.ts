@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: Promise<{ resource: string }> } // Unwrapping params sesuai Next.js 15+
 ) {
   const { resource: rawResource } = await params;
-  const resource = rawResource.toLowerCase(); 
+  const resource = rawResource.toLowerCase();
 
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
@@ -16,7 +16,7 @@ export async function GET(
     let data;
 
     switch (resource) {
-      case 'personnel': // Menangani resource guru
+      case 'personnel':
         const personnelRes = await query('SELECT * FROM "EducationPersonnel" ORDER BY sort_order ASC');
         data = personnelRes.rows;
         break;
@@ -35,18 +35,49 @@ export async function GET(
         return NextResponse.json({ error: `Resource '${resource}' tidak ditemukan` }, { status: 404 });
     }
 
-    // Transformasi URL Gambar untuk semua resource (personnel, post, facility)
     if (data) {
-      const VPS_BASE = "http://202.52.147.214:5433";
+      // Tentukan Base URL: Gunakan env var atau fallback ke IP CMS jika di lokal
+      let apiBase = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/$/, "");
       
+      if (!apiBase || apiBase.includes("localhost")) {
+        apiBase = "http://202.52.147.214:9000";
+      }
+
       const transform = (item: any) => {
-        // Cek field image_url (personnel) dan thumbnail (post)
-        ['image_url', 'thumbnail'].forEach(field => {
-          if (item[field] && !item[field].startsWith('http')) {
-            const cleanPath = item[field].startsWith('/') ? item[field] : `/${item[field]}`;
-            item[field] = `${VPS_BASE}${cleanPath}`;
+        if (!item) return item;
+        
+        // 1. Transformasi Field Gambar
+        const imageFields = ['image_url', 'thumbnail', 'thumbnail_raw', 'image', 'raw_image'];
+        imageFields.forEach(field => {
+          if (item[field] && typeof item[field] === 'string') {
+            if (item[field].startsWith('http')) return;
+            
+            // Bersihkan dan normalkan path
+            let cleanPath = item[field].startsWith('/') ? item[field] : `/${item[field]}`;
+            
+            // Jika SUDAH punya /api/files, jangan tambah lagi
+            if (cleanPath.startsWith('/api/files/')) {
+               item[field] = cleanPath;
+               return;
+            }
+
+            // Hapus prefix datasmanka jika ada agar tidak double
+            const finalPath = cleanPath.replace(/^\/datasmanka\//, '/');
+            item[field] = `/api/files${finalPath}`;
           }
         });
+        // 2. Transformasi di dalam Content/Description (HTML)
+        const contentFields = ['content', 'description'];
+        contentFields.forEach(field => {
+          if (item[field] && typeof item[field] === 'string') {
+            const minioRegex = /http:\/\/202\.52\.147\.214:9000\/datasmanka\//g;
+            item[field] = item[field].replace(minioRegex, '/api/files/');
+            
+            const relativeUploadsRegex = /src="\/uploads\//g;
+            item[field] = item[field].replace(relativeUploadsRegex, 'src="/api/files/uploads/');
+          }
+        });
+
         return item;
       };
 
@@ -55,6 +86,11 @@ export async function GET(
 
     return NextResponse.json(data);
   } catch (error: any) {
-    return NextResponse.json({ error: "Server Error", detail: error.message }, { status: 500 });
+    console.error(`[API ERROR] Gagal load ${resource}:`, error);
+    return NextResponse.json({ 
+      error: "Server Error", 
+      detail: error.message || "Koneksi Database Gagal. Pastikan DATABASE_URL benar.",
+      code: error.code
+    }, { status: 500 });
   }
 }

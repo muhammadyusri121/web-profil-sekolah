@@ -10,10 +10,14 @@ function resolveImageUrl(url: string | null): string | null {
   if (!url) return null;
   // Jika sudah URL absolut (dari sumber lain), kembalikan langsung
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
-  // Konversi path relatif /api/files/personnel/xxx.png
-  // → http://202.52.147.214:9000/datasmanka/personnel/xxx.png
-  const withoutApiFiles = url.replace(/^\/?api\/files\//, "");
-  return `${MINIO_BASE}/${withoutApiFiles}`;
+  
+  // Konversi ke proxy kita /api/files/...
+  const cleanPath = url
+    .replace(/^\/?api\/files\//, "")
+    .replace(/^\/?datasmanka\//, "")
+    .replace(/^\//, "");
+
+  return `/api/files/${cleanPath}`;
 }
 
 export async function getStructuralPersonnel() {
