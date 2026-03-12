@@ -1,15 +1,12 @@
-import React from "react";
-export const dynamic = 'force-dynamic';
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { getHolidays } from "@/data/data_holiday";
 import CalendarContent from "./calendar-content";
-import { CalendarDays } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
 export default async function KalenderPage() {
   const holidays = await getHolidays();
 
-  // Stats for the header
   const now = new Date();
   const upcoming = holidays.filter((h: any) => new Date(h.date) >= now);
   const thisMonth = holidays.filter((h: any) => {
@@ -18,13 +15,12 @@ export default async function KalenderPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       <Header />
 
-      <main className="grow pt-32 pb-20 px-6">
+      <main className="grow pt-20 pb-5 px-6">
         <div className="max-w-7xl mx-auto">
 
-          {/* ── Page Header ── */}
           <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
               <h1 className="text-4xl md:text-5xl font-[1000] text-slate-900 uppercase tracking-tighter leading-none">

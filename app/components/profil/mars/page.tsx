@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import Link from "next/link";
-import { Play, Pause, Music, ChevronRight, Home } from "lucide-react";
+import { Play, Pause } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -34,7 +33,6 @@ export default function MarsPage() {
               Mars <span className="text-[#F3C623]"> SMAN 1 Ketapang</span>
             </h1>
 
-            {/* Simple Compact Button */}
             <button 
               onClick={togglePlay}
               className="group flex items-center gap-3 px-6 py-3 bg-slate-900 text-white rounded-full hover:bg-[#F3C623] hover:text-black transition-all active:scale-95 shadow-lg shadow-slate-200"
@@ -56,7 +54,6 @@ export default function MarsPage() {
             />
           </div>
 
-          {/* --- SIMPLE LYRICS --- */}
           <div className="space-y-10">
             {[
               ["SMA Negeri 1 Ketapang", "Santun dalam pekerti, unggul dalam prestasi", "Kondusif dalam edukasi"],
@@ -90,12 +87,6 @@ export default function MarsPage() {
               </motion.div>
             ))}
           </div>
-
-          {/* Footer Logo Minimalist */}
-          <div className="mt-20 flex justify-center opacity-20">
-             <Music size={24} className="text-slate-400" />
-          </div>
-
         </div>
       </main>
 

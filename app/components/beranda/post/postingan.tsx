@@ -91,7 +91,7 @@ export default function PostSection({ posts = [] }: { posts: PostItem[] }) {
             </p>
           </div>
           <Link 
-            href="/berita" 
+            href="/post/berita" 
             className="hidden text-sm font-bold text-yellow-600 transition-colors hover:text-yellow-700 md:flex md:items-center md:gap-1"
           >
             Lihat Semua <ArrowRight size={16} />
@@ -115,7 +115,7 @@ export default function PostSection({ posts = [] }: { posts: PostItem[] }) {
               >
                 <Link href={href} className="flex h-full flex-col">
                   {/* Thumbnail Container */}
-                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md bg-slate-100">
+                  <div className="relative aspect-4/3 w-full overflow-hidden rounded-md bg-slate-100">
                     <img
                       src={post.thumbnail || "/login-logo.png"}
                       alt={post.title}

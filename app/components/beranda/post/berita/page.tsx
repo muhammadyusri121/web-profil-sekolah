@@ -114,7 +114,7 @@ export default async function BeritaPage() {
                   >
                     <Link href={href} className="flex h-full flex-col">
                       {/* Thumbnail Container */}
-                      <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
+                      <div className="relative aspect-4/3 w-full overflow-hidden bg-slate-100">
                         <img
                           src={post.thumbnail || "/login-logo.png"}
                           alt={post.title}

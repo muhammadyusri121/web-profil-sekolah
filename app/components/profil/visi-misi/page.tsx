@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import { Rocket, ShieldCheck, Zap, Award, Target } from "lucide-react";
 import Header from "@/components/layout/header";

@@ -7,11 +7,9 @@ import { X, User, Phone, Briefcase, GraduationCap } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
-// SSR disabled karena library chart memanipulasi DOM secara langsung
 const Tree = dynamic(() => import("react-organizational-chart").then((m) => m.Tree), { ssr: false });
 const TreeNode = dynamic(() => import("react-organizational-chart").then((m) => m.TreeNode), { ssr: false });
 
-// --- KOMPONEN KOTAK NAMA ---
 const MemberNode = ({ member, onClick }: { member: any; onClick: () => void }) => (
   <motion.div
     whileHover={{ scale: 1.05 }}
@@ -41,47 +39,36 @@ const MemberNode = ({ member, onClick }: { member: any; onClick: () => void }) =
 export default function StrukturGTKPage() {
   const [personnel, setPersonnel] = useState<any[]>([]);
   const [selectedMember, setSelectedMember] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPersonnel = async () => {
       try {
-        const response = await fetch('/api/personnel'); // Menggunakan route API yang kita buat
+        const response = await fetch('/api/personnel');
         const data = await response.json();
         setPersonnel(data);
       } catch (err) {
         console.error("Gagal load data GTK:", err);
-      } finally {
-        setLoading(false);
       }
     };
     fetchPersonnel();
   }, []);
 
-  // --- LOGIKA HIRARKI ---
-  // 1. Cari Kepala Sekolah
   const kepalaSekolah = personnel.find(p => p.position.toLowerCase().includes("kepala sekolah"));
-  // 2. Cari semua Wakasek
   const wakasekList = personnel.filter(p => p.position.toLowerCase().includes("waka"));
-  // 3. Sisanya adalah Guru/Staff
   const guruList = personnel.filter(p => 
     !p.position.toLowerCase().includes("kepala") && 
     !p.position.toLowerCase().includes("waka")
   );
-
-  if (loading) return <div className="min-h-screen flex items-center justify-center font-black uppercase tracking-widest text-slate-400">Loading Struktur...</div>;
-
   return (
-    <div className="flex flex-col min-h-screen bg-white font-sans">
+    <div className="flex flex-col min-h-screen bg-gray-100 font-sans">
       <Header />
 
-      <main className="grow pt-32 pb-24 overflow-x-auto selection:bg-[#F3C623]">
+      <main className="grow pt-20 pb-5 overflow-x-auto selection:bg-[#F3C623]">
         <div className="max-w-7xl mx-auto px-6 min-w-[1000px]">
 
-          <div className="text-center mb-20">
-            <span className="text-[10px] font-black text-[#F3C623] uppercase tracking-[0.4em]">Organization Chart</span>
+          <div className="text-center mb-5">
             <h1 className="text-4xl md:text-6xl font-[1000] text-slate-900 uppercase tracking-tighter mt-2">
-              Struktur <span className="text-transparent [text-stroke:1px_#0f172a] md:[text-stroke:2px_#0f172a]">GTK</span>
+              Struktur GTK
             </h1>
           </div>
 
@@ -95,7 +82,6 @@ export default function StrukturGTKPage() {
               >
                 {wakasekList.map((waka, idx) => (
                   <TreeNode key={waka.id} label={<MemberNode member={waka} onClick={() => setSelectedMember(waka)} />}>
-                    {/* Tampilkan Guru hanya di bawah Wakasek pertama agar pohon tidak terlalu lebar horizontal */}
                     {idx === 1 && guruList.slice(0, 5).map((guru) => (
                       <TreeNode key={guru.id} label={<MemberNode member={guru} onClick={() => setSelectedMember(guru)} />} />
                     ))}
@@ -109,7 +95,6 @@ export default function StrukturGTKPage() {
         </div>
       </main>
 
-      {/* --- MODAL DETAIL (POppins & Yellow Theme) --- */}
       <AnimatePresence>
         {selectedMember && (
           <div className="fixed inset-0 z-100 flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm">
@@ -138,7 +123,6 @@ export default function StrukturGTKPage() {
                   <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-[#F3C623]"><Briefcase size={20} /></div>
                   <div className="flex flex-col"><span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Jabatan Struktural</span><span className="text-sm font-bold text-slate-700">{selectedMember.position}</span></div>
                 </div>
-                <button className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all">Lihat Jadwal Mengajar</button>
               </div>
             </motion.div>
           </div>

@@ -1,21 +1,15 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import {
-    UserPlus,
-    BookOpen,
     GraduationCap,
     Users,
-    MessageCircle,
-    FileText,
     ChevronRight,
-    LayoutGrid,
-    User
 } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import Link from "next/link";
+import Info from "@/components/InfoDetail"
 
 const layananData = [
     {
@@ -38,18 +32,18 @@ const layananData = [
 
 export default function LayananPage() {
     return (
-        <div className="flex flex-col min-h-screen bg-white">
+        <div className="flex flex-col min-h-screen bg-gray-100">
             <Header />
 
-            <main className="grow pt-28 pb-20 md:pt-36 md:pb-24">
+            <main className="grow pt-20 pb-5 md:pt-20 md:pb-20">
                 <div className="max-w-5xl mx-auto px-6">
                     <header className="mb-10">
-                        <h1 className="text-2xl md:text-4xl font-[1000] text-slate-900 uppercase tracking-tighter leading-none mb-2">
+                        <h1 className="text-2xl md:text-4xl font-[1000] text-slate-900 uppercase">
                             Pusat <span className="text-[#F3C623]">Layanan Sekolah</span>
                         </h1>
                     </header>
 
-                    <div className="grid grid-cols-1 gap-3 md:gap-4">
+                    <div className="grid grid-cols-1 gap-3 md:gap-5">
                         {layananData.map((item, idx) => (
                             <motion.div
                                 key={item.title}
@@ -66,7 +60,7 @@ export default function LayananPage() {
                                         {item.icon}
                                     </div>
                                     <div className="flex-1 pr-4">
-                                        <h2 className="text-sm md:text-base font-black text-slate-900 uppercase tracking-tight leading-tight group-hover:text-[#F3C623] transition-colors">
+                                        <h2 className="text-sm md:text-base font-black text-slate-900 uppercase tracking-tight leading-tight transition-colors">
                                             {item.title}
                                         </h2>
                                         <p className="text-[11px] md:text-xs font-medium text-slate-500 mt-0.5 line-clamp-1">
@@ -82,12 +76,7 @@ export default function LayananPage() {
                         ))}
                     </div>
 
-                    {/* Footer Card Minimalist */}
-                    <div className="mt-16 p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 text-center">
-                        <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Butuh bantuan lainnya?</p>
-                        <p className="text-sm font-bold text-slate-600">Silahkan hubungi bagian administrasi sekolah atau guru pendidik pada jam kerja.</p>
-                    </div>
-
+                    <Info />
                 </div>
             </main>
 

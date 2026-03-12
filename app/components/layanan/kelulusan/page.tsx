@@ -11,7 +11,6 @@ import {
   School,
   Clock3,
   CalendarDays,
-  Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
@@ -79,16 +78,10 @@ export default function GraduationCheckPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col overflow-hidden bg-slate-50">
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-gray-100">
       <Header />
 
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-yellow-200/30 blur-3xl" />
-        <div className="absolute right-0 top-40 h-[260px] w-[260px] rounded-full bg-amber-100/40 blur-3xl" />
-        <div className="absolute left-0 top-72 h-[240px] w-[240px] rounded-full bg-slate-200/40 blur-3xl" />
-      </div>
-
-      <main className="grow pt-28 pb-16 md:pt-36">
+      <main className="grow pt-20 pb-5 md:pt-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -96,7 +89,7 @@ export default function GraduationCheckPage() {
             transition={{ duration: 0.4 }}
             className="mb-8 text-center"
           >
-            <h1 className="text-3xl font-black uppercase tracking-[-0.06em] text-slate-950 md:text-5xl">
+            <h1 className="text-3xl font-black uppercase text-slate-950 md:text-5xl">
               Hasil <span className="text-[#F3C623]">Kelulusan</span>
             </h1>
           </motion.div>
@@ -337,9 +330,6 @@ export default function GraduationCheckPage() {
                 <h3 className="text-lg font-black uppercase tracking-tight text-slate-900">
                   Siapkan Data Diri Anda
                 </h3>
-                <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-slate-500">
-                  Masukkan NISN dan pilih tanggal lahir anda
-                </p>
               </motion.div>
             )}
           </AnimatePresence>
