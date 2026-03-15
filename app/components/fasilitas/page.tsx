@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import { 
   BookOpen, 
@@ -16,8 +15,6 @@ import AdditionalInfo from "@/components/InfoDetail";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer"
 
-
-// Data Fasilitas - Kamu bisa tambah atau kurangi di sini
 const facilities = [
   {
     title: "Ruang Kelas Digital",
@@ -95,7 +92,6 @@ export default function FasilitasPage() {
         </div>
       </section>
 
-      {/* Grid Content */}
       <section className="py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -108,7 +104,6 @@ export default function FasilitasPage() {
                 viewport={{ once: true }}
                 className="group p-6 bg-white rounded-md border border-slate-100 shadow-sm hover:shadow-md hover:border-yellow-200 transition-all duration-300"
               >
-                {/* Icon Box */}
                 <div className={`w-12 h-12 rounded-md flex items-center justify-center mb-5 transition-transform group-hover:scale-110 ${item.color}`}>
                   {item.icon}
                 </div>
@@ -123,7 +118,6 @@ export default function FasilitasPage() {
             ))}
           </div>
 
-          {/* Additional Info Footer */}
           <AdditionalInfo />
         </div>
       </section>
