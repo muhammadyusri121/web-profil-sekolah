@@ -36,30 +36,23 @@ export async function GET(request: Request) {
             const transform = (item: any) => {
                 if (!item) return item;
 
-                // 1. Transformasi Image/Thumbnail
-                const imageFields = ['thumbnail', 'image', 'thumbnail_raw', 'image_url'];
-                imageFields.forEach(field => {
-                    if (item[field] && typeof item[field] === 'string' && !item[field].startsWith('http')) {
-                        const cleanPath = item[field].startsWith('/') ? item[field] : `/${item[field]}`;
-                        
-                        // Jika SUDAH punya /api/files, jangan tambah lagi
-                        if (cleanPath.startsWith('/api/files/')) {
-                           item[field] = cleanPath;
-                           return;
-                        }
-
+                if (item.thumbnail && typeof item.thumbnail === 'string' && !item.thumbnail.startsWith('http')) {
+                    const cleanPath = item.thumbnail.startsWith('/') ? item.thumbnail : `/${item.thumbnail}`;
+                    
+                    if (!cleanPath.startsWith('/api/files/')) {
                         const finalPath = cleanPath.replace(/^\/datasmanka\//, '/');
-                        item[field] = `/api/files${finalPath}`;
+                        item.thumbnail = `/api/files${finalPath}`;
                     }
-                });
+                }
 
-                // 2. Transformasi Content (HTML)
-                if (item.description && typeof item.description === 'string') {
+                item.images = item.thumbnail ? [item.thumbnail] : [];
+
+                if (item.content && typeof item.content === 'string') {
                     const minioRegex = /http:\/\/202\.52\.147\.214:9000\/datasmanka\//g;
-                    item.description = item.description.replace(minioRegex, '/api/files/');
+                    item.content = item.content.replace(minioRegex, '/api/files/');
                     
                     const relativeUploadsRegex = /src="\/uploads\//g;
-                    item.description = item.description.replace(relativeUploadsRegex, 'src="/api/files/uploads/');
+                    item.content = item.content.replace(relativeUploadsRegex, 'src="/api/files/uploads/');
                 }
 
                 return item;
@@ -72,8 +65,6 @@ export async function GET(request: Request) {
 
     } catch (error: any) {
         console.error("=== ERROR DATABASE EKSKUL ===");
-        console.error(error.message);
-
         return NextResponse.json(
             { error: "Gagal konek DB", detail: error.message },
             { status: 500 }

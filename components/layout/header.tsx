@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { X, Menu as Burger, ChevronDown, ChevronRight, LayoutGrid } from "lucide-react";
-import { navigationData, NavItem } from "@/data/data_header";
+import { navigationData, NavItem } from "@/lib/data/data_header";
 import { cn } from "@/lib/utils";
 
 export default function Header() {
@@ -183,7 +183,7 @@ export default function Header() {
 
           <div className="flex items-center gap-4">
             <Link
-              href="/components/layanan"
+              href="/layanan"
               className="hidden md:flex px-5 py-2.5 text-[13px] font-bold text-white rounded-full bg-black hover:bg-neutral-800 transition-all items-center gap-2 shadow-lg"
             >
               LAYANAN KAMI
@@ -264,7 +264,7 @@ export default function Header() {
 
             <div className="absolute bottom-0 inset-x-0 p-6 bg-linear-to-t from-white via-white to-transparent">
               <Link
-                href="/components/layanan"
+                href="/layanan"
                 onClick={() => setIsMobileOpen(false)}
                 className="flex items-center justify-center gap-3 w-full py-4 bg-black text-white rounded-2xl font-black tracking-widest text-[13px] shadow-2xl active:scale-[0.98] transition-all"
               >
