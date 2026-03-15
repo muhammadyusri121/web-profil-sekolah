@@ -13,6 +13,9 @@ import {
   HeartPulse 
 } from "lucide-react";
 import AdditionalInfo from "@/components/InfoDetail";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer"
+
 
 // Data Fasilitas - Kamu bisa tambah atau kurangi di sini
 const facilities = [
@@ -69,7 +72,8 @@ const facilities = [
 export default function FasilitasPage() {
   return (
     <div className="min-h-screen bg-gray-50/50">
-      {/* Hero Section */}
+      <Header />
+
       <section className="bg-white border-b border-slate-100 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <motion.div
@@ -123,6 +127,8 @@ export default function FasilitasPage() {
           <AdditionalInfo />
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }
