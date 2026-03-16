@@ -22,9 +22,9 @@ const CATEGORY_HREF: Record<string, string> = {
   KARYA_SISWA: "/karya",
   DOUBLE_TRACK: "/double-track",
   OSIS_MPK: "/osis",
-  HUMAS: "/humas-komite",
-  KOMITE: "/humas-komite",
-  KEMITRAAN: "/humas-komite",
+  HUMAS: "/humas",
+  KOMITE: "/komite",
+  KEMITRAAN: "/kemitraan",
   SUPERVISI_GURU: "/karya",
   ASAS: "/karya",
   ASAJ: "/karya",
@@ -91,7 +91,7 @@ export default function PostSection({ posts = [] }: { posts: PostItem[] }) {
             </p>
           </div>
           <Link 
-            href="/post/berita" 
+            href="/beranda/post/berita" 
             className="hidden text-sm font-bold text-yellow-600 transition-colors hover:text-yellow-700 md:flex md:items-center md:gap-1"
           >
             Lihat Semua <ArrowRight size={16} />
@@ -116,14 +116,11 @@ export default function PostSection({ posts = [] }: { posts: PostItem[] }) {
                 <Link href={href} className="flex h-full flex-col">
                   {/* Thumbnail Container */}
                   <div className="relative aspect-4/3 w-full overflow-hidden rounded-md bg-slate-100">
-                    <img
+                    <Image
                       src={post.thumbnail || "/login-logo.png"}
                       alt={post.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src = "/login-logo.png";
-                      }}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
 
@@ -161,7 +158,7 @@ export default function PostSection({ posts = [] }: { posts: PostItem[] }) {
         {/* Mobile View All Button */}
         <div className="mt-10 md:hidden">
           <Link 
-            href="/berita" 
+            href="/beranda/post/berita" 
             className="flex w-full items-center justify-center rounded-md border border-slate-200 py-3 text-sm font-bold text-slate-700 active:bg-slate-50"
           >
             Lihat Semua Berita

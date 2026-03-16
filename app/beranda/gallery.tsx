@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
+import Image from "next/image";
 import { ArrowRight, Users } from "lucide-react";
 import {
   Carousel,
@@ -76,13 +77,11 @@ export default function TeacherGallery({ teachers = [] }: { teachers: Teacher[] 
                 >
                   <div className="group overflow-hidden rounded-[20px] border border-slate-100 bg-white transition-all duration-300 hover:border-yellow-400 hover:shadow-md">
                     <div className="relative aspect-3/4 overflow-hidden bg-slate-50">
-                      <img
+                      <Image
                         src={teacher.image_url || "/placeholder-user.png"}
                         alt={teacher.full_name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src = "/placeholder-user.png";
-                        }}
+                        fill
+                        className="object-cover"
                       />
                     </div>
                     <div className="p-3 text-center">

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { 
   Plus,
   Image as ImageIcon
@@ -19,6 +20,10 @@ interface Facility {
 export default function FasilitasPage() {
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pageInfo, setPageInfo] = useState<{ title: string; content: string }>({
+    title: "Fasilitas Sekolah",
+    content: "Sarana dan prasarana pendukung kegiatan belajar mengajar di SMAN 1 Ketapang."
+  });
 
   useEffect(() => {
     const fetchFacilities = async () => {
@@ -34,7 +39,26 @@ export default function FasilitasPage() {
         setLoading(false);
       }
     };
+
+    const fetchPageInfo = async () => {
+      try {
+        const res = await fetch('/api/post?slug=fasilitas');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.title) {
+            setPageInfo({
+              title: data.title,
+              content: data.content || pageInfo.content
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Gagal load info halaman:", err);
+      }
+    };
+
     fetchFacilities();
+    fetchPageInfo();
   }, []);
 
   return (
@@ -43,10 +67,13 @@ export default function FasilitasPage() {
 
       <main className="grow pt-24 pb-16 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
-          <header className="mb-12 text-center md:text-left">
+          <header className="mb-12 text-center md:text-left max-w-3xl">
              <h1 className="mt-4 text-4xl md:text-6xl font-black text-black leading-[1.1] tracking-tighter uppercase">
-               Fasilitas <span className="text-yellow-500">Sekolah</span>
+               {pageInfo.title.split(' ')[0]} <span className="text-yellow-500">{pageInfo.title.split(' ').slice(1).join(' ')}</span>
              </h1>
+             <p className="mt-4 text-slate-500 text-sm md:text-base font-medium leading-relaxed">
+                {pageInfo.content.replace(/<[^>]*>/g, '')}
+             </p>
           </header>
 
           {loading ? (
@@ -67,10 +94,11 @@ export default function FasilitasPage() {
                 >
                   <div className="relative aspect-4/3 w-full bg-slate-50 flex items-center justify-center overflow-hidden border-b border-yellow-100">
                     {item.image_url ? (
-                      <img
+                      <Image
                         src={item.image_url}
                         alt={item.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
                       />
                     ) : (
                       <div className="flex items-center justify-center w-full h-full bg-slate-50">

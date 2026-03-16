@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Calendar, ArrowLeft } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { getAllPosts } from "@/lib/data/data_beranda/data_postingan";
+import { getAllPosts } from "@/lib/data/data_postingan";
 
 interface PostItem {
   id: string;
@@ -77,13 +77,13 @@ export default async function BeritaPage() {
   return (
     <main className="min-h-screen flex flex-col bg-slate-50">
       <Header />
-      
+
       <div className="grow pt-10 pb-20">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          
+
           <div className="mb-6 flex items-center justify-between">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors"
             >
               <ArrowLeft size={16} /> Kembali ke Beranda
@@ -153,10 +153,10 @@ export default async function BeritaPage() {
               })}
             </div>
           ) : (
-             <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-white py-20 text-center">
-                <p className="text-lg font-bold text-slate-600">Belum ada berita diterbitkan.</p>
-                <p className="mt-1 text-sm text-slate-400">Silakan kembali lagi nanti untuk informasi terbaru.</p>
-             </div>
+            <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-white py-20 text-center">
+              <p className="text-lg font-bold text-slate-600">Belum ada berita diterbitkan.</p>
+              <p className="mt-1 text-sm text-slate-400">Silakan kembali lagi nanti untuk informasi terbaru.</p>
+            </div>
           )}
         </div>
       </div>

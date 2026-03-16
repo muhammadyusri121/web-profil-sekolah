@@ -36,13 +36,30 @@ export default function GraduationCheckPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [result, setResult] = useState<any>(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const [pageInfo, setPageInfo] = useState<{ title: string; content: string }>({
+    title: "Hasil Kelulusan",
+    content: "Silakan masukkan NISN dan tanggal lahir Anda untuk mengecek status kelulusan."
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch Graduation Data
         const res = await fetch("/api/graduation");
         const json = await res.json();
         setData(Array.isArray(json) ? json : []);
+
+        // Fetch Page Info
+        const infoRes = await fetch("/api/post?slug=kelulusan");
+        if (infoRes.ok) {
+          const infoData = await infoRes.json();
+          if (infoData && infoData.title) {
+            setPageInfo({
+              title: infoData.title,
+              content: infoData.content || pageInfo.content
+            });
+          }
+        }
       } catch (err) {
         console.error("Gagal load data:", err);
       } finally {
@@ -90,8 +107,11 @@ export default function GraduationCheckPage() {
             className="mb-8 text-center"
           >
             <h1 className="text-3xl font-black uppercase text-slate-950 md:text-5xl">
-              Hasil <span className="text-[#F3C623]">Kelulusan</span>
+              {pageInfo.title.split(' ').slice(0, -1).join(' ')} <span className="text-[#F3C623]">{pageInfo.title.split(' ').slice(-1)}</span>
             </h1>
+            <p className="mt-4 text-slate-500 text-sm md:text-base font-medium leading-relaxed">
+              {pageInfo.content.replace(/<[^>]*>/g, '')}
+            </p>
           </motion.div>
 
           <motion.div

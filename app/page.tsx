@@ -13,8 +13,8 @@ import YouTubeSection from '@/app/beranda/youtube';
 
 import BetaNotice from "@/components/PopUpNotice";
 
-import { getStructuralPersonnel } from "@/lib/data/data_beranda/data_guru";
-import { getLatestPosts } from "@/lib/data/data_beranda/data_postingan";
+import { getStructuralPersonnel } from "@/lib/data/data_guru";
+import { getLatestPosts } from "@/lib/data/data_postingan";
 import { getLatestYouTubeVideos } from "@/lib/youtube";
 
 export default async function Home() {
@@ -38,7 +38,7 @@ export default async function Home() {
         <PostSection posts={posts} />
       </div>
 
-      {/* <StatistikPengunjung /> */}
+      <StatistikPengunjung />
       <Footer />
     </main>
   );

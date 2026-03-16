@@ -4,5 +4,5 @@ export default function BasketPage() {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
     const apiUrl = `${baseUrl}/api/ekskul?ekskul_name=Basket`;
     
-    return <TemplatHalaman title="Basket" basePath="/ekskul/basket" apiUrl={apiUrl} />;
+    return <TemplatHalaman title="Basket" basePath="/ekskul/basket" apiUrl={apiUrl} pageSlug="ekskul-basket" />;
 }

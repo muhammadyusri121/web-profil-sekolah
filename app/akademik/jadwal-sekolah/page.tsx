@@ -70,6 +70,11 @@ export default function JadwalSekolahPage() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [pageInfo, setPageInfo] = useState<{ title: string; content: string }>({
+    title: "Jadwal Pelajaran",
+    content: "Pantau seluruh agenda belajar-mengajar di lingkungan sekolah dengan mudah. Pilih kelas Anda untuk melihat rincian mata pelajaran harian secara real-time."
+  });
+
   useEffect(() => {
     const checkSize = () => setIsMobile(window.innerWidth < 768);
     checkSize();
@@ -86,6 +91,19 @@ export default function JadwalSekolahPage() {
         const list = Array.from(new Set(data.map((d) => d.class_name))).sort();
         setClasses(list);
         if (list.length > 0) setSelectedClass(list[0]);
+      })
+      .catch(console.error);
+
+    // Fetch page info
+    fetch("/api/post?slug=jadwal-sekolah")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data && data.title) {
+          setPageInfo({
+            title: data.title,
+            content: data.content || pageInfo.content
+          });
+        }
       })
       .catch(console.error);
   }, []);
@@ -136,13 +154,12 @@ export default function JadwalSekolahPage() {
       <main className="grow pt-32 pb-20">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
 
-          <div className="max-w-3xl mx-auto text-center mb-5">
+          <div className="max-w-3xl mx-auto text-center mb-10">
             <h1 className="text-4xl md:text-6xl font-[1000] text-slate-900 uppercase tracking-tighter mt-2 leading-none">
-              Jadwal <span className="text-yellow-500">Pelajaran</span>
+              {pageInfo.title.split(' ')[0]} <span className="text-yellow-500">{pageInfo.title.split(' ').slice(1).join(' ')}</span>
             </h1>
             <p className="mt-4 text-sm md:text-base text-slate-500 font-medium leading-relaxed">
-              Pantau seluruh agenda belajar-mengajar di lingkungan sekolah dengan mudah. 
-              Pilih kelas Anda untuk melihat rincian mata pelajaran harian secara real-time.
+              {pageInfo.content.replace(/<[^>]*>/g, '')}
             </p>
           </div>
 

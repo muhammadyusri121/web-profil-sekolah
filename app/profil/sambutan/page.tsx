@@ -1,10 +1,35 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
 export default function SambutanPage() {
+  const [pageInfo, setPageInfo] = useState<{ title: string; content: string }>({
+    title: "Sambutan Kepala Sekolah",
+    content: "Salam hangat bagi kita semua yang tergabung dalam keluarga besar SMAN 1 Ketapang."
+  });
+
+  useEffect(() => {
+    const fetchPageInfo = async () => {
+      try {
+        const res = await fetch('/api/post?slug=sambutan');
+        const data = await res.json();
+        if (data && data.title) {
+          setPageInfo({
+            title: data.title,
+            content: data.content || pageInfo.content
+          });
+        }
+      } catch (error) {
+        console.error("Gagal mengambil info halaman:", error);
+      }
+    };
+    fetchPageInfo();
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-[#F8FAFC]">
       <Header />
@@ -22,13 +47,12 @@ export default function SambutanPage() {
                 <div className="absolute -inset-2 bg-yellow-400 rounded-[2rem] rotate-3 group-hover:rotate-0 transition-transform duration-500" />
                 
                 <div className="relative bg-white p-3 rounded-[2rem] shadow-xl shadow-slate-700/50 border border-slate-100">
-                  <img 
+                  <Image 
                     src="/foto-kepsek.jpeg"
                     alt="Sulaiman, S.E., M.Pd."
+                    width={400}
+                    height={533}
                     className="w-full aspect-3/4 object-cover rounded-[1.5rem]"
-                    onError={(e) => { 
-                      (e.target as any).src = "https://placehold.co/400x533/F3C623/333?text=Kepala+Sekolah"; 
-                    }}
                   />
                   
                   <div className="mt-5 text-center pb-2">
@@ -50,15 +74,15 @@ export default function SambutanPage() {
               className="lg:col-span-8 bg-white p-6 md:p-10 rounded-[2rem] border border-slate-100 shadow-sm"
             >
               <h1 className="text-2xl md:text-4xl font-[1000] text-slate-900 leading-[1.1] uppercase tracking-tighter mb-8">
-                Santun dalam <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-500 to-yellow-600">
-                  Pekerti
-                </span>,<br />
-                Unggul dalam <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-500 to-yellow-600">
-                  Prestasi
-                </span>,<br />
-                Kondusif dalam <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-500 to-yellow-600">
-                  Edukasi
-                </span>
+                {pageInfo.title.split(' ').map((word, i) => {
+                  const isHighlighted = i >= 2 && i <= 3;
+                  return (
+                    <span key={i} className={isHighlighted ? "text-transparent bg-clip-text bg-linear-to-r from-yellow-500 to-yellow-600" : ""}>
+                      {word}{" "}
+                      {i === 2 ? <br /> : ""}
+                    </span>
+                  );
+                })}
               </h1>
 
               <div className="space-y-5 text-slate-600 leading-relaxed text-sm md:text-[15px]">

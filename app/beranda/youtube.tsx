@@ -49,6 +49,7 @@ export default function YouTubeSection({
                 src={`https://www.youtube.com/embed/${mainVideo.id}`}
                 title={mainVideo.title}
                 allowFullScreen
+                loading="lazy"
                 className="absolute inset-0 h-full w-full border-0"
               />
             </div>

@@ -1,11 +1,19 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Rocket, ShieldCheck, Zap, Award, Target } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
-const misiData = [
+interface MisiItem {
+  id: number;
+  title: string;
+  desc: string;
+  icon: React.ReactNode;
+}
+
+const misiData: MisiItem[] = [
   {
     id: 1,
     title: "Kualitas Akademik",
@@ -33,12 +41,47 @@ const misiData = [
 ];
 
 export default function VisiMisiPage() {
+  const [pageInfo, setPageInfo] = useState<{ title: string; content: string }>({
+    title: "Visi & Misi",
+    content: "Eksplorasi fokus strategis dan tujuan utama sekolah untuk masa depan siswa."
+  });
+
+  useEffect(() => {
+    const fetchPageInfo = async () => {
+      try {
+        const res = await fetch('/api/post?slug=visi-misi');
+        const data = await res.json();
+        if (data && data.title) {
+          setPageInfo({
+            title: data.title,
+            content: data.content || pageInfo.content
+          });
+        }
+      } catch (error) {
+        console.error("Gagal mengambil info halaman:", error);
+      }
+    };
+    fetchPageInfo();
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
 
       <main className="grow pt-24 pb-16 md:pt-32 md:pb-24">
         <div className="max-w-5xl mx-auto px-6">
+          
+          {/* Header Dinamis */}
+          <div className="text-center mb-16 max-w-2xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-[1000] text-slate-900 uppercase tracking-tighter leading-none mb-4">
+              {pageInfo.title.split(' ').map((word, i) => (
+                <span key={i} className={i === 1 ? "text-yellow-500" : ""}>{word} </span>
+              ))}
+            </h1>
+            <p className="text-slate-500 font-medium text-sm md:text-base leading-relaxed">
+              {pageInfo.content.replace(/<[^>]*>/g, '')}
+            </p>
+          </div>
 
           <motion.section 
             initial={{ opacity: 0, y: 10 }}
@@ -53,7 +96,7 @@ export default function VisiMisiPage() {
             <div className="relative p-6 md:p-10 bg-slate-50 rounded-[2rem] border-l-8 border-[#F3C623] overflow-hidden">
               <p className="text-xl md:text-3xl font-black text-slate-900 leading-[1.2] uppercase italic tracking-tighter">
                 "Santun dalam pekerti, <br />
-                unggul dalam pretasi, <br />
+                unggul dalam prestasi, <br />
                 <span className="text-[#F3C623]">kondusif dalam edukasi."</span>
               </p>
             </div>

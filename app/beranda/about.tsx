@@ -1,7 +1,6 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Target, Music, ArrowRight, ArrowUpRight } from "lucide-react";
 
 const NAV_CARDS = [
@@ -28,14 +27,12 @@ export default function AboutSection() {
           {/* Foto kepala sekolah */}
           <div className="lg:col-span-4">
             <div className="relative rounded-[32px] overflow-hidden shadow-xl bg-slate-100 border-4 border-white">
-              <img
+              <Image
                 src="/foto-kepsek.jpeg"
                 alt="Sulaiman, S.E., M.Pd."
+                width={400}
+                height={500}
                 className="w-full aspect-4/5 object-cover"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    "https://placehold.co/400x500?text=Kepala+Sekolah";
-                }}
               />
               {/* Overlay nama & jabatan */}
               <div className="absolute bottom-0 inset-x-0 bg-linear-to-t from-slate-900 p-6 text-white text-center">

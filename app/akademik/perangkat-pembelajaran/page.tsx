@@ -43,6 +43,10 @@ const getDocTypeInfo = (type: DocType) => {
 export default function PerangkatPembelajaranPage() {
   const [documents, setDocuments] = useState<AcademicDocument[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pageInfo, setPageInfo] = useState<{ title: string; content: string }>({
+    title: "Perangkat Pembelajaran",
+    content: "Akses dan unduh berbagai dokumen pendukung pembelajaran, mulai dari peraturan sekolah hingga bahan ajar terkini."
+  });
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -58,7 +62,26 @@ export default function PerangkatPembelajaranPage() {
         setLoading(false);
       }
     };
+
+    const fetchPageInfo = async () => {
+      try {
+        const res = await fetch('/api/post?slug=perangkat-pembelajaran');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.title) {
+            setPageInfo({
+              title: data.title,
+              content: data.content || pageInfo.content
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Gagal load info halaman:", err);
+      }
+    };
+
     fetchDocuments();
+    fetchPageInfo();
   }, []);
 
   return (
@@ -69,10 +92,10 @@ export default function PerangkatPembelajaranPage() {
         <div className="max-w-5xl mx-auto">
           <header className="mb-12 text-center md:text-left">
              <h1 className="mt-4 text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tighter uppercase">
-               Perangkat <span className="text-yellow-500">Pembelajaran</span>
+               {pageInfo.title.split(' ')[0]} <span className="text-yellow-500">{pageInfo.title.split(' ').slice(1).join(' ')}</span>
              </h1>
              <p className="mt-4 text-slate-500 font-medium max-w-2xl leading-relaxed">
-               Akses dan unduh berbagai dokumen pendukung pembelajaran, mulai dari peraturan sekolah hingga bahan ajar terkini.
+               {pageInfo.content.replace(/<[^>]*>/g, '')}
              </p>
           </header>
 

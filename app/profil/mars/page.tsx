@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Play, Pause } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/header";
@@ -9,6 +9,28 @@ import Footer from "@/components/layout/footer";
 export default function MarsPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [pageInfo, setPageInfo] = useState<{ title: string; content: string }>({
+    title: "Mars SMAN 1 Ketapang",
+    content: "Simbol semangat juang dan identitas sekolah dalam alunan nada yang inspiratif."
+  });
+
+  useEffect(() => {
+    const fetchPageInfo = async () => {
+      try {
+        const res = await fetch('/api/post?slug=mars');
+        const data = await res.json();
+        if (data && data.title) {
+          setPageInfo({
+            title: data.title,
+            content: data.content || pageInfo.content
+          });
+        }
+      } catch (error) {
+        console.error("Gagal mengambil info halaman:", error);
+      }
+    };
+    fetchPageInfo();
+  }, []);
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -29,9 +51,14 @@ export default function MarsPage() {
         <div className="max-w-xl mx-auto px-6">
         
           <div className="flex flex-col items-center text-center mb-16">
-            <h1 className="text-2xl md:text-3xl font-[1000] text-slate-900 uppercase tracking-tighter leading-none mb-6">
-              Mars <span className="text-[#F3C623]"> SMAN 1 Ketapang</span>
+            <h1 className="text-2xl md:text-3xl font-[1000] text-slate-900 uppercase tracking-tighter leading-none mb-4">
+              {pageInfo.title.split(' ').map((word, i) => (
+                <span key={i} className={i >= 1 ? "text-[#F3C623]" : ""}>{word} </span>
+              ))}
             </h1>
+            <p className="text-slate-500 font-medium text-xs md:text-sm leading-relaxed mb-6">
+              {pageInfo.content.replace(/<[^>]*>/g, '')}
+            </p>
 
             <button 
               onClick={togglePlay}
@@ -57,11 +84,8 @@ export default function MarsPage() {
           <div className="space-y-10">
             {[
               ["SMA Negeri 1 Ketapang", "Santun dalam pekerti, unggul dalam prestasi", "Kondusif dalam edukasi"],
-              ["Raih semua mimpi dengan berjiwa Pancasila", "Wujudkan cita mulia dengan berjiwa Pancasila", "Taklukan dunia!"],
-              ["Kobarkan semangat menuju cita bangsa", "Kuatkan tekad, berdiri tegak", "Barisan kita kuat, bergerak kita hebat", "SMA Negeri 1 Ketapang!"],
-              ["SMA Negeri 1 Ketapang", "Santun dalam pekerti, unggul dalam prestasi", "Kondusif dalam edukasi"],
               ["Raih semua mimpi dengan berjiwa Pancasila", "Wujudkan cita mulia dengan berjiwa Pancasila", "Taklukkan dunia!"],
-              ["Kobarkan semangat menuju cita bangsa", "Kuatkan tekad, berdiri tegak", "Barisan kita kuat, bergerak kita hebat", "SMA Negeri 1 Ketapang!"]
+              ["Kobarkan semangat menuju cita bangsa", "Kuatkan tekad, berdiri tegak", "Barisan kita kuat, bergerak kita hebat", "SMA Negeri 1 Ketapang!"],
             ].map((verse, vIdx) => (
               <motion.div 
                 key={vIdx}

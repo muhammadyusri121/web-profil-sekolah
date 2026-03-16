@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import { motion } from "framer-motion";
 import {
     GraduationCap,
@@ -31,16 +33,44 @@ const layananData = [
 ];
 
 export default function LayananPage() {
+    const [pageInfo, setPageInfo] = React.useState<{ title: string; content: string }>({
+        title: "Pusat Layanan Sekolah",
+        content: "Berbagai layanan digital SMAN 1 Ketapang untuk memudahkan civitas akademika."
+    });
+
+    React.useEffect(() => {
+        const fetchPageInfo = async () => {
+            try {
+                const res = await fetch('/api/post?slug=layanan');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.title) {
+                        setPageInfo({
+                            title: data.title,
+                            content: data.content || pageInfo.content
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error("Gagal load info halaman:", err);
+            }
+        };
+        fetchPageInfo();
+    }, []);
+
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
             <Header />
 
             <main className="grow pt-20 pb-5 md:pt-20 md:pb-20">
                 <div className="max-w-5xl mx-auto px-6">
-                    <header className="mb-10">
+                    <header className="mb-10 max-w-2xl">
                         <h1 className="text-2xl md:text-4xl font-[1000] text-slate-900 uppercase">
-                            Pusat <span className="text-[#F3C623]">Layanan Sekolah</span>
+                            {pageInfo.title.split(' ')[0]} <span className="text-[#F3C623]">{pageInfo.title.split(' ').slice(1).join(' ')}</span>
                         </h1>
+                        <p className="mt-4 text-slate-500 text-sm md:text-base font-medium leading-relaxed">
+                            {pageInfo.content.replace(/<[^>]*>/g, '')}
+                        </p>
                     </header>
 
                     <div className="grid grid-cols-1 gap-3 md:gap-5">
