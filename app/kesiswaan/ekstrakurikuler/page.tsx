@@ -5,15 +5,15 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
 const ekskulData = [
-    { nama: "PMR", slug: "pmr", icon: "/login-logo.png" },
-    { nama: "Voli", slug: "voli", icon: "/login-logo.png" },
-    { nama: "Basket", slug: "basket", icon: "/login-logo.png" },
-    { nama: "Pramuka", slug: "pramuka", icon: "/login-logo.png" },
-    { nama: "Paskibraka", slug: "paskibraka", icon: "/login-logo.png" },
-    { nama: "Seni Tari", slug: "seni-tari", icon: "/login-logo.png" },
-    { nama: "Jurnalistik", slug: "jurnalistik", icon: "/login-logo.png" },
-    { nama: "Paduan Suara", slug: "paduan-suara", icon: "/login-logo.png" },
-    { nama: "Sains Club", slug: "sains-club", icon: "/login-logo.png" },
+    { nama: "PMR", slug: "pmr", icon: "/logo-ekstrakurikuler/pmi.svg" },
+    { nama: "Voli", slug: "voli", icon: "/logo-ekstrakurikuler/volleyball.jpg" },
+    { nama: "Basket", slug: "basket", icon: "/logo-ekstrakurikuler/basket.jpg" },
+    { nama: "Pramuka", slug: "pramuka", icon: "/logo-ekstrakurikuler/pramuka.jpg" },
+    { nama: "Paskibraka", slug: "paskibraka", icon: "/logo-ekstrakurikuler/paskibraka.jpg" },
+    { nama: "Seni Tari", slug: "seni-tari", icon: "/logo-ekstrakurikuler/tari.jpg" },
+    { nama: "Jurnalistik", slug: "jurnalistik", icon: "/logo-ekstrakurikuler/jurnalistik.jpg" },
+    { nama: "Paduan Suara", slug: "paduan-suara", icon: "/logo-ekstrakurikuler/paduan.jpg" },
+    { nama: "Sains Club", slug: "sains-club", icon: "/logo-ekstrakurikuler/sains.jpg" },
 ];
 
 export default async function EkskulPage() {

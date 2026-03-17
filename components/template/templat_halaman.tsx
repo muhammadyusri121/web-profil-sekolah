@@ -24,6 +24,18 @@ export default async function TemplatHalaman({ title, basePath, apiUrl, pageSlug
 
         // Fetch dynamic page info if pageSlug is provided
         if (pageSlug) {
+            // First try sections API
+            const sectionRes = await fetch(`${baseUrl}/api/sections?slug=${pageSlug}`, { cache: 'no-store' });
+            if (sectionRes.ok) {
+                const sectionData = await sectionRes.json();
+                if (sectionData && sectionData.title) {
+                    pageInfo.title = sectionData.title;
+                    pageInfo.content = sectionData.description || "";
+                    return; // Found it in sections, no need to check post
+                }
+            }
+
+            // Fallback to post API for backward compatibility or individual posts as pages
             const infoRes = await fetch(`${baseUrl}/api/post?slug=${pageSlug}`, { cache: 'no-store' });
             if (infoRes.ok) {
                 const infoData = await infoRes.json();

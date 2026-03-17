@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Play, Youtube, Calendar } from "lucide-react";
+import { motion } from "motion/react";
+import { Play, Youtube, Calendar, ArrowRight, ExternalLink } from "lucide-react";
 import { YouTubeVideo } from "@/lib/youtube";
 
 export default function YouTubeSection({
@@ -13,9 +14,8 @@ export default function YouTubeSection({
 }) {
   if (!videos || videos.length === 0) return null;
 
-  // Video terbaru jadi yang besar, 3 berikutnya di samping
   const mainVideo = videos[0];
-  const sideVideos = videos.slice(1, 4); 
+  const sideVideos = videos.slice(1, 5); 
 
   const formatDate = (value: string) => {
     if (!value) return "Baru";
@@ -24,27 +24,29 @@ export default function YouTubeSection({
   };
 
   return (
-    <section id="youtube" className="bg-white py-8">
-      <div className="mx-auto max-w-6xl px-4">
-        
-        {/* Header Ringkas */}
-        <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-xl font-bold tracking-tight text-slate-900">
-            Video <span className="text-red-600">Terbaru</span>
-          </h2>
-          <a
-            href={channelUrl}
-            target="_blank"
-            className="text-xs font-bold uppercase tracking-wider text-red-600 hover:underline"
-          >
-            Semua Video
-          </a>
+    <section id="youtube" className="relative bg-gray-100 py-12 md:py-16 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div className="max-w-xl text-center sm:text-left">
+            <motion.h2 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tighter"
+            >
+              Video <span className="text-yellow-500">Youtube</span>
+            </motion.h2>
+          </div>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-3">
-          {/* Main Video (Terbaru) */}
-          <div className="lg:col-span-2">
-            <div className="relative aspect-video overflow-hidden rounded-xl bg-slate-100 ring-1 ring-slate-200">
+        <div className="grid gap-6 lg:grid-cols-12">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.98 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="lg:col-span-8 group"
+          >
+            <div className="relative aspect-video overflow-hidden rounded-2xl bg-slate-200 ring-1 ring-black/5 shadow-xl">
               <iframe
                 src={`https://www.youtube.com/embed/${mainVideo.id}`}
                 title={mainVideo.title}
@@ -53,45 +55,60 @@ export default function YouTubeSection({
                 className="absolute inset-0 h-full w-full border-0"
               />
             </div>
-            <h3 className="mt-3 line-clamp-1 text-base font-bold text-slate-900">
-              {mainVideo.title}
-            </h3>
-          </div>
+            <div className="mt-4">
+              <h3 className="text-lg md:text-xl font-bold text-slate-800 line-clamp-1">
+                {mainVideo.title}
+              </h3>
+            </div>
+          </motion.div>
 
-          {/* Side Videos (3 Saja) */}
-          <div className="flex flex-col gap-5">
-            {sideVideos.map((video) => (
-              <a
+          <div className="lg:col-span-4 flex flex-col gap-3">
+            {sideVideos.map((video, idx) => (
+              <motion.a
+                initial={{ opacity: 0, x: 15 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.05 }}
                 key={video.id}
                 href={`https://www.youtube.com/watch?v=${video.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-3 rounded-lg border border-transparent p-1 transition-all hover:bg-slate-50 hover:border-slate-100"
+                className="group flex items-center gap-3 p-2.5 rounded-xl bg-white border border-slate-200 hover:border-yellow-400/50 hover:bg-slate-50 shadow-sm transition-all"
               >
-                {/* Thumbnail Kecil */}
-                <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-md bg-slate-100">
+                <div className="relative aspect-video w-32 shrink-0 overflow-hidden rounded-lg bg-slate-100">
                   <img
                     src={video.thumbnailUrl || "/login-logo.png"}
                     alt={video.title}
-                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100">
-                    <Play size={14} className="text-white" fill="white" />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Play size={12} fill="white" className="text-white" />
                   </div>
                 </div>
-                
-                {/* Info Singkat */}
-                <div className="flex flex-col min-w-0">
-                  <h4 className="line-clamp-2 text-xs font-bold leading-snug text-slate-800 group-hover:text-red-600">
+
+                <div className="flex flex-col grow min-w-0">
+                  <h5 className="line-clamp-2 text-[13px] font-bold leading-tight text-slate-800 group-hover:text-yellow-600 transition-colors mb-1">
                     {video.title}
-                  </h4>
-                  <div className="mt-1 flex items-center gap-1 text-[10px] text-slate-400">
-                    <Calendar size={10} />
+                  </h5>
+                  <div className="flex items-center gap-1.5 text-[9px] font-bold text-slate-500 uppercase">
+                    <Calendar size={10} className="text-yellow-500" />
                     <span>{formatDate(video.publishedAt)}</span>
                   </div>
                 </div>
-              </a>
+              </motion.a>
             ))}
+
+            <motion.a
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                href={channelUrl}
+                target="_blank"
+                className="mt-1 flex items-center justify-between p-3 rounded-lg border border-dashed border-slate-300 hover:border-yellow-500 hover:bg-yellow-50 shadow-xs transition-all text-slate-500 hover:text-yellow-600 group"
+              >
+                <span className="text-[10px] font-black uppercase tracking-widest">Lihat Semua Video</span>
+                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+            </motion.a>
           </div>
         </div>
       </div>

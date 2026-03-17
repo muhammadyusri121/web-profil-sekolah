@@ -170,3 +170,11 @@ model VisitorLog {
   // @@unique([ipHash, path], name: "daily_unique") - Akan di-handle via logic API agar lebih fleksibel
 }
 
+// --- Modul: Section Headers ---
+model SectionHeader {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?  @db.Text
+  updatedAt   DateTime @updatedAt
+}

@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { 
-  Plus,
   Image as ImageIcon
 } from "lucide-react";
 import Header from "@/components/layout/header";
@@ -34,7 +33,7 @@ export default function FasilitasPage() {
           setFacilities(data);
         }
       } catch (err) {
-        console.error("Gagal load fasilitas:", err);
+        console.error("Gagal ambil data ", err);
       } finally {
         setLoading(false);
       }
@@ -53,7 +52,7 @@ export default function FasilitasPage() {
           }
         }
       } catch (err) {
-        console.error("Gagal load info halaman:", err);
+        console.error("Gagal mengambil data ", err);
       }
     };
 
@@ -106,9 +105,8 @@ export default function FasilitasPage() {
                       </div>
                     )}
                     
-                    {/* Quantity Badge */}
-                    <div className="absolute top-2 right-2 px-2 py-1 bg-black/80 text-white text-[9px] font-black rounded-md flex items-center gap-1">
-                       <Plus size={8} /> {item.quantity} Unit
+                    <div className="absolute top-2 right-2 px-2 py-1 bg-black text-white text-[12px] font-black rounded-md flex items-center gap-2 tracking-wider">
+                       {item.quantity} Unit
                     </div>
                   </div>
 
