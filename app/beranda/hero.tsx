@@ -28,24 +28,6 @@ export default function SchoolHero() {
           <p className="mt-6 text-gray-300 text-lg max-w-xl mx-auto lg:mx-0">
             Tempat terbaik untuk membangun karakter, ilmu, dan masa depan gemilang. Kami menghadirkan pendidikan modern dengan teknologi dan nilai-nilai terbaik.
           </p>
-
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-6 py-3 bg-yellow-400 text-black font-semibold rounded-xl shadow-lg"
-            >
-              Daftar Sekarang
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-6 py-3 border border-white text-white rounded-xl"
-            >
-              Lihat Profil
-            </motion.button>
-          </div>
         </motion.div>
 
         <motion.div
