@@ -13,7 +13,7 @@ interface MisiItem {
   icon: React.ReactNode;
 }
 
-const misiData: MisiItem[] = [
+const staticMisiData: MisiItem[] = [
   {
     id: 1,
     title: "Kualitas Akademik",
@@ -45,23 +45,75 @@ export default function VisiMisiPage() {
     title: "Visi & Misi",
     content: "Eksplorasi fokus strategis dan tujuan utama sekolah untuk masa depan siswa."
   });
+  
+  const [visionHtml, setVisionHtml] = useState<string>("\"Santun dalam pekerti, <br /> unggul dalam prestasi, <br /> <span class=\\\"text-[#F3C623]\\\">kondusif dalam edukasi.\\\"</span>");
+  const [dynamicMisi, setDynamicMisi] = useState<MisiItem[]>(staticMisiData);
 
   useEffect(() => {
-    const fetchPageInfo = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch('/api/post?slug=visi-misi');
-        const data = await res.json();
-        if (data && data.title) {
-          setPageInfo({
-            title: data.title,
-            content: data.content || pageInfo.content
-          });
+        // Fetch page info from post
+        const resPost = await fetch('/api/post?slug=visi-misi');
+        const dataPost = await resPost.json();
+        if (dataPost && dataPost.title) {
+          setPageInfo(prev => ({
+            ...prev,
+            title: dataPost.title,
+            content: dataPost.content || prev.content
+          }));
         }
       } catch (error) {
         console.error("Gagal mengambil info halaman:", error);
       }
+
+      try {
+        // Fetch vision and mission from profile
+        const resProfile = await fetch('/api/school-profile');
+        if (resProfile.ok) {
+          const profile = await resProfile.json();
+          if (profile && profile.vision) {
+            setVisionHtml(profile.vision);
+          }
+          if (profile && profile.mission) {
+            // parse the mission text
+            let mText = profile.mission;
+            mText = mText.replace(/<\/?(ul|ol|li)[^>]*>/gi, '\\n').replace(/<br\s*\/?>/gi, '\\n').replace(/<[^>]*>/g, '');
+            const list = mText.split('\\n').map((s: string) => s.trim()).filter(Boolean);
+            
+            if (list.length > 0) {
+              const icons = [
+                <Rocket key="1" className="text-yellow-600" size={20} />,
+                <ShieldCheck key="2" className="text-yellow-600" size={20} />,
+                <Zap key="3" className="text-yellow-600" size={20} />,
+                <Award key="4" className="text-yellow-600" size={20} />,
+                <Target key="5" className="text-yellow-600" size={20} />
+              ];
+              
+              setDynamicMisi(list.map((item: string, idx: number) => {
+                // Try to extract title if there's a colon or dash
+                let title = `Misi ${idx + 1}`;
+                let desc = item;
+                const splitMisi = item.split(/[:\-]/);
+                if (splitMisi.length > 1 && splitMisi[0].length < 40) {
+                  title = splitMisi[0].trim();
+                  desc = splitMisi.slice(1).join(" - ").trim();
+                }
+
+                return {
+                  id: idx + 1,
+                  title: title,
+                  desc: desc,
+                  icon: icons[idx % icons.length]
+                };
+              }));
+            }
+          }
+        }
+      } catch (error) {
+         console.error("Gagal mengambil profil:", error);
+      }
     };
-    fetchPageInfo();
+    fetchData();
   }, []);
 
   return (
@@ -94,11 +146,10 @@ export default function VisiMisiPage() {
             </div>
             
             <div className="relative p-6 md:p-10 bg-slate-50 rounded-[2rem] border-l-8 border-[#F3C623] overflow-hidden">
-              <p className="text-xl md:text-3xl font-black text-slate-900 leading-[1.2] uppercase italic tracking-tighter">
-                "Santun dalam pekerti, <br />
-                unggul dalam prestasi, <br />
-                <span className="text-[#F3C623]">kondusif dalam edukasi."</span>
-              </p>
+              <div 
+                className="text-xl md:text-3xl font-black text-slate-900 leading-[1.2] uppercase italic tracking-tighter"
+                dangerouslySetInnerHTML={{ __html: visionHtml }}
+              />
             </div>
           </motion.section>
 
@@ -109,7 +160,7 @@ export default function VisiMisiPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {misiData.map((misi, idx) => (
+              {dynamicMisi.map((misi, idx) => (
                 <motion.div
                   key={misi.id}
                   initial={{ opacity: 0, y: 10 }}
@@ -118,6 +169,9 @@ export default function VisiMisiPage() {
                   transition={{ delay: idx * 0.05 }}
                   className="group flex items-start gap-4 p-5 bg-white rounded-2xl border border-slate-100 hover:border-[#F3C623]/50 hover:bg-slate-50 transition-all"
                 >
+                  <div className="mt-1">
+                    {misi.icon}
+                  </div>
                   <div>
                     <h3 className="text-[13px] font-black text-slate-900 uppercase tracking-tight mb-1">
                       {misi.title}

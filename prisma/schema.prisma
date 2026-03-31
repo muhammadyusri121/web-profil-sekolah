@@ -7,49 +7,165 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// --- Modul: Authentication (CMS) ---
-enum Role {
-  ADMIN
-  EDITOR
-  AUTHOR
-}
+// ==========================================
+// MODELS (sesuai dengan CMS Admin)
+// ==========================================
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String
-  role      Role     @default(EDITOR)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  email       String   @unique
+  nip         String?  @unique
+  password    String
+  name        String
+  role        Role     @default(OPERATOR)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  permissions String[] @default([])
 }
 
-// --- Modul: Profile & Personnel (GTK) ---
 model EducationPersonnel {
-  id         String   @id @default(cuid())
+  id         String           @id @default(cuid())
   full_name  String
-  nip        String?  @unique
+  nip        String?          @unique
   email      String?
   position   String
   image_url  String?
-  sort_order Int      @default(0)
-  createdAt  DateTime @default(now())
-
-  // Relations
+  sort_order Int              @default(0)
+  createdAt  DateTime         @default(now())
   schedules  SchoolSchedule[]
 }
 
-// --- Modul: Articles & Content (Innovation, News, Student Work, etc.) ---
 model Post {
   id           String       @id @default(cuid())
   title        String
   slug         String       @unique
-  content      String       @db.Text
+  content      String
   category     PostCategory
-  images       String[] // Gambar galeri / slider (banyak gambar)
+  images       String[]
   is_published Boolean      @default(false)
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+}
+
+model Graduation {
+  id              String   @id @default(cuid())
+  nisn            String   @unique
+  student_name    String
+  birthday        String?
+  gender          String?
+  class_name      String?
+  is_graduated    Boolean  @default(false)
+  graduation_year Int
+  createdAt       DateTime @default(now())
+}
+
+model AcademicDocument {
+  id        String   @id @default(cuid())
+  file_name String
+  file_path String
+  doc_type  DocType
+  createdAt DateTime @default(now())
+}
+
+model Extracurricular {
+  id           String     @id @default(cuid())
+  title        String
+  slug         String     @unique
+  ekskul_name  EkskulName
+  content      String
+  thumbnail    String?
+  is_published Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Facility {
+  id        String   @id @default(cuid())
+  name      String
+  quantity  Int      @default(1)
+  image_url String?
+  createdAt DateTime @default(now())
+}
+
+model Holiday {
+  id          String   @id @default(cuid())
+  date        DateTime
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PeriodTime {
+  id        Int              @id
+  time      String
+  schedules SchoolSchedule[]
+}
+
+model SchoolSchedule {
+  id          String              @id @default(cuid())
+  class_name  String
+  subject     String
+  teacher_nip String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  period      Int
+  day_of_week DayOfWeek
+  period_time PeriodTime          @relation(fields: [period], references: [id])
+  teacher     EducationPersonnel? @relation(fields: [teacher_nip], references: [nip])
+}
+
+model SectionHeader {
+  id          String   @id
+  slug        String   @unique
+  title       String
+  description String?
+  updatedAt   DateTime
+}
+
+model VisitorLog {
+  id        String   @id
+  ipHash    String
+  path      String
+  country   String?
+  visitedAt DateTime @default(now())
+}
+
+model VisitorStatistic {
+  id        String   @id
+  path      String   @unique
+  count     Int      @default(0)
+  updatedAt DateTime
+}
+
+// --- Modul: School Profile (khusus Website, tidak ada di CMS Admin) ---
+model SchoolProfile {
+  id              String   @id @default(cuid())
+  principalName   String
+  principalImage  String?
+  welcomeMessage  String   @db.Text
+  vision          String   @db.Text
+  mission         String   @db.Text
+  updatedAt       DateTime @updatedAt
+  updatedBy       String?
+}
+
+// ==========================================
+// ENUMS (sesuai dengan CMS Admin)
+// ==========================================
+
+enum DayOfWeek {
+  Senin
+  Selasa
+  Rabu
+  Kamis
+  Jumat
+  Sabtu
+}
+
+enum Role {
+  ADMIN
+  OPERATOR
+  KONTRIBUTOR
 }
 
 enum PostCategory {
@@ -65,45 +181,10 @@ enum PostCategory {
   OSIS_MPK
 }
 
-// --- Modul: Graduation (Search Feature) ---
-model Graduation {
-  id              String   @id @default(cuid())
-  nisn            String   @unique
-  student_name    String
-  birthday        String?
-  gender          String?
-  class_name      String?
-  is_graduated    Boolean  @default(false)
-  graduation_year Int
-  createdAt       DateTime @default(now())
-}
-
-// --- Modul: Academic Documents (Files) ---
-model AcademicDocument {
-  id        String   @id @default(cuid())
-  file_name String
-  file_path String
-  doc_type  DocType
-  createdAt DateTime @default(now())
-}
-
 enum DocType {
   REGULATION
-  TEACHING_MATERIAL
   SCHEDULE
-}
-
-// --- Modul: Extracurricular (Articles) ---
-model Extracurricular {
-  id           String     @id @default(cuid())
-  title        String
-  slug         String     @unique
-  ekskul_name  EkskulName
-  content      String     @db.Text
-  thumbnail    String?
-  is_published Boolean    @default(false)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  TEACHING_MATERIAL
 }
 
 enum EkskulName {
@@ -116,65 +197,4 @@ enum EkskulName {
   Paduan_Suara
   PMR
   Jurnalistik
-}
-
-// --- Modul: Facilities (Sarpras) ---
-model Facility {
-  id        String   @id @default(cuid())
-  name      String
-  quantity  Int      @default(1)
-  image_url String?
-  createdAt DateTime @default(now())
-}
-
-// --- Modul: Calendar (Holidays) ---
-model Holiday {
-  id          String   @id @default(cuid())
-  date        DateTime // Tanggal perayaan
-  description String   // Nama perayaan/libur
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-// --- Modul: Jadwal Pelajaran (School Schedule) ---
-model SchoolSchedule {
-  id          String   @id @default(cuid())
-  class_name  String
-  period      String
-  time        String
-  subject     String
-  day_of_week String
-  teacher_nip String?
-  teacher     EducationPersonnel? @relation(fields: [teacher_nip], references: [nip], onDelete: SetNull)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-// --- Modul: Visitor Counter ---
-model VisitorStatistic {
-  id        String   @id @default(cuid())
-  path      String   @unique // misal: "homepage"
-  count     Int      @default(0)
-  updatedAt DateTime @updatedAt
-}
-
-// Model baru untuk pelacakan spesifik waktu & lokasi (Hari, Bulan, Tahun, Negara)
-model VisitorLog {
-  id        String   @id @default(cuid())
-  ipHash    String   // Hash alamat IP untuk keamanan/privasi
-  path      String   // misal: "homepage"
-  country   String?  // Kode negara (misal "ID", "US")
-  visitedAt DateTime @default(now()) // Waktu kunjungan
-  
-  // Memastikan 1 IP dibaca 1 kali per hari untuk path tertentu
-  // @@unique([ipHash, path], name: "daily_unique") - Akan di-handle via logic API agar lebih fleksibel
-}
-
-// --- Modul: Section Headers ---
-model SectionHeader {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  description String?  @db.Text
-  updatedAt   DateTime @updatedAt
 }

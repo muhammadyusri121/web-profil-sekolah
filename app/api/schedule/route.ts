@@ -9,11 +9,22 @@ export async function GET(request: Request) {
         let result;
         if (className) {
             result = await query(
-                `SELECT s.*, p.full_name AS teacher_name
+                `SELECT s.*, pt.time, p.full_name AS teacher_name
          FROM "SchoolSchedule" s
+         LEFT JOIN "PeriodTime" pt ON s.period = pt.id
          LEFT JOIN "EducationPersonnel" p ON s.teacher_nip = p.nip
          WHERE s.class_name = $1
-         ORDER BY s.day_of_week, s.period`,
+         ORDER BY 
+             CASE s.day_of_week
+                 WHEN 'Senin' THEN 1
+                 WHEN 'Selasa' THEN 2
+                 WHEN 'Rabu' THEN 3
+                 WHEN 'Kamis' THEN 4
+                 WHEN 'Jumat' THEN 5
+                 WHEN 'Sabtu' THEN 6
+                 ELSE 7
+             END,
+             s.period`,
                 [className]
             );
         } else {

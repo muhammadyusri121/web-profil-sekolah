@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Target, Music, ArrowRight, ArrowUpRight } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
 const NAV_CARDS = [
   {
@@ -18,7 +19,13 @@ const NAV_CARDS = [
   },
 ];
 
-export default function AboutSection() {
+export default async function AboutSection() {
+  const profile = await prisma.schoolProfile.findFirst();
+
+  const principalName = profile?.principalName || "Sulaiman, S.E., M.Pd.";
+  const principalImage = profile?.principalImage || "/foto-kepsek.jpeg";
+  const welcomeMessage = profile?.welcomeMessage || "SMAN 1 Ketapang berkomitmen mencetak generasi yang santun dalam pekerti dan unggul dalam prestasi melalui lingkungan edukasi yang kondusif.";
+
   return (
     <section id="about" className="py-10 md:py-16 bg-gray-100 overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
@@ -28,8 +35,8 @@ export default function AboutSection() {
           <div className="lg:col-span-4">
             <div className="relative rounded-[32px] overflow-hidden shadow-xl bg-slate-100 border-4 border-white">
               <Image
-                src="/foto-kepsek.jpeg"
-                alt="Sulaiman, S.E., M.Pd."
+                src={principalImage}
+                alt={principalName}
                 width={400}
                 height={500}
                 className="w-full aspect-4/5 object-cover"
@@ -37,7 +44,7 @@ export default function AboutSection() {
               {/* Overlay nama & jabatan */}
               <div className="absolute bottom-0 inset-x-0 bg-linear-to-t from-slate-900 p-6 text-white text-center">
                 <h3 className="text-sm font-black uppercase tracking-tight">
-                  Sulaiman, S.E., M.Pd.
+                  {principalName}
                 </h3>
                 <p className="text-[9px] text-yellow-400 font-black uppercase tracking-widest mt-0.5">
                   Kepala SMAN 1 Ketapang
@@ -55,9 +62,7 @@ export default function AboutSection() {
                 Sambutan <span className="text-yellow-400">Kepala Sekolah</span>
               </h2>
               <p className="text-slate-500 font-medium text-sm md:text-base leading-relaxed max-w-2xl">
-                SMAN 1 Ketapang berkomitmen mencetak generasi yang santun dalam
-                pekerti dan unggul dalam prestasi melalui lingkungan edukasi yang
-                kondusif.
+                {welcomeMessage}
               </p>
               <Link
                 href="/profil/sambutan"
