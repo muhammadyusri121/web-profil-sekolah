@@ -11,26 +11,49 @@ import Footer from "@/components/layout/footer";
 const Tree = dynamic(() => import("react-organizational-chart").then((m) => m.Tree), { ssr: false });
 const TreeNode = dynamic(() => import("react-organizational-chart").then((m) => m.TreeNode), { ssr: false });
 
+/**
+ * FIX: react-organizational-chart needs global CSS to show lines properly 
+ * in Next.js environment because pseudo-elements can be reset by Tailwind.
+ */
+const OrgChartStyles = () => (
+    <style dangerouslySetInnerHTML={{ __html: `
+        .org-tree-container ul { padding-top: 30px; position: relative; transition: all 0.5s; display: flex; justify-content: center; }
+        .org-tree-container li { text-align: center; list-style-type: none; position: relative; padding: 30px 10px 0 10px; transition: all 0.5s; }
+        .org-tree-container li::before, .org-tree-container li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 4px solid #CBD5E1; width: 50%; height: 30px; }
+        .org-tree-container li::after { right: auto; left: 50%; border-left: 4px solid #CBD5E1; }
+        .org-tree-container li:only-child::after, .org-tree-container li:only-child::before { display: none; }
+        .org-tree-container li:only-child { padding-top: 0; }
+        .org-tree-container li:first-child::before, .org-tree-container li:last-child::after { border: 0 none; }
+        .org-tree-container li:last-child::before { border-right: 4px solid #CBD5E1; border-radius: 0 12px 0 0; }
+        .org-tree-container li:first-child::after { border-radius: 12px 0 0 0; }
+        .org-tree-container ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 4px solid #CBD5E1; width: 0; height: 30px; }
+    `}} />
+);
+
 const MemberNode = ({ member, onClick }: { member: any; onClick: () => void }) => (
   <motion.div
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
+    whileHover={{ scale: 1.1, y: -5 }}
+    whileTap={{ scale: 0.9 }}
     onClick={onClick}
-    className="inline-block cursor-pointer group"
+    className="inline-flex flex-col items-center cursor-pointer group px-4 py-2"
   >
-    <div className="bg-white border-2 border-slate-100 group-hover:border-[#F3C623] p-4 rounded-[24px] shadow-xl shadow-slate-200/50 transition-all min-w-[160px] md:min-w-[200px]">
-      <div className="w-16 mx-auto mb-3 rounded-xl bg-slate-50 flex items-center justify-center overflow-hidden border border-slate-100 relative" style={{ aspectRatio: "3/4" }}>
-        <Image
-          src={member.image_url || "/placeholder-user.png"}
-          alt={member.full_name}
-          fill
-          className="object-cover"
-        />
-      </div>
-      <h4 className="text-[11px] md:text-[13px] font-black text-slate-900 uppercase leading-tight">
+    {/* Circular Image Wrapper */}
+    <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full border-[6px] border-white shadow-2xl overflow-hidden mb-4 group-hover:border-[#F3C623] transition-all duration-300 ring-2 ring-slate-100 group-hover:ring-[#F3C623]/30">
+      <Image
+        src={member.image_url || "/placeholder-user.png"}
+        alt={member.full_name}
+        fill
+        className="object-cover"
+      />
+    </div>
+    
+    {/* Floating Text below Circle */}
+    <div className="max-w-[180px] text-center">
+      <h4 className="text-[12px] md:text-[14px] font-[1000] text-slate-900 uppercase leading-none tracking-tight">
         {member.full_name}
       </h4>
-      <p className="text-[9px] font-bold text-[#F3C623] uppercase tracking-widest mt-1">
+      <div className="h-[2px] w-6 bg-[#F3C623]/40 mx-auto my-1.5 rounded-full" />
+      <p className="text-[9px] font-black text-[#F3C623] uppercase tracking-[0.15em] leading-tight">
         {member.position}
       </p>
     </div>
@@ -49,12 +72,15 @@ export default function StrukturGTKPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch Personnel
         const personnelRes = await fetch('/api/personnel');
-        const personnelData = await personnelRes.json();
-        setPersonnel(personnelData);
+        const resData = await personnelRes.json();
+        
+        // FIX: Tangani jika data dibungkus dalam { success: true, data: [...] } dari API
+        const actualData = Array.isArray(resData) ? resData : (resData.data || []);
+        
+        console.log("Personnel data loaded:", actualData.length);
+        setPersonnel(actualData);
 
-        // Fetch Page Info (Judul & Deskripsi)
         const pageRes = await fetch('/api/post?slug=struktur-gtk');
         const pageData = await pageRes.json();
         if (pageData && pageData.title) {
@@ -80,6 +106,7 @@ export default function StrukturGTKPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 font-sans">
       <Header />
+      <OrgChartStyles />
 
       <main className="grow pt-20 pb-5 overflow-x-auto selection:bg-[#F3C623]">
         <div className="max-w-7xl mx-auto px-6 min-w-[1000px]">
@@ -96,18 +123,37 @@ export default function StrukturGTKPage() {
           <div className="py-10">
             {kepalaSekolah ? (
               <Tree
-                lineWidth={'3px'}
-                lineColor={'#000000'}
-                lineBorderRadius={'20px'}
+                lineWidth={'4px'}
+                lineColor={'#CBD5E1'}
+                lineHeight={'50px'}
+                lineBorderRadius={'16px'}
+                nodePadding={'32px'}
                 label={<MemberNode member={kepalaSekolah} onClick={() => setSelectedMember(kepalaSekolah)} />}
               >
-                {wakasekList.map((waka, idx) => (
-                  <TreeNode key={waka.id} label={<MemberNode member={waka} onClick={() => setSelectedMember(waka)} />}>
-                    {idx === 1 && guruList.length > 0 && guruList.map((guru) => (
-                      <TreeNode key={guru.id} label={<MemberNode member={guru} onClick={() => setSelectedMember(guru)} />} />
-                    ))}
-                  </TreeNode>
-                ))}
+                {wakasekList.length > 0 ? (
+                  wakasekList.map((waka, idx) => (
+                    <TreeNode 
+                      key={waka.id} 
+                      label={<MemberNode member={waka} onClick={() => setSelectedMember(waka)} />}
+                    >
+                      {/* Masukkan SEMUA Guru di bawah Wakasek pertama sebagai representasi hirarki */}
+                      {idx === 0 && guruList.map((guru) => (
+                        <TreeNode 
+                          key={guru.id} 
+                          label={<MemberNode member={guru} onClick={() => setSelectedMember(guru)} />} 
+                        />
+                      ))}
+                    </TreeNode>
+                  ))
+                ) : (
+                  /* Jika tidak ada Wakasek, tampilkan Guru langsung di bawah Kepala Sekolah */
+                  guruList.map((guru) => (
+                    <TreeNode 
+                      key={guru.id} 
+                      label={<MemberNode member={guru} onClick={() => setSelectedMember(guru)} />} 
+                    />
+                  ))
+                )}
               </Tree>
             ) : (
               <p className="text-center text-slate-400 font-bold uppercase italic">Memuat Data</p>

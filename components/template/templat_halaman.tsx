@@ -31,17 +31,16 @@ export default async function TemplatHalaman({ title, basePath, apiUrl, pageSlug
                 if (sectionData && sectionData.title) {
                     pageInfo.title = sectionData.title;
                     pageInfo.content = sectionData.description || "";
-                    return; // Found it in sections, no need to check post
-                }
-            }
-
-            // Fallback to post API for backward compatibility or individual posts as pages
-            const infoRes = await fetch(`${baseUrl}/api/post?slug=${pageSlug}`, { cache: 'no-store' });
-            if (infoRes.ok) {
-                const infoData = await infoRes.json();
-                if (infoData && infoData.title) {
-                    pageInfo.title = infoData.title;
-                    pageInfo.content = infoData.content || "";
+                } else {
+                    // Fallback to post API for backward compatibility or individual posts as pages
+                    const infoRes = await fetch(`${baseUrl}/api/post?slug=${pageSlug}`, { cache: 'no-store' });
+                    if (infoRes.ok) {
+                        const infoData = await infoRes.json();
+                        if (infoData && infoData.title) {
+                            pageInfo.title = infoData.title;
+                            pageInfo.content = infoData.content || "";
+                        }
+                    }
                 }
             }
         }
@@ -60,11 +59,6 @@ export default async function TemplatHalaman({ title, basePath, apiUrl, pageSlug
                         <h1 className="text-3xl md:text-5xl font-[1000] text-slate-900 uppercase tracking-tighter leading-tight mb-4">
                             {pageInfo.title}
                         </h1>
-                        {pageInfo.content && (
-                            <p className="text-slate-500 text-sm md:text-base font-medium leading-relaxed">
-                                {pageInfo.content.replace(/<[^>]*>/g, '')}
-                            </p>
-                        )}
                     </header>
 
                     {posts && posts.length > 0 ? (
