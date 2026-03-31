@@ -27,7 +27,7 @@ export default async function Home() {
       <Header />
 
       <div className="grow">
-        {/* <BetaNotice /> */}
+        <BetaNotice />
         <Hero />
         <About />
 
