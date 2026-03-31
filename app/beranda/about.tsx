@@ -52,7 +52,7 @@ export default function AboutSection() {
             {/* Sambutan singkat */}
             <div className="space-y-4">
               <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-none uppercase tracking-tighter">
-                Selayang <span className="text-yellow-400">Pandang</span>
+                Sambutan <span className="text-yellow-400">Kepala Sekolah</span>
               </h2>
               <p className="text-slate-500 font-medium text-sm md:text-base leading-relaxed max-w-2xl">
                 SMAN 1 Ketapang berkomitmen mencetak generasi yang santun dalam

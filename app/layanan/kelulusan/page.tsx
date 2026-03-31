@@ -154,10 +154,6 @@ export default function GraduationCheckPage() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-12 text-center"
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-yellow-100 px-4 py-1.5 text-xs font-bold text-yellow-700 shadow-sm">
-              <Sparkles size={14} className="animate-pulse" />
-              <span>PENGUMUMAN KELULUSAN</span>
-            </div>
             <h1 className="text-4xl font-black uppercase text-slate-950 md:text-6xl">
               {pageInfo.title.split(' ').slice(0, -1).join(' ')} <span className="text-yellow-500">{pageInfo.title.split(' ').slice(-1)}</span>
             </h1>
@@ -173,15 +169,6 @@ export default function GraduationCheckPage() {
             transition={{ delay: 0.1 }}
             className="relative mb-12 rounded-[32px] border border-white/60 bg-white/70 p-6 shadow-2xl shadow-blue-900/5 backdrop-blur-xl md:p-8"
           >
-            <div className="absolute -top-4 -right-4 hidden lg:block">
-              <div className="relative">
-                <div className="absolute inset-0 animate-ping rounded-full bg-yellow-400 opacity-20" />
-                <div className="relative rounded-full bg-yellow-400 p-3 text-white shadow-lg">
-                  <GraduationCap size={24} />
-                </div>
-              </div>
-            </div>
-
             <form onSubmit={handleSearch} className="grid items-end gap-5 md:grid-cols-12">
               <div className="md:col-span-5">
                 <label className="mb-3 block text-xs font-black uppercase tracking-widest text-slate-400">
