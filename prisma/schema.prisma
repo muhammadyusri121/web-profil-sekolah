@@ -137,7 +137,6 @@ model VisitorStatistic {
   updatedAt DateTime
 }
 
-// --- Modul: School Profile (khusus Website, tidak ada di CMS Admin) ---
 model SchoolProfile {
   id              String   @id @default(cuid())
   principalName   String
