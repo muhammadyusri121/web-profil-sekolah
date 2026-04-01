@@ -1,4 +1,5 @@
 import { query } from "@/lib/db";
+import { type PostItem } from "./post-utils";
 
 const VPS_BASE = "http://202.52.147.214:9000/datasmanka";
 
@@ -22,18 +23,14 @@ function resolveImage(raw: string | null | undefined): string | null {
  * - Tabel Extracurricular (artikel per ekskul)
  * Hasil digabung, diurutkan by createdAt DESC, dan diambil 10 teratas.
  */
-export async function getLatestPosts() {
+export async function getLatestPosts(): Promise<PostItem[]> {
   try {
     const result = await query(`
       SELECT
-        id,
-        title,
-        slug,
-        category       AS category,
-        NULL           AS ekskul_name,
-        'post'         AS source,
-        images[1]      AS raw_image,
-        NULL           AS thumbnail_raw,
+        id, title, slug, category, 
+        NULL AS ekskul_name, 
+        'post' AS source, 
+        images[1] AS raw_image, 
         "createdAt"
       FROM "Post"
       WHERE is_published = true
@@ -41,14 +38,10 @@ export async function getLatestPosts() {
       UNION ALL
 
       SELECT
-        id,
-        title,
-        slug,
-        NULL           AS category,
-        ekskul_name    AS ekskul_name,
-        'ekskul'       AS source,
-        NULL           AS raw_image,
-        thumbnail      AS thumbnail_raw,
+        id, title, slug, NULL AS category, 
+        ekskul_name, 
+        'ekskul' AS source, 
+        thumbnail AS raw_image, 
         "createdAt"
       FROM "Extracurricular"
       WHERE is_published = true
@@ -64,7 +57,7 @@ export async function getLatestPosts() {
       category: row.category ?? null,
       ekskul_name: row.ekskul_name ?? null,
       source: row.source,
-      thumbnail: resolveImage(row.raw_image ?? row.thumbnail_raw),
+      thumbnail: resolveImage(row.raw_image),
       createdAt: row.createdat ?? row.createdAt,
     }));
   } catch (error) {
@@ -76,18 +69,14 @@ export async function getLatestPosts() {
 /**
  * Mengambil SEMUA postingan dari dua sumber untuk halaman Arsip Berita
  */
-export async function getAllPosts() {
+export async function getAllPosts(): Promise<PostItem[]> {
   try {
     const result = await query(`
       SELECT
-        id,
-        title,
-        slug,
-        category       AS category,
-        NULL           AS ekskul_name,
-        'post'         AS source,
-        images[1]      AS raw_image,
-        NULL           AS thumbnail_raw,
+        id, title, slug, category, 
+        NULL AS ekskul_name, 
+        'post' AS source, 
+        images[1] AS raw_image, 
         "createdAt"
       FROM "Post"
       WHERE is_published = true
@@ -95,14 +84,10 @@ export async function getAllPosts() {
       UNION ALL
 
       SELECT
-        id,
-        title,
-        slug,
-        NULL           AS category,
-        ekskul_name    AS ekskul_name,
-        'ekskul'       AS source,
-        NULL           AS raw_image,
-        thumbnail      AS thumbnail_raw,
+        id, title, slug, NULL AS category, 
+        ekskul_name, 
+        'ekskul' AS source, 
+        thumbnail AS raw_image, 
         "createdAt"
       FROM "Extracurricular"
       WHERE is_published = true
@@ -117,7 +102,7 @@ export async function getAllPosts() {
       category: row.category ?? null,
       ekskul_name: row.ekskul_name ?? null,
       source: row.source,
-      thumbnail: resolveImage(row.raw_image ?? row.thumbnail_raw),
+      thumbnail: resolveImage(row.raw_image),
       createdAt: row.createdat ?? row.createdAt,
     }));
   } catch (error) {

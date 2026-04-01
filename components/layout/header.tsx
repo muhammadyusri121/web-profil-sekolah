@@ -33,14 +33,14 @@ export default function Header() {
     }
   }, [isMobileOpen]);
 
-  const handleMouseEnter = (menu: string) => {
+  const handleMouseEnter = React.useCallback((menu: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setActiveMenu(menu);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => setActiveMenu(null), 300);
-  };
+  const handleMouseLeave = React.useCallback(() => {
+    timeoutRef.current = setTimeout(() => setActiveMenu(null), 200);
+  }, []);
 
   return (
     <>
@@ -50,12 +50,12 @@ export default function Header() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="fixed top-0 inset-x-0 z-50 bg-yellow-300 border-b border-yellow-200 shadow-sm"
       >
-        <header className="max-w-7xl mx-auto px-6 h-15 md:h-16 flex items-center justify-between transition-all">
-          <div className="flex items-center">
-            <Link
-              href="/"
-              className="flex items-center gap-3 text-lg md:text-xl font-black tracking-widest text-black uppercase"
-            >
+      <header className="max-w-7xl mx-auto px-4 md:px-6 h-14 md:h-16 flex items-center justify-between transition-all">
+        <div className="flex items-center">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 text-base md:text-lg font-black tracking-wider text-black uppercase"
+          >
               <div className="relative w-10 h-10 md:w-12 md:h-12 shrink-0">
                 <Image
                   src="/login-logo.png"
@@ -76,110 +76,108 @@ export default function Header() {
             </Link>
           </div>
 
-          <nav className="hidden md:flex flex-1 justify-center gap-1 lg:gap-2 h-full">
-            {navigationData.map((item: NavItem) => (
-              <div
-                key={item.label}
-                onMouseEnter={() => item.children && handleMouseEnter(item.label)}
-                onMouseLeave={() => item.children && handleMouseLeave()}
-                className="relative h-full flex items-center px-3"
-              >
-                {item.children ? (
-                  <button
-                    className={cn(
-                      "text-[15px] font-bold tracking-wider transition-colors flex items-center gap-1.5",
-                      activeMenu === item.label
-                        ? "text-black"
-                        : "text-black hover:text-black"
-                    )}
-                  >
-                    {item.label}
-                    <ChevronDown
-                      size={14}
-                      className={cn(
-                        "transition-transform duration-200",
-                        activeMenu === item.label && "rotate-180"
-                      )}
-                    />
-                  </button>
-                ) : (
-                  <Link
-                    href={item.href || "/"}
-                    className="text-[15px] font-bold tracking-wider text-black hover:text-black transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                )}
-
-                <AnimatePresence>
-                  {item.children && activeMenu === item.label && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 5 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50"
-                    >
-                      <div className="bg-white border border-yellow-500 rounded-2xl shadow-xl p-3 min-w-[240px]">
-                        {item.label === "Akademik" ? (
-                          <div className="flex gap-4">
-                            <div className="flex flex-col min-w-[200px]">
-                              <span className="text-[10px] font-black uppercase text-black px-3 pb-2 mb-1 border-b border-yellow-200">
-                                K u r i k u l u m
-                              </span>
-                              {item.children
-                                .filter((child) => child.group === "Kurikulum")
-                                .map((child) => (
-                                  <Link
-                                    key={child.label}
-                                    href={child.href}
-                                    className="px-3 py-2.5 text-[13px] font-medium text-black rounded-xl hover:bg-yellow-100 hover:text-black transition-colors"
-                                  >
-                                    {child.label}
-                                  </Link>
-                                ))}
-                            </div>
-                            <div className="flex flex-col min-w-[200px] border-l border-yellow-200 pl-4">
-                              <span className="text-[10px] font-black uppercase text-black px-3 pb-2 mb-1 border-b border-yellow-200">
-                                A s e s m e n
-                              </span>
-                              {item.children
-                                .filter((child) => child.group === "Asesmen")
-                                .map((child) => (
-                                  <Link
-                                    key={child.label}
-                                    href={child.href}
-                                    className="px-3 py-2.5 text-[13px] font-medium text-black rounded-xl hover:bg-yellow-100 hover:text-black transition-colors"
-                                  >
-                                    {child.label}
-                                  </Link>
-                                ))}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="flex flex-col">
-                            {item.children.map((child) => (
-                              <Link
-                                key={child.label}
-                                href={child.href}
-                                target={child.isExternal ? "_blank" : "_self"}
-                                className="px-4 py-3 text-[13px] font-medium text-black rounded-xl hover:bg-yellow-100 hover:text-black transition-colors flex items-center justify-between group"
-                              >
-                                {child.label}
-                                {child.isExternal && (
-                                  <ChevronRight size={14} className="text-black group-hover:text-yellow-500" />
-                                )}
-                              </Link>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
+        <nav className="hidden md:flex flex-1 justify-center gap-1 lg:gap-2 h-full">
+          {navigationData.map((item: NavItem) => (
+            <div
+              key={item.label}
+              onMouseEnter={() => item.children && handleMouseEnter(item.label)}
+              onMouseLeave={() => item.children && handleMouseLeave()}
+              className="relative h-full flex items-center px-2.5"
+            >
+              {item.children ? (
+                <button
+                  className={cn(
+                    "text-[15px] md:text-base font-bold tracking-normal transition-colors flex items-center gap-1",
+                    activeMenu === item.label ? "text-black scale-105" : "text-black"
                   )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </nav>
+                >
+                  {item.label}
+                  <ChevronDown
+                    size={14}
+                    className={cn(
+                      "transition-transform duration-200",
+                      activeMenu === item.label && "rotate-180"
+                    )}
+                  />
+                </button>
+              ) : (
+                <Link
+                  href={item.href || "/"}
+                  className="text-[15px] md:text-base font-bold tracking-normal text-black hover:scale-105 transition-all"
+                >
+                  {item.label}
+                </Link>
+              )}
+
+              <AnimatePresence>
+                {item.children && activeMenu === item.label && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 5 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-1 z-50"
+                  >
+                    <div className="bg-white border border-yellow-400 rounded-2xl shadow-xl p-2 min-w-[220px]">
+                      {item.label === "Akademik" ? (
+                        <div className="flex gap-2">
+                          <div className="flex flex-col min-w-[180px]">
+                            <span className="text-[10px] font-black uppercase text-slate-500 px-3 py-1.5 mb-1 border-b border-yellow-100">
+                              Kurikulum
+                            </span>
+                            {item.children
+                              .filter((child) => child.group === "Kurikulum")
+                              .map((child) => (
+                                <Link
+                                  key={child.label}
+                                  href={child.href}
+                                  className="px-3 py-2 text-[13px] font-semibold text-black rounded-xl hover:bg-yellow-50 transition-colors"
+                                >
+                                  {child.label}
+                                </Link>
+                              ))}
+                          </div>
+                          <div className="flex flex-col min-w-[180px] border-l border-yellow-100 pl-2">
+                            <span className="text-[10px] font-black uppercase text-slate-500 px-3 py-1.5 mb-1 border-b border-yellow-100">
+                              Asesmen
+                            </span>
+                            {item.children
+                              .filter((child) => child.group === "Asesmen")
+                              .map((child) => (
+                                <Link
+                                  key={child.label}
+                                  href={child.href}
+                                  className="px-3 py-2 text-[13px] font-semibold text-black rounded-xl hover:bg-yellow-50 transition-colors"
+                                >
+                                  {child.label}
+                                </Link>
+                              ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.label}
+                              href={child.href}
+                              target={child.isExternal ? "_blank" : "_self"}
+                              className="px-4 py-2.5 text-[13px] font-semibold text-black rounded-xl hover:bg-yellow-50 transition-colors flex items-center justify-between group"
+                            >
+                              {child.label}
+                              {child.isExternal && (
+                                <ChevronRight size={13} className="text-slate-400" />
+                              )}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </nav>
 
           <div className="flex items-center gap-4">
             <Link
@@ -223,25 +221,25 @@ export default function Header() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-6 py-8 space-y-8 pb-32">
+            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 pb-32">
               {navigationData.map((item) => (
-                <div key={item.label} className="space-y-4">
+                <div key={item.label} className="space-y-2">
                   {item.children ? (
                     <>
-                      <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-black border-b border-yellow-100 pb-2">
+                      <h3 className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 border-b border-yellow-100 pb-1 px-2">
                         {item.label}
                       </h3>
-                      <div className="grid gap-2">
+                      <div className="grid grid-cols-1 gap-1.5">
                         {item.children.map((child) => (
                           <Link
                             key={child.label}
                             href={child.href}
                             target={child.isExternal ? "_blank" : "_self"}
                             onClick={() => setIsMobileOpen(false)}
-                            className="flex items-center justify-between p-4 rounded-2xl bg-yellow-50/50 border border-yellow-100/50 text-[14px] font-semibold text-black active:bg-yellow-100 transition-colors"
+                            className="flex items-center justify-between p-3.5 rounded-xl bg-yellow-50/30 border border-yellow-100/30 text-[15px] font-semibold text-black active:bg-yellow-100 transition-colors"
                           >
                             <span>{child.label}</span>
-                            <ChevronRight size={16} className="text-yellow-600" />
+                            <ChevronRight size={15} className="text-yellow-600" />
                           </Link>
                         ))}
                       </div>
@@ -250,12 +248,10 @@ export default function Header() {
                     <Link
                       href={item.href || "/"}
                       onClick={() => setIsMobileOpen(false)}
-                      className="flex items-center justify-between pb-2 border-b border-yellow-100"
+                      className="flex items-center justify-between p-3.5 rounded-xl bg-yellow-50 text-[15px] font-bold text-black active:bg-yellow-100 transition-colors"
                     >
-                      <h3 className="text-[13px] font-black uppercase tracking-[0.2em] text-black">
-                        {item.label}
-                      </h3>
-                      <ChevronRight size={18} className="text-black" />
+                      <span>{item.label}</span>
+                      <ChevronRight size={18} className="text-black opacity-30" />
                     </Link>
                   )}
                 </div>

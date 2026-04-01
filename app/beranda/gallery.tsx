@@ -11,6 +11,7 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import { motion } from "motion/react";
 
 interface Teacher {
   id: string;
@@ -34,61 +35,70 @@ export default function TeacherGallery({ teachers = [] }: { teachers: Teacher[] 
   if (!teachers || teachers.length === 0) return null;
 
   return (
-    <section id="gallery" className="relative overflow-hidden bg-gray-100 py-12 md:py-16">
+    <section id="gallery" className="relative overflow-hidden bg-gray-100 py-12 md:py-20 border-t border-gray-200">
       <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6">
 
         {/* Header: judul, deskripsi, dan tombol ke halaman lengkap */}
-        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tighter md:text-4xl">
-              Tenaga Pendidik &{" "}
-              <span className="text-yellow-400">Kependidikan</span>
-            </h2>
-            <p className="max-w-lg text-sm text-slate-500 font-medium leading-relaxed">
-              Didukung oleh tenaga pendidik profesional dan berdedikasi yang
-              berkomitmen mengantarkan setiap siswa meraih prestasi terbaik.
+        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-3">
+            <div className="max-w-xl text-center sm:text-left">
+            <motion.h2 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight leading-none"
+            >
+              Tenaga <span className="text-yellow-600">Pendidik & Kependidikan</span>
+            </motion.h2>
+          </div>
+            <p className="max-w-lg text-[15px] font-medium leading-relaxed text-slate-600">
+              Didukung oleh tenaga pendidik profesional dan berdedikasi yang berkomitmen mengantarkan setiap siswa meraih prestasi terbaik.
             </p>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end sm:pb-1">
             <Link
               href="/profil/struktur-gtk"
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-2 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-400 hover:text-slate-900"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-400 hover:text-slate-900 shadow-md hover:shadow-xl active:scale-95"
             >
-              <Users size={12} />
               Lihat Selengkapnya
-              <ArrowRight size={11} />
+              <ArrowRight size={14} />
             </Link>
           </div>
         </div>
 
-        {/* Carousel daftar guru */}
-        <div className="rounded-[28px] bg-white p-4 shadow-lg border border-slate-100">
+        {/* Carousel daftar guru - NO WRAPPER as requested */}
+        <div className="w-full">
           <Carousel
             setApi={setApi}
             plugins={[plugin.current]}
             opts={{ align: "start", loop: true }}
+            className="w-full"
           >
-            <CarouselContent className="-ml-3">
+            <CarouselContent className="-ml-4 sm:-ml-6">
               {teachers.map((teacher) => (
                 <CarouselItem
                   key={teacher.id}
-                  className="pl-3 basis-1/2 md:basis-1/4 lg:basis-1/5"
+                  className="pl-4 sm:pl-6 basis-1/2 md:basis-1/4 lg:basis-1/5"
                 >
-                  <div className="group overflow-hidden rounded-[20px] border border-slate-100 bg-white transition-all duration-300 hover:border-yellow-400 hover:shadow-md">
-                    <div className="relative aspect-3/4 overflow-hidden bg-slate-50">
+                  <div className="group overflow-hidden rounded-[24px] border border-slate-200 bg-white transition-all duration-300 hover:border-yellow-400 hover:shadow-2xl">
+                    <div className="relative aspect-3/4 overflow-hidden bg-slate-50 border-b border-slate-100">
                       <Image
-                        src={teacher.image_url || "/placeholder-user.png"}
+                        src={teacher.image_url || "/foto-kepsek.jpeg"}
                         alt={teacher.full_name}
                         fill
-                        className="object-cover"
+                        loading="lazy"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+                        className="object-cover transform group-hover:scale-110 transition-transform duration-700"
                       />
+                      {/* Gradient Hover Effect */}
+                      <div className="absolute inset-0 bg-linear-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
-                    <div className="p-3 text-center">
-                      <h3 className="text-[11px] font-black text-slate-900 uppercase leading-tight line-clamp-2">
+                    <div className="py-3 px-2 text-center bg-white">
+                      <h3 className="text-xs font-black text-slate-900 uppercase leading-tight line-clamp-2 min-h-8 flex items-center justify-center">
                         {teacher.full_name}
                       </h3>
-                      <p className="mt-1 text-[9px] font-bold text-yellow-500 uppercase tracking-widest line-clamp-1">
+                      <p className="text-[10px] font-black text-amber-600 uppercase tracking-widest line-clamp-1 opacity-90 mt-0.5">
                         {teacher.position}
                       </p>
                     </div>

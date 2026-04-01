@@ -15,60 +15,62 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-yellow-700 text-white border-t border-yellow-300">
-
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
-          <div className="space-y-10">
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="relative w-12 h-12">
-                  <Image src="/login-logo.png" alt="Logo" fill className="object-contain" />
+    <footer className="bg-yellow-800 text-white border-t border-yellow-200">
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20">
+          <div className="space-y-8">
+            <div className="space-y-5">
+              <div className="flex items-center gap-3">
+                <div className="relative w-10 h-10 md:w-12 md:h-12">
+                  <Image src="/login-logo.png" alt="Logo SMAN 1 Ketapang" fill className="object-contain" />
                 </div>
                 <div>
-                  <h3 className="text-white font-black text-xl md:text-2xl leading-none uppercase tracking-tight">
+                  <h3 className="text-white font-black text-lg md:text-xl leading-none uppercase tracking-wide">
                     SMAN 1 KETAPANG
                   </h3>
-                  <p className="text-yellow-400 text-[11px] font-bold tracking-[0.2em] uppercase mt-1">
-                    Sampang
+                  <p className="text-white/60 text-[10px] font-bold tracking-widest uppercase mt-1">
+                    SAMPANG • JAWA TIMUR
                   </p>
                 </div>
               </div>
-              <p className="text-sm text-white max-w-md">
-                Sekolah penggerak yang berfokus pada pengembangan bakat, minat, dan karakter siswa untuk menghadapi tantangan masa depan.
+              <p className="text-sm md:text-[15px] text-white/90 max-w-md leading-relaxed">
+                Sekolah penggerak yang berfokus pada pengembangan bakat, minat, dan karakter siswa untuk menghadapi tantangan masa depan dengan semangat inovatif.
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               <h4 className="text-white font-bold text-sm uppercase tracking-wider flex items-center gap-2">
-                <Phone size={16} className="text-yellow-400" />
+                <Phone size={15} className="text-yellow-300" />
                 Hubungi Kami
               </h4>
-              <div className="text-sm text-white space-y-2">
-                <p className="flex items-center gap-2 hover:text-yellow-400 transition-colors cursor-pointer">
-                  <span className="font-semibold text-white">Telp:</span> (0721) 123456
+              <div className="text-[15px] text-white/90 space-y-1.5">
+                <p className="flex items-center gap-2 group cursor-pointer">
+                  <span className="font-semibold text-white group-hover:text-yellow-300 transition-colors">Telp:</span> 
+                  <span className="group-hover:translate-x-1 transition-transform">(0323) 123456</span>
                 </p>
-                <p className="flex items-center gap-2 hover:text-yellow-400 transition-colors cursor-pointer">
-                  <span className="font-semibold text-white">Email:</span> info@sman1ketapang.sch.id
+                <p className="flex items-center gap-2 group cursor-pointer">
+                  <span className="font-semibold text-white group-hover:text-yellow-300 transition-colors">Email:</span> 
+                  <span className="group-hover:translate-x-1 transition-transform">admin@sman1ketapang.sch.id</span>
                 </p>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <p className="text-xs font-bold uppercase tracking-widest text-white">Ikuti Kami</p>
-              <div className="flex gap-3">
+            <div className="space-y-3">
+              <p className="text-[10px] font-black uppercase tracking-[0.15em] text-white/50">Ikuti Kami</p>
+              <div className="flex gap-2">
                 {[
-                  { Icon: Instagram, href: "#" },
-                  { Icon: Facebook, href: "#" },
-                  { Icon: Youtube, href: "#" },
-                  { Icon: Twitter, href: "#" },
+                  { Icon: Instagram, href: "https://instagram.com/sman1_ketapang", label: "Instagram" },
+                  { Icon: Facebook, href: "#", label: "Facebook" },
+                  { Icon: Youtube, href: "#", label: "Youtube" },
+                  { Icon: Twitter, href: "#", label: "X" },
                 ].map((social, i) => (
                   <Link 
                     key={i} 
                     href={social.href}
-                    className="w-10 h-10 rounded-lg bg-white/50 border border-white flex items-center justify-center hover:bg-yellow-400 hover:text-white transition-all active:scale-90"
+                    title={social.label}
+                    className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-yellow-400 hover:text-black transition-all active:scale-95"
                   >
-                    <social.Icon size={18} />
+                    <social.Icon size={16} />
                   </Link>
                 ))}
               </div>
@@ -101,9 +103,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-white text-center">
-          <p className="text-[10px] md:text-xs font-bold text-white uppercase tracking-[0.2em]">
-            © {currentYear} SMAN 1 KETAPANG. ALL RIGHTS RESERVED.
+        <div className="mt-12 pt-6 border-t border-white/10 text-center">
+          <p className="text-[10px] md:text-xs font-bold text-white/60 uppercase tracking-[0.25em]">
+            © {currentYear} SMAN 1 KETAPANG. SELURUH HAK CIPTA DILINDUNGI.
           </p>
         </div>
       </div>
