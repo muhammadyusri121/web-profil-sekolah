@@ -4,5 +4,5 @@ export default function PramukaPage() {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
     const apiUrl = `${baseUrl}/api/ekskul?ekskul_name=Pramuka`;
     
-    return <TemplatHalaman title="Pramuka" basePath="/ekskul/pramuka" apiUrl={apiUrl} pageSlug="ekskul-pramuka" />;
+    return <TemplatHalaman title="Pramuka" basePath="/ekskul/pramuka" apiUrl={apiUrl} pageSlug="ekskul-pramuka" backPath="/kesiswaan/ekstrakurikuler" />;
 }

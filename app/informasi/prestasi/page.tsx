@@ -5,5 +5,5 @@ export default function PrestasiPage() {
     // Using KARYA_SISWA as a fallback category for now as discussed in implementation plan
     const apiUrl = `${baseUrl}/api/post?category=KARYA_SISWA`;
 
-    return <TemplatHalaman title="Galeri Prestasi" basePath="/prestasi" apiUrl={apiUrl} pageSlug="prestasi" />;
+    return <TemplatHalaman title="Galeri Prestasi" basePath="/prestasi" apiUrl={apiUrl} pageSlug="prestasi" backPath="/" />;
 }

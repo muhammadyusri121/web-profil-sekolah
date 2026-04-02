@@ -2,71 +2,63 @@
 
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { X, User, Briefcase, ZoomIn } from "lucide-react";
+import { LayoutGrid, Network, X } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
 const Tree = dynamic(() => import("react-organizational-chart").then((m) => m.Tree), { ssr: false });
 const TreeNode = dynamic(() => import("react-organizational-chart").then((m) => m.TreeNode), { ssr: false });
 
-/**
- * FIX: react-organizational-chart needs global CSS to show lines properly 
- * in Next.js environment because pseudo-elements can be reset by Tailwind.
- */
 const OrgChartStyles = () => (
     <style dangerouslySetInnerHTML={{ __html: `
-        .org-tree-container ul { padding-top: 30px; position: relative; transition: all 0.5s; display: flex; justify-content: center; }
-        .org-tree-container li { text-align: center; list-style-type: none; position: relative; padding: 30px 10px 0 10px; transition: all 0.5s; }
-        .org-tree-container li::before, .org-tree-container li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 4px solid #CBD5E1; width: 50%; height: 30px; }
-        .org-tree-container li::after { right: auto; left: 50%; border-left: 4px solid #CBD5E1; }
+        .org-tree-container ul { padding-top: 20px; position: relative; transition: all 0.5s; display: flex; justify-content: center; }
+        .org-tree-container li { text-align: center; list-style-type: none; position: relative; padding: 20px 5px 0 5px; transition: all 0.5s; }
+        .org-tree-container li::before, .org-tree-container li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #CBD5E1; width: 50%; height: 20px; }
+        .org-tree-container li::after { right: auto; left: 50%; border-left: 2px solid #CBD5E1; }
         .org-tree-container li:only-child::after, .org-tree-container li:only-child::before { display: none; }
         .org-tree-container li:only-child { padding-top: 0; }
         .org-tree-container li:first-child::before, .org-tree-container li:last-child::after { border: 0 none; }
-        .org-tree-container li:last-child::before { border-right: 4px solid #CBD5E1; border-radius: 0 12px 0 0; }
-        .org-tree-container li:first-child::after { border-radius: 12px 0 0 0; }
-        .org-tree-container ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 4px solid #CBD5E1; width: 0; height: 30px; }
+        .org-tree-container li:last-child::before { border-right: 2px solid #CBD5E1; border-radius: 0 10px 0 0; }
+        .org-tree-container li:first-child::after { border-radius: 10px 0 0 0; }
+        .org-tree-container ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid #CBD5E1; width: 0; height: 20px; }
     `}} />
 );
 
-const MemberNode = ({ member, onClick }: { member: any; onClick: () => void }) => (
-  <motion.div
-    whileHover={{ scale: 1.1, y: -5 }}
-    whileTap={{ scale: 0.9 }}
+const MemberNode = ({ member, onClick, isCompact = false }: { member: any; onClick: () => void; isCompact?: boolean }) => (
+  <div
     onClick={onClick}
-    className="inline-flex flex-col items-center cursor-pointer group px-4 py-2"
+    className={`inline-flex flex-col items-center cursor-pointer group ${isCompact ? "p-2" : "p-4"}`}
   >
-    {/* Circular Image Wrapper */}
-    <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full border-[6px] border-white shadow-2xl overflow-hidden mb-4 group-hover:border-[#F3C623] transition-all duration-300 ring-2 ring-slate-100 group-hover:ring-[#F3C623]/30">
+    <div className={`relative ${isCompact ? "w-20 h-20" : "w-24 h-24 md:w-32 md:h-32"} mb-4 bg-slate-100 overflow-hidden shadow-sm`}>
       <Image
         src={member.image_url || "/placeholder-user.png"}
         alt={member.full_name}
         fill
         className="object-cover"
+        sizes={isCompact ? "80px" : "128px"}
       />
     </div>
     
-    {/* Floating Text below Circle */}
-    <div className="max-w-[180px] text-center">
-      <h4 className="text-[12px] md:text-[14px] font-[1000] text-slate-900 uppercase leading-none tracking-tight">
+    <div className="max-w-[150px] text-center">
+      <h4 className="text-[11px] md:text-[13px] font-black text-slate-900 uppercase leading-none tracking-tight">
         {member.full_name}
       </h4>
-      <div className="h-[2px] w-6 bg-[#F3C623]/40 mx-auto my-1.5 rounded-full" />
-      <p className="text-[9px] font-black text-[#F3C623] uppercase tracking-[0.15em] leading-tight">
+      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-tight mt-1.5">
         {member.position}
       </p>
     </div>
-  </motion.div>
+  </div>
 );
 
 export default function StrukturGTKPage() {
   const [personnel, setPersonnel] = useState<any[]>([]);
   const [selectedMember, setSelectedMember] = useState<any>(null);
-  const [zoomedPhoto, setZoomedPhoto] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<"chart" | "grid">("grid");
   const [pageInfo, setPageInfo] = useState<{ title: string; content: string }>({
     title: "Struktur GTK",
-    content: "Daftar Tenaga Pendidik dan Kependidikan SMAN 1 Ketapang yang berdedikasi dalam mencetak generasi unggul."
+    content: "Daftar Tenaga Pendidik dan Kependidikan SMAN 1 Ketapang."
   });
 
   useEffect(() => {
@@ -74,11 +66,7 @@ export default function StrukturGTKPage() {
       try {
         const personnelRes = await fetch('/api/personnel');
         const resData = await personnelRes.json();
-        
-        // FIX: Tangani jika data dibungkus dalam { success: true, data: [...] } dari API
         const actualData = Array.isArray(resData) ? resData : (resData.data || []);
-        
-        console.log("Personnel data loaded:", actualData.length);
         setPersonnel(actualData);
 
         const pageRes = await fetch('/api/post?slug=struktur-gtk');
@@ -94,6 +82,8 @@ export default function StrukturGTKPage() {
       }
     };
     fetchData();
+
+    if (window.innerWidth > 1024) setViewMode("chart");
   }, []);
 
   const kepalaSekolah = personnel.find(p => p.position.toLowerCase().includes("kepala sekolah"));
@@ -104,60 +94,90 @@ export default function StrukturGTKPage() {
   );
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 font-sans">
+    <div className="flex flex-col min-h-screen bg-[#F8FAFC]">
       <Header />
       <OrgChartStyles />
 
-      <main className="grow pt-20 pb-5 overflow-x-auto selection:bg-[#F3C623]">
-        <div className="max-w-7xl mx-auto px-6 min-w-[1000px]">
+      <main className="grow pt-24 pb-10 block overflow-hidden selection:bg-slate-200">
+        <div className="max-w-7xl mx-auto px-5">
 
-          <div className="text-center mb-5 max-w-2xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-[1000] text-slate-900 uppercase tracking-tighter mt-2">
+          <div className="text-center mb-10 max-w-2xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-black text-slate-900 uppercase tracking-tighter leading-none mb-4">
               {pageInfo.title}
             </h1>
-            <p className="mt-4 text-slate-500 text-sm md:text-base font-medium leading-relaxed">
+            <p className="text-slate-500 text-sm md:text-base font-semibold">
               {pageInfo.content.replace(/<[^>]*>/g, '')}
             </p>
           </div>
 
-          <div className="py-10">
-            {kepalaSekolah ? (
-              <Tree
-                lineWidth={'4px'}
-                lineColor={'#CBD5E1'}
-                lineHeight={'50px'}
-                lineBorderRadius={'16px'}
-                nodePadding={'32px'}
-                label={<MemberNode member={kepalaSekolah} onClick={() => setSelectedMember(kepalaSekolah)} />}
-              >
-                {wakasekList.length > 0 ? (
-                  wakasekList.map((waka, idx) => (
-                    <TreeNode 
-                      key={waka.id} 
-                      label={<MemberNode member={waka} onClick={() => setSelectedMember(waka)} />}
-                    >
-                      {/* Masukkan SEMUA Guru di bawah Wakasek pertama sebagai representasi hirarki */}
-                      {idx === 0 && guruList.map((guru) => (
-                        <TreeNode 
-                          key={guru.id} 
-                          label={<MemberNode member={guru} onClick={() => setSelectedMember(guru)} />} 
-                        />
-                      ))}
-                    </TreeNode>
-                  ))
+          <div className="flex justify-center mb-12">
+            <div className="inline-flex p-1 bg-slate-200/40 rounded-xl border border-slate-200">
+                <button 
+                    onClick={() => setViewMode("grid")}
+                    className={`flex items-center gap-2 px-6 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === "grid" ? "bg-white text-slate-900 shadow-sm" : "text-slate-400 hover:text-slate-600"}`}
+                >
+                    <LayoutGrid size={14} />
+                    Grid View
+                </button>
+                <button 
+                    onClick={() => setViewMode("chart")}
+                    className={`flex items-center gap-2 px-6 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === "chart" ? "bg-white text-slate-900 shadow-sm" : "text-slate-400 hover:text-slate-600"}`}
+                >
+                    <Network size={14} />
+                    Tree View
+                </button>
+            </div>
+          </div>
+
+          <div className={`transition-all duration-500 ${viewMode === "chart" ? "overflow-x-auto pb-10" : ""}`}>
+            <div className={viewMode === "chart" ? "min-w-[1200px] flex justify-center py-6" : ""}>
+                {personnel.length > 0 ? (
+                    viewMode === "chart" ? (
+                        kepalaSekolah && (
+                            <Tree
+                                lineWidth={'2px'}
+                                lineColor={'#CBD5E1'}
+                                lineHeight={'50px'}
+                                lineBorderRadius={'0px'}
+                                nodePadding={'10px'}
+                                label={<MemberNode member={kepalaSekolah} onClick={() => setSelectedMember(kepalaSekolah)} />}
+                            >
+                                {wakasekList.map((waka) => (
+                                    <TreeNode 
+                                        key={waka.id} 
+                                        label={<MemberNode member={waka} onClick={() => setSelectedMember(waka)} />}
+                                    />
+                                ))}
+                                
+                                <TreeNode 
+                                  label={
+                                    <div className="py-2 px-6 bg-slate-100 inline-block text-[10px] font-black uppercase tracking-widest rounded-lg border border-slate-200">
+                                      Tenaga Pendidik & Kependidikan
+                                    </div>
+                                  }
+                                >
+                                  {guruList.map((guru) => (
+                                      <TreeNode 
+                                      key={guru.id} 
+                                      label={<MemberNode member={guru} onClick={() => setSelectedMember(guru)} isCompact />} 
+                                      />
+                                  ))}
+                                </TreeNode>
+                            </Tree>
+                        )
+                    ) : (
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 justify-center">
+                            {kepalaSekolah && <MemberNode member={kepalaSekolah} onClick={() => setSelectedMember(kepalaSekolah)} />}
+                            {wakasekList.map(waka => <MemberNode key={waka.id} member={waka} onClick={() => setSelectedMember(waka)} />)}
+                            {guruList.map(guru => <MemberNode key={guru.id} member={guru} onClick={() => setSelectedMember(guru)} />)}
+                        </div>
+                    )
                 ) : (
-                  /* Jika tidak ada Wakasek, tampilkan Guru langsung di bawah Kepala Sekolah */
-                  guruList.map((guru) => (
-                    <TreeNode 
-                      key={guru.id} 
-                      label={<MemberNode member={guru} onClick={() => setSelectedMember(guru)} />} 
-                    />
-                  ))
+                    <div className="py-20 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        Memuat data personnel...
+                    </div>
                 )}
-              </Tree>
-            ) : (
-              <p className="text-center text-slate-400 font-bold uppercase italic">Memuat Data</p>
-            )}
+            </div>
           </div>
         </div>
       </main>
@@ -165,98 +185,58 @@ export default function StrukturGTKPage() {
       <AnimatePresence>
         {selectedMember && (
           <div
-            className="fixed inset-0 z-100 flex items-center justify-center p-6"
-            style={{ backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(6px)" }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/50 backdrop-blur-sm"
             onClick={() => setSelectedMember(null)}
           >
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0, y: 30 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.85, opacity: 0, y: 30 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="relative bg-white w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl"
+            <div
+              className="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl border border-slate-100 relative"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="relative bg-linear-to-br from-[#F3C623] to-[#e0a800] pt-10 pb-8 px-8 flex flex-col items-center text-center">
-                <div
-                  className="relative w-28 rounded-2xl overflow-hidden border-4 border-white shadow-xl bg-white"
-                  style={{ aspectRatio: "3/4" }}
-                >
+              <button 
+                onClick={() => setSelectedMember(null)}
+                className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors z-10"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="p-10 text-center">
+                <div className="relative w-40 aspect-[3/4] mx-auto mb-8 bg-slate-50 border border-slate-100">
                   <Image
                     src={selectedMember.image_url || "/placeholder-user.png"}
                     fill
                     className="object-cover"
-                    alt="Avatar"
+                    alt={selectedMember.full_name}
                   />
                 </div>
-                <button
-                  onClick={() => setZoomedPhoto(selectedMember.image_url || "/placeholder-user.png")}
-                  className="absolute bottom-2 right-[-10px] flex items-center gap-1 bg-white text-slate-800 text-[10px] font-bold px-2 py-1 rounded-full shadow-lg hover:bg-slate-50 transition-colors border border-slate-100"
-                  title="Lihat Foto"
-                >
-                  <ZoomIn size={11} />
-                  <span>Lihat</span>
-                </button>
 
-                <h3 className="text-xl font-black text-slate-900 uppercase leading-tight mt-5">{selectedMember.full_name}</h3>
-                <span className="mt-2 inline-block bg-black/10 text-slate-900 text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full">
+                <h3 className="text-2xl font-black text-slate-900 uppercase leading-tight tracking-tight mb-2">
+                  {selectedMember.full_name}
+                </h3>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-10">
                   {selectedMember.position}
-                </span>
-              </div>
+                </p>
 
-              <div className="p-8 space-y-5 bg-white">
-                <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 bg-amber-50 rounded-2xl flex items-center justify-center text-[#F3C623] shrink-0">
-                    <User size={20} />
+                <div className="space-y-4 pt-8 border-t border-slate-50 text-left">
+                  <div>
+                    <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">NIP Sekolah</p>
+                    <p className="text-base font-bold text-slate-800">{selectedMember.nip || "N/A"}</p>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Nomor Induk Pegawai</span>
-                    <span className="text-sm font-bold text-slate-800">{selectedMember.nip || "N/A"}</span>
-                  </div>
-                </div>
-                <div className="h-px bg-slate-100" />
-                <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 bg-amber-50 rounded-2xl flex items-center justify-center text-[#F3C623] shrink-0">
-                    <Briefcase size={20} />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Jabatan Struktural</span>
-                    <span className="text-sm font-bold text-slate-800">{selectedMember.position}</span>
+                  <div>
+                    <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">Status Jabatan</p>
+                    <p className="text-base font-bold text-slate-800">{selectedMember.position}</p>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
-      <AnimatePresence>
-        {zoomedPhoto && (
-          <div
-            className="fixed inset-0 z-200 flex items-center justify-center p-6"
-            style={{ backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)" }}
-            onClick={() => setZoomedPhoto(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 260, damping: 22 }}
-              className="relative"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div
-                className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white"
-                style={{ width: "340px", aspectRatio: "3/4" }}
-              >
-                <Image
-                  src={zoomedPhoto}
-                  alt="Foto Lengkap"
-                  fill
-                  className="object-cover"
-                />
+              <div className="p-4 bg-slate-50/50">
+                <button 
+                  onClick={() => setSelectedMember(null)}
+                  className="w-full py-4 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-colors"
+                >
+                  Tutup Profil
+                </button>
               </div>
-            </motion.div>
+            </div>
           </div>
         )}
       </AnimatePresence>

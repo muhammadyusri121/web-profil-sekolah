@@ -5,5 +5,5 @@ export default function KegiatanPage() {
     // Using HUMAS as a fallback category for now as discussed in implementation plan
     const apiUrl = `${baseUrl}/api/post?category=HUMAS`;
 
-    return <TemplatHalaman title="Kegiatan Sekolah" basePath="/kegiatan" apiUrl={apiUrl} pageSlug="kegiatan" />;
+    return <TemplatHalaman title="Kegiatan Sekolah" basePath="/kegiatan" apiUrl={apiUrl} pageSlug="kegiatan" backPath="/" />;
 }

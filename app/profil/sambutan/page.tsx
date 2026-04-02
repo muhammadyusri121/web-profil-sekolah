@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -24,7 +23,7 @@ export default function SambutanPage() {
           });
         }
       } catch (error) {
-        console.error("Gagal mengambil info halaman:", error);
+        console.error("Gagal mengambil info:", error);
       }
     };
     fetchPageInfo();
@@ -35,58 +34,38 @@ export default function SambutanPage() {
       <Header />
 
       <main className="grow pt-24 pb-12 md:pt-32 md:pb-20">
-        <div className="max-w-5xl mx-auto px-5">
+        <div className="max-w-6xl mx-auto px-5">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="lg:col-span-4 lg:sticky lg:top-32"
-            >
-              <div className="relative group">
-                <div className="absolute -inset-2 bg-yellow-400 rounded-[2rem] rotate-3 group-hover:rotate-0 transition-transform duration-500" />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            <div className="lg:col-span-4 lg:sticky lg:top-32">
+              <div className="relative bg-white p-3 rounded-[2rem] shadow-xl shadow-slate-200 border border-slate-100">
+                <Image 
+                  src="/foto-kepsek.jpeg"
+                  alt="Sulaiman, S.E., M.Pd."
+                  width={500}
+                  height={667}
+                  className="w-full aspect-3/4 object-cover rounded-[1.5rem]"
+                  priority
+                />
                 
-                <div className="relative bg-white p-3 rounded-[2rem] shadow-xl shadow-slate-700/50 border border-slate-100">
-                  <Image 
-                    src="/foto-kepsek.jpeg"
-                    alt="Sulaiman, S.E., M.Pd."
-                    width={400}
-                    height={533}
-                    className="w-full aspect-3/4 object-cover rounded-[1.5rem]"
-                  />
-                  
-                  <div className="mt-5 text-center pb-2">
-                    <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight">
-                      Sulaiman, S.E., M.Pd.
-                    </h2>
-                    <p className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em]">
-                      NIP. 19720512 199802 1 004
-                    </p>
-                  </div>
+                <div className="mt-5 text-center pb-2">
+                  <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight">
+                    Sulaiman, S.E., M.Pd.
+                  </h2>
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mt-1">
+                    NIP. 19720512 199802 1 004
+                  </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="lg:col-span-8 bg-white p-6 md:p-10 rounded-[2rem] border border-slate-100 shadow-sm"
-            >
-              <h1 className="text-2xl md:text-4xl font-[1000] text-slate-900 leading-[1.1] uppercase tracking-tighter mb-8">
-                {pageInfo.title.split(' ').map((word, i) => {
-                  const isHighlighted = i >= 2 && i <= 3;
-                  return (
-                    <span key={i} className={isHighlighted ? "text-transparent bg-clip-text bg-linear-to-r from-yellow-500 to-yellow-600" : ""}>
-                      {word}{" "}
-                      {i === 2 ? <br /> : ""}
-                    </span>
-                  );
-                })}
+            <div className="lg:col-span-8 bg-white p-8 md:p-12 rounded-[2.5rem] border border-slate-100 shadow-sm">
+              <h1 className="text-3xl md:text-5xl font-black text-slate-900 leading-[1.1] uppercase tracking-tighter mb-10">
+                {pageInfo.title}
               </h1>
 
-              <div className="space-y-5 text-slate-600 leading-relaxed text-sm md:text-[15px]">
-                <p className="font-bold text-slate-900 text-base italic">
+              <div className="space-y-6 text-slate-600 leading-relaxed text-base md:text-lg font-medium">
+                <p className="font-bold text-slate-900 italic">
                   "Assalamu’alaikum Warahmatullahi Wabarakatuh,"
                 </p>
 
@@ -108,21 +87,22 @@ export default function SambutanPage() {
                   akhlakul karimah.
                 </p>
 
-                <div className="mt-6 border-t border-slate-50">
-                  <p className="font-bold text-yellow-600">
+                <div className="mt-6 border-t border-slate-100 pt-8">
+                  <p className="font-bold text-slate-900">
                     Wassalamu’alaikum Warahmatullahi Wabarakatuh.
                   </p>
 
-                  <p className="pt-10 mb-10 font-black text-slate-900 uppercase tracking-widest text-xs">
-                    Tertanda,
-                  </p>
-
-                  <div className="mt-4 opacity-50 grayscale hover:grayscale-0 transition-all cursor-default">
-                    <span className="text-2xl text-slate-900">Sulaiman M.Pd.</span>
+                  <div className="mt-10">
+                    <p className="font-black text-slate-400 uppercase tracking-widest text-[10px] mb-4">
+                      Tertanda,
+                    </p>
+                    <p className="text-2xl font-black text-slate-900 uppercase">
+                      Sulaiman, S.E., M.Pd.
+                    </p>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
           </div>
         </div>

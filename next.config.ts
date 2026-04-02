@@ -211,6 +211,24 @@ const nextConfig: NextConfig = {
         source: '/ekskul/jurnalistik/:slug*',
         destination: '/kesiswaan/ekstrakurikuler/Jurnalistik/:slug*',
       },
+      // Kegiatan Sekolah
+      {
+        source: '/kegiatan',
+        destination: '/informasi/kegiatan',
+      },
+      {
+        source: '/kegiatan/:slug*',
+        destination: '/informasi/kegiatan/:slug*',
+      },
+      // Galeri Prestasi
+      {
+        source: '/prestasi',
+        destination: '/informasi/prestasi',
+      },
+      {
+        source: '/prestasi/:slug*',
+        destination: '/informasi/prestasi/:slug*',
+      },
     ];
   },
 };

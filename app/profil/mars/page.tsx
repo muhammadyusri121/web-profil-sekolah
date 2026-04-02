@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Play, Pause } from "lucide-react";
-import { motion } from "framer-motion";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
@@ -26,7 +24,7 @@ export default function MarsPage() {
           });
         }
       } catch (error) {
-        console.error("Gagal mengambil info halaman:", error);
+        console.error("Gagal mengambil info:", error);
       }
     };
     fetchPageInfo();
@@ -47,31 +45,23 @@ export default function MarsPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
 
-      <main className="grow pt-28 pb-20 md:pt-36 md:pb-24">
-        <div className="max-w-xl mx-auto px-6">
+      <main className="grow pt-24 pb-12 md:pt-32 md:pb-20">
+        <div className="max-w-2xl mx-auto px-5">
         
-          <div className="flex flex-col items-center text-center mb-16">
-            <h1 className="text-2xl md:text-3xl font-[1000] text-slate-900 uppercase tracking-tighter leading-none mb-4">
-              {pageInfo.title.split(' ').map((word, i) => (
-                <span key={i} className={i >= 1 ? "text-[#F3C623]" : ""}>{word} </span>
-              ))}
+          <div className="flex flex-col items-center text-center mb-12">
+            <h1 className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-tight mb-4">
+              {pageInfo.title}
             </h1>
-            <p className="text-slate-500 font-medium text-xs md:text-sm leading-relaxed mb-6">
+            
+            <p className="text-slate-500 font-semibold text-sm md:text-base mb-8 max-w-md">
               {pageInfo.content.replace(/<[^>]*>/g, '')}
             </p>
 
             <button 
               onClick={togglePlay}
-              className="group flex items-center gap-3 px-6 py-3 bg-slate-900 text-white rounded-full hover:bg-[#F3C623] hover:text-black transition-all active:scale-95 shadow-lg shadow-slate-200"
+              className="px-8 py-3 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all active:scale-95 text-xs font-black uppercase tracking-[0.2em]"
             >
-              {isPlaying ? (
-                <Pause size={18} fill="currentColor" />
-              ) : (
-                <Play size={18} fill="currentColor" />
-              )}
-              <span className="text-[11px] font-black uppercase tracking-widest">
-                {isPlaying ? "Mendengarkan" : "Putar Lagu"}
-              </span>
+              {isPlaying ? "Hentikan Lagu" : "Putar Mars Sekolah"}
             </button>
             
             <audio 
@@ -81,35 +71,27 @@ export default function MarsPage() {
             />
           </div>
 
-          <div className="space-y-10">
-            {[
-              ["SMA Negeri 1 Ketapang", "Santun dalam pekerti, unggul dalam prestasi", "Kondusif dalam edukasi"],
-              ["Raih semua mimpi dengan berjiwa Pancasila", "Wujudkan cita mulia dengan berjiwa Pancasila", "Taklukkan dunia!"],
-              ["Kobarkan semangat menuju cita bangsa", "Kuatkan tekad, berdiri tegak", "Barisan kita kuat, bergerak kita hebat", "SMA Negeri 1 Ketapang!"],
-            ].map((verse, vIdx) => (
-              <motion.div 
-                key={vIdx}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
-                <div className="space-y-1.5">
-                  {verse.map((line, lIdx) => (
-                    <p 
-                      key={lIdx} 
-                      className={`uppercase tracking-wide font-bold text-sm md:text-[15px] ${
-                        line === "SMA Negeri 1 Ketapang!" || line === "Taklukkan dunia!" 
-                        ? "text-black font-[1000]" 
-                        : "text-black"
-                      }`}
-                    >
-                      {line}
-                    </p>
-                  ))}
+          <div className="bg-slate-50 p-8 md:p-12 rounded-[2.5rem] border border-slate-100 shadow-sm">
+            <div className="space-y-10">
+              {[
+                ["SMA Negeri 1 Ketapang", "Santun dalam pekerti, Unggul dalam prestasi", "Kondusif dalam edukasi"],
+                ["Raih semua mimpi dengan berjiwa Pancasila", "Wujudkan cita melia dengan berjiwa Pancasila", "Taklukkan dunia!"],
+                ["Kobarkan semangat menuju cita bangsa", "Kuatkan tekad, berdiri tegak", "Barisan kita kuat, bergerak kita hebat", "SMA Negeri 1 Ketapang!"],
+              ].map((verse, vIdx) => (
+                <div key={vIdx} className="text-center">
+                  <div className="space-y-2">
+                    {verse.map((line, lIdx) => (
+                      <p 
+                        key={lIdx} 
+                        className="text-base md:text-lg font-bold text-slate-800 tracking-tight"
+                      >
+                        {line}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </main>
@@ -117,4 +99,4 @@ export default function MarsPage() {
       <Footer />
     </div>
   );
-}
+}

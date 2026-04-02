@@ -4,5 +4,5 @@ export default function VoliPage() {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
     const apiUrl = `${baseUrl}/api/ekskul?ekskul_name=Voli`;
     
-    return <TemplatHalaman title="Voli" basePath="/ekskul/voli" apiUrl={apiUrl} pageSlug="ekskul-voli" />;
+    return <TemplatHalaman title="Voli" basePath="/ekskul/voli" apiUrl={apiUrl} pageSlug="ekskul-voli" backPath="/kesiswaan/ekstrakurikuler" />;
 }

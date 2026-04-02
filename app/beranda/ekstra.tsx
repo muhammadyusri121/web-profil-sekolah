@@ -7,12 +7,12 @@ import { motion } from "framer-motion";
 import { ArrowRight, LayoutGrid } from "lucide-react";
 
 const EXTRA_DATA = [
-  { name: "Pramuka", image: "/logo-ekstrakurikuler/pramuka.jpg", href: "/kesiswaan/ekstrakurikuler" },
-  { name: "Paskibraka", image: "/logo-ekstrakurikuler/paskibraka.jpg", href: "/kesiswaan/ekstrakurikuler" },
-  { name: "Sains Club", image: "/logo-ekstrakurikuler/sains.jpg", href: "/kesiswaan/ekstrakurikuler" },
-  { name: "Basket", image: "/logo-ekstrakurikuler/basket.jpg", href: "/kesiswaan/ekstrakurikuler" },
-  { name: "Voli", image: "/logo-ekstrakurikuler/volleyball.jpg", href: "/kesiswaan/ekstrakurikuler" },
-  { name: "Seni Tari", image: "/logo-ekstrakurikuler/tari.jpg", href: "/kesiswaan/ekstrakurikuler" },
+  { name: "Pramuka", image: "/logo-ekstrakurikuler/pramuka.jpg", href: "/kesiswaan/ekstrakurikuler/Pramuka" },
+  { name: "Paskibraka", image: "/logo-ekstrakurikuler/paskibraka.jpg", href: "/kesiswaan/ekstrakurikuler/Paskibraka" },
+  { name: "Sains Club", image: "/logo-ekstrakurikuler/sains.jpg", href: "/kesiswaan/ekstrakurikuler/Sains_Club" },
+  { name: "Basket", image: "/logo-ekstrakurikuler/basket.jpg", href: "/kesiswaan/ekstrakurikuler/Basket" },
+  { name: "Voli", image: "/logo-ekstrakurikuler/volleyball.jpg", href: "/kesiswaan/ekstrakurikuler/Voli" },
+  { name: "Seni Tari", image: "/logo-ekstrakurikuler/tari.jpg", href: "/kesiswaan/ekstrakurikuler/Seni_Tari" },
   { name: "Paduan Suara", image: "/logo-ekstrakurikuler/paduan.jpg", href: "/kesiswaan/ekstrakurikuler" },
   { name: "PMR (PMI)", image: "/logo-ekstrakurikuler/pmi.svg", href: "/kesiswaan/ekstrakurikuler" },
   { name: "Jurnalistik", image: "/logo-ekstrakurikuler/jurnalistik.jpg", href: "/kesiswaan/ekstrakurikuler" },

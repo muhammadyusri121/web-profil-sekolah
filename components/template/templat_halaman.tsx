@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import AutoCarouselCard from "./AutoCarouselCard";
@@ -7,9 +9,10 @@ interface TemplatHalamanProps {
     basePath: string;
     apiUrl: string;
     pageSlug?: string;
+    backPath?: string;
 }
 
-export default async function TemplatHalaman({ title, basePath, apiUrl, pageSlug }: TemplatHalamanProps) {
+export default async function TemplatHalaman({ title, basePath, apiUrl, pageSlug, backPath }: TemplatHalamanProps) {
     let posts = [];
     let pageInfo = { title, content: "" };
 
@@ -54,6 +57,19 @@ export default async function TemplatHalaman({ title, basePath, apiUrl, pageSlug
             <main className="grow pt-24 pb-12 px-4 md:px-6">
                 <div className="max-w-[1400px] mx-auto">
                     
+                    {/* Tombol Kembali */}
+                    {backPath && (
+                        <Link 
+                            href={backPath} 
+                            className="inline-flex items-center gap-2 text-slate-400 hover:text-black font-bold text-sm mb-10 group transition-all"
+                        >
+                            <div className="p-2 rounded-full border border-slate-100 group-hover:border-slate-300">
+                                <ArrowLeft size={18} />
+                            </div>
+                            Kembali
+                        </Link>
+                    )}
+
                     {/* Header Dinamis */}
                     <header className="mb-10 md:mb-16 max-w-3xl">
                         <h1 className="text-3xl md:text-5xl font-[1000] text-slate-900 uppercase tracking-tighter leading-tight mb-4">
