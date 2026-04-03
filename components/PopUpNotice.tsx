@@ -5,9 +5,6 @@ import { Info, X } from "lucide-react";
 
 export default function BetaNotice() {
   const [isOpen, setIsOpen] = useState(false);
-
-  // TRIK DEVELOPER: Ubah ini ke 'true' jika ingin pop-up muncul TERUS saat refresh di localhost
-  // Ubah ke 'false' jika ingin mengikuti aturan "1x per sesi" saat develop
   const ALWAYS_SHOW_IN_DEV = true; 
 
   useEffect(() => {
@@ -15,15 +12,12 @@ export default function BetaNotice() {
 
     if (isDev) {
       if (ALWAYS_SHOW_IN_DEV) {
-        // Mode Tes: Muncul setiap refresh di localhost
         setIsOpen(true);
       } else {
-        // Mode Normal Dev: Hanya muncul 1x per sesi agar tidak mengganggu coding
         const hasSeenNotice = sessionStorage.getItem("beta_notified");
         if (!hasSeenNotice) setIsOpen(true);
       }
     } else {
-      // MODE RILIS: Selalu muncul setiap refresh/masuk halaman
       setIsOpen(true);
     }
   }, []);
@@ -41,7 +35,7 @@ export default function BetaNotice() {
         
         {process.env.NODE_ENV === "development" && (
           <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-red-600 text-[8px] font-black text-white rounded-full uppercase tracking-widest">
-            Dev Mode
+            Developer Mode
           </div>
         )}
 

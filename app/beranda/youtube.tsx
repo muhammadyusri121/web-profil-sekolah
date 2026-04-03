@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Play, Youtube, Calendar, ArrowRight } from "lucide-react";
 import { YouTubeVideo } from "@/lib/youtube";
+import { AnimatedHeading } from "@/components/ui/animated-heading";
 
 export default function YouTubeSection({
   videos = [],
@@ -28,33 +29,27 @@ export default function YouTubeSection({
   };
 
   return (
-    <section id="youtube" className="relative py-4 md:py-6 overflow-hidden border-t border-yellow-200/50">
-      {/* Background Gradasi Kuning Mewah */}
+    <section id="youtube" className="relative py-4 md:py-6 overflow-hidden border-t border-gray-200">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-100 to-amber-200 -z-10" />
       
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Header Section */}
-        <div className="mb-10">
-          <motion.h2 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-none"
-          >
-            Galeri <span className="text-yellow-600">Video</span>
-          </motion.h2>
-
+        <div className="space-y-2 mb-8 md:mb-10">
+          <AnimatedHeading className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-none">
+            Video Youtube
+          </AnimatedHeading>
+          <p className="text-slate-500 font-medium text-sm md:text-base max-w-2xl leading-relaxed">
+            Video Youtube Terbaru SMAN 1 Ketapang Sampang.
+          </p>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-12 items-start">
-          {/* Video Utama (Judul di Dalam) */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className="lg:col-span-7 group relative"
           >
-            <div className="relative aspect-video overflow-hidden rounded-[2rem] bg-slate-900 shadow-2xl ring-1 ring-black/5">
+            <div className="relative aspect-video overflow-hidden rounded-xl bg-slate-900 shadow-xl ring-1 ring-black/5">
               <iframe
                 src={`https://www.youtube.com/embed/${mainVideo.id}`}
                 title={mainVideo.title}
@@ -63,7 +58,6 @@ export default function YouTubeSection({
                 className="absolute inset-0 h-full w-full border-0"
               />
               
-              {/* 1. Judul di dalam (Overlay) - Lebih kecil & tidak terlalu bold */}
               <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-6 md:p-8 pointer-events-none">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="px-2 py-0.5 bg-yellow-500 text-white text-[9px] font-bold uppercase tracking-widest rounded">Terbaru</span>
@@ -78,7 +72,6 @@ export default function YouTubeSection({
             </div>
           </motion.div>
 
-          {/* Daftar Video Samping */}
           <div className="lg:col-span-5 flex flex-col gap-5">
             <div className="grid gap-3">
               {sideVideos.map((video, idx) => (
@@ -91,13 +84,13 @@ export default function YouTubeSection({
                   href={`https://www.youtube.com/watch?v=${video.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-4 p-2.5 rounded-2xl bg-white/50 backdrop-blur-sm border border-white hover:bg-white hover:border-yellow-400 hover:shadow-xl transition-all duration-300"
+                  className="group flex items-center gap-4 p-2.5 rounded-xl bg-white/50 backdrop-blur-sm border border-white hover:bg-white hover:border-yellow-400 hover:shadow-xl transition-all duration-300"
                 >
                   <div className="relative aspect-video w-24 md:w-32 shrink-0 overflow-hidden rounded-xl shadow-sm">
                     <img
-                      src={video.thumbnailUrl || "/login-logo.png"}
+                      src={video.thumbnailUrl || "/404.png"}
                       alt={video.title}
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="h-full w-full object-cover"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-yellow-600/10 transition-colors">
                       <div className="p-2 bg-white/90 rounded-full scale-75 group-hover:scale-100 transition-transform">
@@ -116,12 +109,11 @@ export default function YouTubeSection({
               ))}
             </div>
 
-            {/* 3. Tombol Subscribe (Samakan dengan tombol 'Semua Ekskul') */}
             <motion.a
               whileTap={{ scale: 0.95 }}
               href={channelUrl}
               target="_blank"
-              className="flex items-center justify-between gap-3 rounded-full bg-slate-900 px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-500 hover:text-black shadow-lg group mt-2"
+              className="flex items-center justify-between gap-3 rounded-xl bg-slate-900 px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-500 hover:text-black shadow-lg group mt-2"
             >
               <div className="flex items-center gap-3">
                 <Youtube size={16} className="text-red-500 group-hover:text-black transition-colors" />

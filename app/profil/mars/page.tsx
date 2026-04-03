@@ -8,8 +8,8 @@ export default function MarsPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [pageInfo, setPageInfo] = useState<{ title: string; content: string }>({
-    title: "Mars SMAN 1 Ketapang",
-    content: "Simbol semangat juang dan identitas sekolah dalam alunan nada yang inspiratif."
+    title: "Mars Sekolah",
+    content: "Mars sekolah adalah lagu resmi lembaga pendidikan."
   });
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function MarsPage() {
               onClick={togglePlay}
               className="px-8 py-3 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all active:scale-95 text-xs font-black uppercase tracking-[0.2em]"
             >
-              {isPlaying ? "Hentikan Lagu" : "Putar Mars Sekolah"}
+              {isPlaying ? "Stop" : "Putar"}
             </button>
             
             <audio 
@@ -99,4 +99,4 @@ export default function MarsPage() {
       <Footer />
     </div>
   );
-}
+}

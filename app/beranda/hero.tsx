@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { DotPattern } from "@/components/ui/dot-pattern"; // Pastikan path sesuai
+import { DotPattern } from "@/components/ui/dot-pattern";
 import { cn } from "@/lib/utils";
 
 interface HeroItem {
@@ -23,7 +23,6 @@ export default function SchoolHero() {
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Cek ukuran layar untuk mematikan efek rotasi di mobile
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -44,7 +43,7 @@ export default function SchoolHero() {
           }
         }
       } catch (err) {
-        console.error("HERO_FETCH_EXCEPTION:", err);
+        console.error("Data Gagal", err);
       } finally {
         setLoading(false);
       }
@@ -75,7 +74,7 @@ export default function SchoolHero() {
     if (diff === 0) {
       return {
         zIndex: 30,
-        scale: isMobile ? 1.1 : 1.3, // Skala dikurangi di mobile agar tidak terpotong
+        scale: isMobile ? 1.1 : 1.3,
         x: "0%",
         opacity: 1,
         rotateY: 0,
@@ -83,14 +82,13 @@ export default function SchoolHero() {
       };
     }
     
-    // Slide Samping
     if (diff === 1 || (index === banners.length - 1 && slideIndex === 0)) {
       return {
         zIndex: 20,
         scale: 0.80,
-        x: isMobile ? "60%" : "100%", // Jarak dikurangi di mobile
+        x: isMobile ? "60%" : "100%", 
         opacity: 0.4,
-        rotateY: isMobile ? 0 : -15, // 3. Matikan rotasi di mobile
+        rotateY: isMobile ? 0 : -15, 
         filter: "brightness(90%)",
       };
     }
@@ -100,7 +98,7 @@ export default function SchoolHero() {
         scale: 0.80,
         x: isMobile ? "-60%" : "-100%",
         opacity: 0.4,
-        rotateY: isMobile ? 0 : 15, // 3. Matikan rotasi di mobile
+        rotateY: isMobile ? 0 : 15,
         filter: "brightness(90%)",
       };
     }
@@ -130,14 +128,13 @@ export default function SchoolHero() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* 1. Background Dot Pattern */}
       <DotPattern
         className={cn(
           "[mask-image:radial-gradient(900px_circle_at_center,white,transparent)]",
         )}
       />
 
-      <div className="relative z-10 container mx-auto px-4 text-center mt-10 mb-10 lg:mt-20 lg:mb-16">
+      <div className="relative z-10 container mx-auto px-4 text-center mt-20 mb-10 lg:mt-30 lg:mb-30">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -164,7 +161,6 @@ export default function SchoolHero() {
                 initial={false}
                 animate={style}
                 transition={{ type: "spring", stiffness: 150, damping: 20 }}
-                // 2. Stroke card dibuat lebih tebal (border-2 atau border-4)
                 className="absolute w-[85%] md:w-[80%] aspect-[2/1] rounded-2xl overflow-hidden cursor-pointer border-2 md:border-4 border-white shadow-2xl bg-white"
                 onClick={() => setIndex(i)}
               >
@@ -185,7 +181,6 @@ export default function SchoolHero() {
             );
           })}
 
-          {/* 4. Tombol Navigasi lebih terlihat dengan Background Putih Blur */}
           <button
             onClick={(e) => { e.stopPropagation(); prevSlide(); }}
             className="absolute left-0 md:-left-16 z-40 bg-white/90 p-2 md:p-3 rounded-full text-black shadow-lg hover:bg-yellow-500 hover:text-white transition-all active:scale-90 border border-gray-100"

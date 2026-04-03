@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { Clock, User, Search, X, ChevronDown, ChevronUp, CalendarDays } from "lucide-react";
+import { User, Search, X, ChevronDown, ChevronUp } from "lucide-react";
+import { AnimatedHeading } from "@/components/ui/animated-heading";
 
 interface Schedule {
   id: string;
@@ -35,17 +36,17 @@ const DAY_HEADER: Record<string, string> = {
 
 function ScheduleCard({ item }: { item: Schedule }) {
   return (
-    <div className={`rounded-xl border p-3 transition-all hover:shadow-sm ${DAY_COLORS[item.day_of_week] || "bg-slate-50 border-slate-200 text-slate-700"}`}>
-      <div className="flex items-start justify-between gap-2 mb-1.5">
-        <span className="text-[9px] font-black uppercase tracking-widest opacity-70">
+    <div className={`rounded-xl border p-2.5 transition-all hover:shadow-sm ${DAY_COLORS[item.day_of_week] || "bg-slate-50 border-slate-200 text-slate-700"}`}>
+      <div className="flex items-start justify-between gap-2 mb-1">
+        <span className="text-[8px] font-black uppercase tracking-widest opacity-60">
           Jam {item.period}
         </span>
       </div>
-      <p className="text-[13px] font-black leading-snug line-clamp-2">{item.subject}</p>
+      <p className="text-[12px] font-black leading-tight line-clamp-2 uppercase tracking-tight">{item.subject}</p>
       {item.teacher_name && (
-        <div className="mt-2 pt-2 border-t border-current/10 flex items-center gap-1.5 opacity-70">
+        <div className="mt-2 pt-1.5 border-t border-current/10 flex items-center gap-1.5 opacity-70">
           <User size={10} />
-          <p className="text-[12px] font-bold truncate">{item.teacher_name}</p>
+          <p className="text-[10px] font-bold truncate">{item.teacher_name}</p>
         </div>
       )}
     </div>
@@ -54,8 +55,8 @@ function ScheduleCard({ item }: { item: Schedule }) {
 
 function EmptySlot() {
   return (
-    <div className="rounded-xl border border-dashed border-slate-200 p-4 flex flex-col items-center justify-center min-h-[100px] bg-slate-50/30">
-      <span className="text-[10px] text-slate-300 font-bold uppercase tracking-widest">Kosong</span>
+    <div className="rounded-xl border border-dashed border-slate-200 p-4 flex flex-col items-center justify-center min-h-[80px] bg-slate-50/30">
+      <span className="text-[9px] text-slate-300 font-bold uppercase tracking-widest">Kosong</span>
     </div>
   );
 }
@@ -82,7 +83,7 @@ export default function JadwalSekolahPage() {
     return () => window.removeEventListener("resize", checkSize);
   }, []);
 
-  const LIMIT = isMobile ? 10 : 15;
+  const LIMIT = isMobile ? 8 : 15;
 
   useEffect(() => {
     fetch("/api/schedule")
@@ -94,7 +95,6 @@ export default function JadwalSekolahPage() {
       })
       .catch(console.error);
 
-    // Fetch page info
     fetch("/api/post?slug=jadwal-sekolah")
       .then((r) => r.json())
       .then((data) => {
@@ -130,11 +130,6 @@ export default function JadwalSekolahPage() {
     return map;
   }, [schedules]);
 
-  const filteredSuggestions = useMemo(() => {
-    if (!search) return [];
-    return classes.filter(c => c.toLowerCase().includes(search.toLowerCase())).slice(0, 5);
-  }, [classes, search]);
-
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
@@ -146,74 +141,50 @@ export default function JadwalSekolahPage() {
   }, []);
 
   const displayedClasses = showAll ? classes : classes.slice(0, LIMIT);
+  const titleParts = pageInfo.title.split(' ');
+  const firstWord = titleParts[0];
+  const restOfTitle = titleParts.slice(1).join(' ');
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-[#F8FAFC]">
       <Header />
 
-      <main className="grow pt-32 pb-20">
+      <main className="grow pt-24 pb-16 md:pt-32 md:pb-24">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-
-          <div className="max-w-3xl mx-auto text-center mb-10">
-            <h1 className="text-4xl md:text-6xl font-[1000] text-slate-900 uppercase tracking-tighter mt-2 leading-none">
-              {pageInfo.title.split(' ')[0]} <span className="text-yellow-500">{pageInfo.title.split(' ').slice(1).join(' ')}</span>
-            </h1>
-            <p className="mt-4 text-sm md:text-base text-slate-500 font-medium leading-relaxed">
-              {pageInfo.content.replace(/<[^>]*>/g, '')}
-            </p>
+          <div className="mb-12 md:mb-16 flex flex-col items-center text-center">
+            <div className="max-w-3xl">
+              <AnimatedHeading className="text-4xl md:text-7xl font-black text-slate-900 uppercase tracking-tighter leading-none">
+                {firstWord} <span className="text-yellow-500">{restOfTitle}</span>
+              </AnimatedHeading>
+              <p className="mt-6 text-sm md:text-base text-slate-500 font-medium leading-relaxed text-justify md:text-center hyphens-auto">
+                {pageInfo.content.replace(/<[^>]*>/g, '')}
+              </p>
+            </div>
           </div>
 
-          <div className="mb-6 rounded-2xl bg-white border border-slate-200 p-5 shadow-sm relative z-20">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-              <div className="flex items-center gap-2">
-                <CalendarDays size={18} className="text-yellow-500" />
-                <h2 className="text-xs font-black uppercase tracking-widest text-slate-900">
-                  Daftar Kelas
-                </h2>
-              </div>
+          <div className="mb-6 rounded-xl bg-white border border-slate-200 p-4 shadow-sm relative z-20">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+              <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                Pilih Kelas
+              </h2>
 
-              <div className="relative w-full sm:w-72" ref={searchRef}>
+              <div className="relative w-full sm:w-64" ref={searchRef}>
                 <div className="relative">
-                  <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <Search size={12} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input
                     type="text"
-                    placeholder="Cari kelas Anda..."
+                    placeholder="Cari kelas..."
                     value={search}
                     onFocus={() => setShowSuggestions(true)}
-                    onChange={(e) => {
-                      setSearch(e.target.value);
-                      setShowSuggestions(true);
-                    }}
-                    className="w-full pl-10 pr-10 py-2.5 text-xs font-bold rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-yellow-400/20 focus:border-yellow-400 transition-all"
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="w-full pl-9 pr-8 py-2 text-[11px] font-bold rounded-lg border border-slate-200 bg-slate-50 outline-none focus:border-yellow-400 transition-all"
                   />
                   {search && (
-                    <button 
-                      onClick={() => setSearch("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-slate-200 rounded-full transition-colors"
-                    >
-                      <X size={12} className="text-slate-500" />
+                    <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 p-1">
+                      <X size={10} className="text-slate-500" />
                     </button>
                   )}
                 </div>
-
-                {showSuggestions && filteredSuggestions.length > 0 && (
-                  <div className="absolute top-full left-0 w-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden z-50">
-                    {filteredSuggestions.map((s) => (
-                      <button
-                        key={s}
-                        onClick={() => {
-                          setSelectedClass(s);
-                          setSearch("");
-                          setShowSuggestions(false);
-                        }}
-                        className="w-full px-4 py-3 text-left text-xs font-bold text-slate-700 hover:bg-yellow-50 hover:text-yellow-700 flex items-center justify-between border-b last:border-0 border-slate-50 transition-colors"
-                      >
-                        {s}
-                        <span className="text-[8px] bg-slate-100 px-1.5 py-0.5 rounded uppercase">Pilih</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
 
@@ -222,9 +193,9 @@ export default function JadwalSekolahPage() {
                 <button
                   key={cls}
                   onClick={() => setSelectedClass(cls)}
-                  className={`px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-200 border
+                  className={`px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all border
                     ${selectedClass === cls
-                      ? "bg-slate-900 border-slate-900 text-yellow-400 shadow-lg shadow-slate-200 -translate-y-0.5"
+                      ? "bg-slate-900 border-slate-900 text-yellow-400 shadow-md"
                       : "bg-white border-slate-200 text-slate-500 hover:border-yellow-400 hover:text-yellow-600"
                     }`}
                 >
@@ -235,46 +206,39 @@ export default function JadwalSekolahPage() {
               {classes.length > LIMIT && (
                 <button
                   onClick={() => setShowAll(!showAll)}
-                  className="px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 hover:bg-slate-200 flex items-center gap-2 transition-all"
+                  className="px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 hover:bg-slate-200 flex items-center gap-1.5 transition-all"
                 >
-                  {showAll ? (
-                    <>Sembunyikan <ChevronUp size={14} /></>
-                  ) : (
-                    <>Lihat Semua ({classes.length - LIMIT}+) <ChevronDown size={14} /></>
-                  )}
+                  {showAll ? "Tutup" : `Semua (${classes.length})`}
+                  {showAll ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
                 </button>
               )}
             </div>
           </div>
 
-          <div className="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden min-h-[400px]">
-            <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-white sticky left-0">
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-black uppercase tracking-tight text-slate-900">
-                    Jadwal Kelas <span className="text-yellow-500">{selectedClass || "-"}</span>
-                  </h2>
-                </div>
-              </div>
+          <div className="rounded-xl bg-white border border-slate-200 shadow-sm overflow-hidden min-h-[300px]">
+            <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-white">
+              <h2 className="text-xs font-black uppercase tracking-[0.1em] text-slate-900">
+                Jadwal Kelas <span className="text-yellow-500">{selectedClass || "-"}</span>
+              </h2>
               {loading && (
-                <div className="flex items-center gap-2 text-[10px] font-black uppercase text-yellow-600 animate-pulse">
-                  <div className="w-1.5 h-1.5 rounded-full bg-current" /> Memuat...
+                <div className="text-[9px] font-black uppercase text-yellow-600 animate-pulse">
+                  Memuat...
                 </div>
               )}
             </div>
 
-            <div className="p-4 md:p-6 overflow-x-auto bg-white">
-              <div className="grid grid-cols-5 gap-4 min-w-[1000px]">
+            <div className="p-4 md:p-5 overflow-x-auto bg-white">
+              <div className="grid grid-cols-5 gap-3 min-w-[900px]">
                 {DAYS.map((day) => (
-                  <div key={day} className="flex flex-col gap-4">
-                    <div className={`rounded-xl px-4 py-3 text-center text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-sm ${DAY_HEADER[day]}`}>
+                  <div key={day} className="flex flex-col gap-3">
+                    <div className={`rounded-lg px-3 py-2 text-center text-[9px] font-black uppercase tracking-[0.2em] text-white shadow-sm ${DAY_HEADER[day]}`}>
                       {day}
                     </div>
 
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-2">
                       {loading ? (
                         Array.from({ length: 4 }).map((_, i) => (
-                          <div key={i} className="rounded-xl bg-slate-50 border border-slate-100 animate-pulse h-[85px]" />
+                          <div key={i} className="rounded-xl bg-slate-50 border border-slate-100 animate-pulse h-16" />
                         ))
                       ) : scheduleByDay[day].length > 0 ? (
                         scheduleByDay[day].map((item) => (

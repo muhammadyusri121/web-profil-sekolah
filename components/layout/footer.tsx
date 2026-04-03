@@ -46,7 +46,7 @@ export default function Footer() {
               <div className="text-[15px] text-white/90 space-y-1.5">
                 <p className="flex items-center gap-2 group cursor-pointer">
                   <span className="font-semibold text-white group-hover:text-yellow-300 transition-colors">Telp:</span> 
-                  <span className="group-hover:translate-x-1 transition-transform">(0323) 123456</span>
+                  <span className="group-hover:translate-x-1 transition-transform">(+62) 000-0000-0000</span>
                 </p>
                 <p className="flex items-center gap-2 group cursor-pointer">
                   <span className="font-semibold text-white group-hover:text-yellow-300 transition-colors">Email:</span> 

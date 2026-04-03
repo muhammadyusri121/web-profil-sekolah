@@ -14,7 +14,6 @@ export interface PostItem {
   createdAt?: string | Date | null;
 }
 
-/** Mapping kategori Post → URL prefix */
 export const CATEGORY_HREF: Record<string, string> = {
   KARYA_SISWA: "/karya",
   DOUBLE_TRACK: "/double-track",
@@ -22,13 +21,12 @@ export const CATEGORY_HREF: Record<string, string> = {
   HUMAS: "/humas-komite",
   KOMITE: "/humas-komite",
   KEMITRAAN: "/humas-komite",
-  SUPERVISI_GURU: "/karya",
-  ASAS: "/karya",
-  ASAJ: "/karya",
-  TKA: "/karya",
+  SUPERVISI_GURU: "/supervisi",
+  ASAS: "/asas",
+  ASAJ: "/asaj",
+  TKA: "/tka",
 };
 
-/** Mapping ekskul_name → URL prefix */
 export const EKSKUL_HREF: Record<string, string> = {
   Pramuka: "/ekskul/pramuka",
   Paskibraka: "/ekskul/paskibraka",
@@ -41,7 +39,6 @@ export const EKSKUL_HREF: Record<string, string> = {
   Jurnalistik: "/ekskul/jurnalistik",
 };
 
-/** Generate the full HREF for a post based on its category or extracurricular name */
 export function getPostHref(post: PostItem): string {
   if (post.source === "ekskul" && post.ekskul_name) {
     const base = EKSKUL_HREF[post.ekskul_name];
@@ -54,14 +51,12 @@ export function getPostHref(post: PostItem): string {
   return "#";
 }
 
-/** Get a clean, human-readable label for the category */
 export function getCategoryLabel(post: PostItem): string {
   if (post.ekskul_name) return post.ekskul_name.replace(/_/g, " ");
   if (post.category) return post.category.replace(/_/g, " ");
   return "Artikel";
 }
 
-/** Format date string or object into a localized string */
 export function formatDate(value?: string | Date | null): string {
   if (!value) return "Baru saja";
   const date = new Date(value);

@@ -2,14 +2,16 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { getHolidays } from "@/lib/data/data_holiday";
 import CalendarContent from "./calendar-content";
+import { AnimatedHeading } from "@/components/ui/animated-heading";
 
 export const dynamic = 'force-dynamic';
+
 export default async function KalenderPage() {
   const holidays = await getHolidays();
 
   let pageInfo = {
     title: "Kalender Akademik",
-    content: "Pantau seluruh agenda penting, hari libur, dan jadwal kegiatan sekolah dalam satu tempat yang praktis."
+    content: "Pantau seluruh agenda penting, hari libur, dan jadwal kegiatan sekolah."
   };
 
   try {
@@ -28,32 +30,34 @@ export default async function KalenderPage() {
     console.error("Gagal load info halaman:", e);
   }
 
-  const now = new Date();
-  const upcoming = holidays.filter((h: any) => new Date(h.date) >= now);
-  const thisMonth = holidays.filter((h: any) => {
-    const d = new Date(h.date);
-    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-  });
+  const titleParts = pageInfo.title.split(' ');
+  const firstWord = titleParts[0];
+  const restOfTitle = titleParts.slice(1).join(' ');
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-[#F8FAFC] flex flex-col font-sans">
       <Header />
 
-      <main className="grow pt-32 pb-5 px-6">
-        <div className="max-w-7xl mx-auto">
-
-          <div className="mb-12 flex flex-col items-center text-center">
+      <main className="grow pt-24 pb-16 md:pt-32 md:pb-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-12 md:mb-16 flex flex-col items-center text-center">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-6xl font-[1000] text-slate-900 uppercase tracking-tighter leading-none">
-                {pageInfo.title.split(' ')[0]} <span className="text-[#F3C623]">{pageInfo.title.split(' ').slice(1).join(' ')}</span>
-              </h1>
-              <p className="mt-4 text-sm md:text-base text-slate-500 font-medium leading-relaxed">
-                {pageInfo.content.replace(/<[^>]*>/g, '')}
-              </p>
+              <AnimatedHeading className="text-4xl md:text-7xl font-black text-slate-900 uppercase tracking-tighter leading-none">
+                {firstWord} <span className="text-yellow-500">{restOfTitle}</span>
+              </AnimatedHeading>
+              
+              {pageInfo.content && (
+                <p className="mt-6 text-sm md:text-base text-slate-500 font-medium leading-relaxed text-justify md:text-center hyphens-auto">
+                  {pageInfo.content.replace(/<[^>]*>/g, '')}
+                </p>
+              )}
+
             </div>
           </div>
 
-          <CalendarContent initialHolidays={holidays} />
+          <div className="relative z-10">
+            <CalendarContent initialHolidays={holidays} />
+          </div>
 
         </div>
       </main>

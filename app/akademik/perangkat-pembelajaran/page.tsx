@@ -8,10 +8,13 @@ import {
   ExternalLink,
   BookOpen,
   FileSpreadsheet,
-  Gavel
+  Gavel,
+  Calendar
 } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import Helper from "@/components/InfoDetail";
+import { AnimatedHeading } from "@/components/ui/animated-heading";
 
 enum DocType {
   REGULATION = "REGULATION",
@@ -30,13 +33,13 @@ interface AcademicDocument {
 const getDocTypeInfo = (type: DocType) => {
   switch (type) {
     case DocType.REGULATION:
-      return { label: "Peraturan", color: "bg-red-50 text-red-600 border-red-100", icon: <Gavel size={16} /> };
+      return { label: "Peraturan", color: "bg-red-50 text-red-600 border-red-100", icon: <Gavel size={18} /> };
     case DocType.TEACHING_MATERIAL:
-      return { label: "Bahan Ajar", color: "bg-blue-50 text-blue-600 border-blue-100", icon: <BookOpen size={16} /> };
+      return { label: "Bahan Ajar", color: "bg-blue-50 text-blue-600 border-blue-100", icon: <BookOpen size={18} /> };
     case DocType.SCHEDULE:
-      return { label: "Jadwal", color: "bg-green-50 text-green-600 border-green-100", icon: <FileSpreadsheet size={16} /> };
+      return { label: "Jadwal", color: "bg-emerald-50 text-emerald-600 border-emerald-100", icon: <FileSpreadsheet size={18} /> };
     default:
-      return { label: "Dokumen", color: "bg-slate-50 text-slate-600 border-slate-100", icon: <FileText size={16} /> };
+      return { label: "Dokumen", color: "bg-slate-50 text-slate-600 border-slate-100", icon: <FileText size={18} /> };
   }
 };
 
@@ -82,77 +85,86 @@ export default function PerangkatPembelajaranPage() {
 
     fetchDocuments();
     fetchPageInfo();
-  }, []);
+  }, [pageInfo.content]);
+
+  const titleParts = pageInfo.title.split(' ');
+  const firstWord = titleParts[0];
+  const restOfTitle = titleParts.slice(1).join(' ');
 
   return (
-    <div className="min-h-screen bg-white flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F8FAFC] flex flex-col font-sans">
       <Header />
 
-      <main className="grow pt-24 pb-16 px-4 md:px-6">
-        <div className="max-w-5xl mx-auto">
-          <header className="mb-12 text-center md:text-left">
-             <h1 className="mt-4 text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tighter uppercase">
-               {pageInfo.title.split(' ')[0]} <span className="text-yellow-500">{pageInfo.title.split(' ').slice(1).join(' ')}</span>
-             </h1>
-             <p className="mt-4 text-slate-500 font-medium max-w-2xl leading-relaxed">
-               {pageInfo.content.replace(/<[^>]*>/g, '')}
-             </p>
+      <main className="grow pt-24 pb-16 md:pt-32 md:pb-24">
+        <div className="max-w-5xl mx-auto px-5">
+          <header className="mb-12 md:mb-16 flex flex-col items-center text-center">
+            <div className="max-w-3xl">
+              <AnimatedHeading className="text-4xl md:text-7xl font-black text-slate-900 uppercase tracking-tighter leading-none">
+                {firstWord} <span className="text-yellow-500">{restOfTitle}</span>
+              </AnimatedHeading>
+              
+              <p className="mt-6 text-sm md:text-base text-slate-500 font-medium leading-relaxed text-justify md:text-center hyphens-auto">
+                {pageInfo.content.replace(/<[^>]*>/g, '')}
+              </p>
+            </div>
           </header>
 
           {loading ? (
-            <div className="space-y-4">
+            <div className="grid gap-3">
                {[...Array(5)].map((_, i) => (
-                 <div key={i} className="h-20 bg-slate-50 animate-pulse rounded-2xl" />
+                 <div key={i} className="h-24 bg-white border border-slate-100 animate-pulse rounded-xl" />
                ))}
             </div>
           ) : documents.length > 0 ? (
-            <div className="grid gap-4">
+            <div className="grid gap-3 md:gap-4">
               {documents.map((doc, index) => {
                 const typeInfo = getDocTypeInfo(doc.doc_type);
                 return (
                   <motion.div
                     key={doc.id}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="group bg-white rounded-3xl border border-slate-100 p-5 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-xl hover:shadow-slate-200/50 hover:border-yellow-200 transition-all duration-300"
+                    className="group bg-white rounded-xl border border-slate-200 p-4 md:p-5 flex flex-col md:flex-row md:items-center justify-between gap-5 hover:border-yellow-400 hover:shadow-md transition-all duration-300"
                   >
-                    <div className="flex items-center gap-5">
-                      <div className={`w-14 h-14 md:w-16 md:h-16 rounded-[20px] flex items-center justify-center shrink-0 border transition-transform group-hover:scale-110 ${typeInfo.color}`}>
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center shrink-0 border transition-transform group-hover:scale-105 ${typeInfo.color}`}>
                         {typeInfo.icon}
                       </div>
                       
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2">
-                           <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border ${typeInfo.color}`}>
-                             {typeInfo.label}
-                           </span>
-                           <span className="text-[10px] text-slate-400 font-bold">
-                             {new Date(doc.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
-                           </span>
-                        </div>
-                        <h3 className="text-base md:text-lg font-black text-slate-900 leading-tight group-hover:text-yellow-600 transition-colors">
+                      <div className="flex flex-col gap-1 min-w-0">
+                        <h3 className="text-sm md:text-base font-black text-slate-900 leading-tight group-hover:text-yellow-600 transition-colors uppercase tracking-tight truncate">
                           {doc.file_name}
                         </h3>
+
+                        <div className="flex items-center gap-3">
+                           <span className={`px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-widest border ${typeInfo.color}`}>
+                             {typeInfo.label}
+                           </span>
+                           <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold uppercase tracking-tight">
+                             <Calendar size={10} className="text-slate-300" />
+                             {new Date(doc.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                           </div>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 shrink-0">
                       <a
                         href={doc.file_path}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-slate-50 text-slate-600 text-[11px] font-black uppercase rounded-2xl hover:bg-slate-100 transition-colors"
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-50 text-slate-600 text-[10px] font-black uppercase rounded-lg hover:bg-slate-100 transition-colors border border-slate-100"
                       >
-                        <ExternalLink size={14} />
+                        <ExternalLink size={12} />
                         Lihat
                       </a>
                       <a
                         href={doc.file_path}
                         download
-                        className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-yellow-400 text-black text-[11px] font-black uppercase rounded-2xl hover:bg-yellow-500 shadow-lg shadow-yellow-200 transition-all active:scale-95"
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase rounded-lg hover:bg-yellow-500 hover:text-black shadow-sm transition-all active:scale-95"
                       >
-                        <Download size={14} />
+                        <Download size={12} />
                         Unduh
                       </a>
                     </div>
@@ -161,19 +173,20 @@ export default function PerangkatPembelajaranPage() {
               })}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-24 px-6 bg-slate-50 rounded-[40px] border-2 border-dashed border-slate-200 text-center">
-               <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-slate-300 mb-6 shadow-sm">
-                  <FileText size={40} />
+            <div className="flex flex-col items-center justify-center py-20 px-6 bg-white rounded-xl border border-dashed border-slate-200 text-center">
+               <div className="w-16 h-16 bg-slate-50 rounded-xl flex items-center justify-center text-slate-200 mb-4">
+                  <FileText size={32} />
                </div>
-               <p className="text-slate-900 text-lg font-black uppercase tracking-tighter">
-                  Belum Ada Dokumen
+               <p className="text-slate-900 text-sm font-black uppercase tracking-widest">
+                 Belum Ada Dokumen
                </p>
-               <p className="mt-2 text-slate-400 text-sm font-medium">
-                  Dokumen akademik akan segera diunggah oleh pihak kurikulum.
+               <p className="mt-1 text-slate-400 text-xs font-medium">
+                 Dokumen akademik akan segera diunggah oleh pihak kurikulum.
                </p>
             </div>
           )}
         </div>
+        <Helper />
       </main>
 
       <Footer />

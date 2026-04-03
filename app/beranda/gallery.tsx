@@ -4,14 +4,14 @@ import * as React from "react";
 import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import { ArrowRight, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { motion } from "motion/react";
+import { AnimatedHeading } from "@/components/ui/animated-heading";
 
 interface Teacher {
   id: string;
@@ -24,50 +24,22 @@ export default function TeacherGallery({ teachers = [] }: { teachers: Teacher[] 
   const [api, setApi] = React.useState<CarouselApi>();
   const plugin = React.useRef(Autoplay({ delay: 3500, stopOnInteraction: false }));
 
-  // Sinkronisasi state slide aktif dengan carousel API
-  React.useEffect(() => {
-    if (!api) return;
-    const onSelect = () => { };
-    api.on("select", onSelect);
-    return () => { api.off("select", onSelect); };
-  }, [api]);
-
   if (!teachers || teachers.length === 0) return null;
 
   return (
-    <section id="gallery" className="relative overflow-hidden bg-gray-100 py-12 md:py-20 border-t border-gray-200">
-      <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6">
-
-        {/* Header: judul, deskripsi, dan tombol ke halaman lengkap */}
-        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div className="space-y-3">
-            <div className="max-w-xl text-center sm:text-left">
-            <motion.h2 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight leading-none"
-            >
-              Tenaga <span className="text-yellow-600">Pendidik & Kependidikan</span>
-            </motion.h2>
-          </div>
-            <p className="max-w-lg text-[15px] font-medium leading-relaxed text-slate-600">
-              Didukung oleh tenaga pendidik profesional dan berdedikasi yang berkomitmen mengantarkan setiap siswa meraih prestasi terbaik.
+    <section id="gallery" className="relative overflow-hidden bg-gray-50 py-16 md:py-24 border-t border-gray-200">
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        <div className="mb-12 text-left">
+          <div className="space-y-2">
+            <AnimatedHeading className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-none">
+              Tenaga Pendidik
+            </AnimatedHeading>
+            <p className="text-slate-500 font-medium text-sm md:text-base max-w-2xl">
+              Mengenal lebih dekat para pendidik berdedikasi yang membimbing dan mencetak generasi unggul di SMAN 1 Ketapang Sampang.
             </p>
-          </div>
-
-          <div className="flex justify-end sm:pb-1">
-            <Link
-              href="/profil/struktur-gtk"
-              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-400 hover:text-slate-900 shadow-md hover:shadow-xl active:scale-95"
-            >
-              Lihat Selengkapnya
-              <ArrowRight size={14} />
-            </Link>
           </div>
         </div>
 
-        {/* Carousel daftar guru - NO WRAPPER as requested */}
         <div className="w-full">
           <Carousel
             setApi={setApi}
@@ -75,38 +47,48 @@ export default function TeacherGallery({ teachers = [] }: { teachers: Teacher[] 
             opts={{ align: "start", loop: true }}
             className="w-full"
           >
-            <CarouselContent className="-ml-4 sm:-ml-6">
+            <CarouselContent className="-ml-4">
               {teachers.map((teacher) => (
                 <CarouselItem
                   key={teacher.id}
-                  className="pl-4 sm:pl-6 basis-1/2 md:basis-1/4 lg:basis-1/5"
+                  className="pl-4 basis-1/2 md:basis-1/4 lg:basis-1/5"
                 >
-                  <div className="group overflow-hidden rounded-[24px] border border-slate-200 bg-white transition-all duration-300 hover:border-yellow-400 hover:shadow-2xl">
-                    <div className="relative aspect-3/4 overflow-hidden bg-slate-50 border-b border-slate-100">
+                  <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 hover:border-yellow-500 hover:bg-yellow-400">
+                    
+                    <div className="relative aspect-[3/4] overflow-hidden bg-slate-100 border-b border-gray-100 group-hover:border-slate-900/10">
                       <Image
-                        src={teacher.image_url || "/foto-kepsek.jpeg"}
+                        src={teacher.image_url || "/placeholder-user.png"}
                         alt={teacher.full_name}
                         fill
-                        loading="lazy"
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
-                        className="object-cover transform group-hover:scale-110 transition-transform duration-700"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        sizes="(max-width: 640px) 50vw, 20vw"
                       />
-                      {/* Gradient Hover Effect */}
-                      <div className="absolute inset-0 bg-linear-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
-                    <div className="py-3 px-2 text-center bg-white">
-                      <h3 className="text-xs font-black text-slate-900 uppercase leading-tight line-clamp-2 min-h-8 flex items-center justify-center">
+
+                    <div className="p-4 text-center">
+                      <h3 className="text-[11px] md:text-xs font-black text-slate-900 uppercase tracking-tight leading-tight line-clamp-2 min-h-[2rem] flex items-center justify-center">
                         {teacher.full_name}
                       </h3>
-                      <p className="text-[10px] font-black text-amber-600 uppercase tracking-widest line-clamp-1 opacity-90 mt-0.5">
+                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1 group-hover:text-slate-800 transition-colors">
                         {teacher.position}
                       </p>
                     </div>
+
                   </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
           </Carousel>
+        </div>
+
+        <div className="mt-12 flex justify-center">
+          <Link
+            href="/profil/struktur-gtk"
+            className="inline-flex items-center gap-3 rounded-full bg-slate-900 px-8 py-3.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-500 hover:text-black shadow-lg active:scale-95 group"
+          >
+            Lihat Selengkapnya
+            <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform" />
+          </Link>
         </div>
 
       </div>

@@ -4,10 +4,13 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { 
-  Image as ImageIcon
+  Image as ImageIcon,
+  Box
 } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import Helper from "@/components/InfoDetail";
+import { AnimatedHeading } from "@/components/ui/animated-heading";
 
 interface Facility {
   id: string;
@@ -58,27 +61,35 @@ export default function FasilitasPage() {
 
     fetchFacilities();
     fetchPageInfo();
-  }, []);
+  }, [pageInfo.content]);
+
+  const titleParts = pageInfo.title.split(' ');
+  const firstWord = titleParts[0];
+  const restOfTitle = titleParts.slice(1).join(' ');
 
   return (
-    <div className="min-h-screen bg-white flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F8FAFC] flex flex-col font-sans">
       <Header />
 
-      <main className="grow pt-24 pb-16 px-4 md:px-6">
-        <div className="max-w-7xl mx-auto">
-          <header className="mb-12 text-center md:text-left max-w-3xl">
-             <h1 className="mt-4 text-4xl md:text-6xl font-black text-black leading-[1.1] tracking-tighter uppercase">
-               {pageInfo.title.split(' ')[0]} <span className="text-yellow-500">{pageInfo.title.split(' ').slice(1).join(' ')}</span>
-             </h1>
-             <p className="mt-4 text-slate-500 text-sm md:text-base font-medium leading-relaxed">
+      <main className="grow pt-24 pb-16 md:pt-32 md:pb-24">
+        <div className="max-w-7xl mx-auto px-5">
+  
+          <header className="mb-12 md:mb-16 flex flex-col items-center text-center">
+            <div className="max-w-3xl">
+              <AnimatedHeading className="text-4xl md:text-7xl font-black text-slate-900 uppercase tracking-tighter leading-none">
+                {firstWord} <span className="text-yellow-500">{restOfTitle}</span>
+              </AnimatedHeading>
+              
+              <p className="mt-6 text-sm md:text-base text-slate-500 font-medium leading-relaxed text-justify md:text-center hyphens-auto">
                 {pageInfo.content.replace(/<[^>]*>/g, '')}
-             </p>
+              </p>
+            </div>
           </header>
 
           {loading ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-               {[...Array(5)].map((_, i) => (
-                 <div key={i} className="aspect-4/3 bg-slate-100 animate-pulse rounded-lg" />
+               {[...Array(10)].map((_, i) => (
+                 <div key={i} className="aspect-[4/3] bg-white border border-slate-100 animate-pulse rounded-xl" />
                ))}
             </div>
           ) : facilities.length > 0 ? (
@@ -87,31 +98,34 @@ export default function FasilitasPage() {
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  className="flex flex-col bg-white rounded-lg overflow-hidden border border-yellow-200 shadow-sm h-full"
+                  className="group flex flex-col bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-yellow-400 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full"
                 >
-                  <div className="relative aspect-4/3 w-full bg-slate-50 flex items-center justify-center overflow-hidden border-b border-yellow-100">
+                  <div className="relative aspect-[4/3] w-full bg-slate-50 overflow-hidden border-b border-slate-100">
                     {item.image_url ? (
                       <Image
                         src={item.image_url}
                         alt={item.name}
                         fill
-                        className="object-cover"
+                        sizes="(max-width: 768px) 50vw, 20vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                     ) : (
-                      <div className="flex items-center justify-center w-full h-full bg-slate-50">
+                      <div className="flex items-center justify-center w-full h-full">
                         <ImageIcon className="w-8 h-8 text-slate-200" />
                       </div>
                     )}
-                    
-                    <div className="absolute top-2 right-2 px-2 py-1 bg-black text-white text-[12px] font-black rounded-md flex items-center gap-2 tracking-wider">
+
+                    <div className="absolute bottom-2 right-2 px-2 py-1 bg-slate-900/80 backdrop-blur-md text-white text-[9px] font-black rounded-lg flex items-center gap-1.5 tracking-widest uppercase border border-white/10">
+                       <Box size={10} className="text-yellow-400" />
                        {item.quantity} Unit
                     </div>
                   </div>
 
-                  <div className="p-3">
-                    <h3 className="text-xs md:text-sm font-bold text-black leading-snug line-clamp-2">
+                  <div className="p-3 md:p-4 flex flex-col grow justify-center">
+                    <h3 className="text-[11px] md:text-sm font-bold text-slate-900 leading-tight line-clamp-2 uppercase tracking-tight group-hover:text-yellow-600 transition-colors">
                        {item.name}
                     </h3>
                   </div>
@@ -119,13 +133,20 @@ export default function FasilitasPage() {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-20 px-6 bg-yellow-50/20 rounded-xl border border-dashed border-yellow-200 text-center">
-               <p className="text-black text-sm font-medium italic uppercase tracking-widest">
-                  Data Fasilitas Belum Tersedia
+            <div className="flex flex-col items-center justify-center py-20 px-6 bg-white rounded-xl border border-dashed border-slate-200 text-center">
+               <div className="w-16 h-16 bg-slate-50 rounded-xl flex items-center justify-center text-slate-200 mb-4">
+                  <Box size={32} />
+               </div>
+               <p className="text-slate-900 text-sm font-black uppercase tracking-widest">
+                 Data Belum Tersedia
+               </p>
+               <p className="mt-1 text-slate-400 text-xs font-medium">
+                 Daftar sarana prasarana sedang diperbarui oleh pihak sarpras.
                </p>
             </div>
           )}
         </div>
+        <Helper />
       </main>
 
       <Footer />

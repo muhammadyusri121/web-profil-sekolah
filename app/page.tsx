@@ -7,7 +7,7 @@ import About from '@/app/beranda/about';
 import Gallery from '@/app/beranda/gallery';
 import Ekstra from '@/app/beranda/ekstra';
 import PostSection from '@/app/beranda/post/postingan';
-import StatistikPengunjung from '@/app/beranda/statistik-pengunjung';
+import StatistikPengunjung from '@/app/beranda/statistik/statistik-pengunjung';
 import YouTubeSection from '@/app/beranda/youtube';
 
 import BetaNotice from "@/components/PopUpNotice";
@@ -27,7 +27,7 @@ export default async function Home() {
       <Header />
 
       <div className="grow">
-        <BetaNotice />
+        {/* <BetaNotice /> */}
         <Hero />
         <About />
 
