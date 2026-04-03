@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { motion } from "motion/react";
-import { Play, Youtube, Calendar, ArrowRight, ExternalLink } from "lucide-react";
+import { motion } from "framer-motion";
+import { Play, Youtube, Calendar, ArrowRight } from "lucide-react";
 import { YouTubeVideo } from "@/lib/youtube";
 
 export default function YouTubeSection({
@@ -28,30 +28,33 @@ export default function YouTubeSection({
   };
 
   return (
-    <section id="youtube" className="relative bg-gray-100 py-10 md:py-14 overflow-hidden border-t border-gray-200">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-          <div className="max-w-xl text-center sm:text-left">
-            <motion.h2 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight leading-none"
-            >
-              Video <span className="text-yellow-600">Youtube</span>
-            </motion.h2>
-          </div>
+    <section id="youtube" className="relative py-4 md:py-6 overflow-hidden border-t border-yellow-200/50">
+      {/* Background Gradasi Kuning Mewah */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-100 to-amber-200 -z-10" />
+      
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* Header Section */}
+        <div className="mb-10">
+          <motion.h2 
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-none"
+          >
+            Galeri <span className="text-yellow-600">Video</span>
+          </motion.h2>
+
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-12 items-start">
-          {/* Video Utama */}
+        <div className="grid gap-8 lg:grid-cols-12 items-start">
+          {/* Video Utama (Judul di Dalam) */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="lg:col-span-7 group"
+            className="lg:col-span-7 group relative"
           >
-            <div className="relative aspect-video overflow-hidden rounded-2xl bg-slate-200 ring-1 ring-black/5 shadow-2xl">
+            <div className="relative aspect-video overflow-hidden rounded-[2rem] bg-slate-900 shadow-2xl ring-1 ring-black/5">
               <iframe
                 src={`https://www.youtube.com/embed/${mainVideo.id}`}
                 title={mainVideo.title}
@@ -59,24 +62,28 @@ export default function YouTubeSection({
                 loading="lazy"
                 className="absolute inset-0 h-full w-full border-0"
               />
-            </div>
-            <div className="mt-4 px-1">
-              <h3 className="text-lg md:text-xl font-black text-slate-900 line-clamp-2 leading-snug uppercase tracking-tight">
-                {mainVideo.title}
-              </h3>
-              <div className="flex items-center gap-2 mt-2 text-xs font-bold text-slate-500 uppercase tracking-widest">
-                <Calendar size={13} className="text-amber-600" />
-                {formatDate(mainVideo.publishedAt)}
+              
+              {/* 1. Judul di dalam (Overlay) - Lebih kecil & tidak terlalu bold */}
+              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-6 md:p-8 pointer-events-none">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="px-2 py-0.5 bg-yellow-500 text-white text-[9px] font-bold uppercase tracking-widest rounded">Terbaru</span>
+                  <span className="text-[10px] font-medium text-white/80 uppercase tracking-widest flex items-center gap-1">
+                    <Calendar size={12} /> {formatDate(mainVideo.publishedAt)}
+                  </span>
+                </div>
+                <h3 className="text-sm md:text-lg font-bold text-white leading-snug max-w-xl line-clamp-2">
+                  {mainVideo.title}
+                </h3>
               </div>
             </div>
           </motion.div>
 
           {/* Daftar Video Samping */}
-          <div className="lg:col-span-5 flex flex-col gap-4">
-            <div className="flex flex-col gap-3">
+          <div className="lg:col-span-5 flex flex-col gap-5">
+            <div className="grid gap-3">
               {sideVideos.map((video, idx) => (
                 <motion.a
-                  initial={{ opacity: 0, x: 15 }}
+                  initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.05 }}
@@ -84,48 +91,43 @@ export default function YouTubeSection({
                   href={`https://www.youtube.com/watch?v=${video.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-4 p-3 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-xl transition-all"
+                  className="group flex items-center gap-4 p-2.5 rounded-2xl bg-white/50 backdrop-blur-sm border border-white hover:bg-white hover:border-yellow-400 hover:shadow-xl transition-all duration-300"
                 >
-                  <div className="relative aspect-video w-32 md:w-36 shrink-0 overflow-hidden rounded-xl bg-slate-100 shadow-sm">
+                  <div className="relative aspect-video w-24 md:w-32 shrink-0 overflow-hidden rounded-xl shadow-sm">
                     <img
                       src={video.thumbnailUrl || "/login-logo.png"}
                       alt={video.title}
-                      loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="p-2 bg-amber-600 rounded-full scale-75 group-hover:scale-100 transition-transform">
-                        <Play size={14} fill="white" className="text-white" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-yellow-600/10 transition-colors">
+                      <div className="p-2 bg-white/90 rounded-full scale-75 group-hover:scale-100 transition-transform">
+                        <Play size={10} className="text-yellow-600 fill-yellow-600" />
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex flex-col grow min-w-0 pr-2">
-                    <h5 className="line-clamp-2 text-sm font-black leading-tight text-slate-900 group-hover:text-amber-600 transition-colors mb-2 uppercase tracking-tight">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <h5 className="line-clamp-2 text-[11px] md:text-xs font-bold leading-snug text-slate-900 group-hover:text-yellow-600 transition-colors mb-1.5 uppercase tracking-tight">
                       {video.title}
                     </h5>
-                    <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest">
-                      <Calendar size={12} className="text-amber-600" />
-                      <span>{formatDate(video.publishedAt)}</span>
-                    </div>
+                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{formatDate(video.publishedAt)}</span>
                   </div>
                 </motion.a>
               ))}
             </div>
 
+            {/* 3. Tombol Subscribe (Samakan dengan tombol 'Semua Ekskul') */}
             <motion.a
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
+              whileTap={{ scale: 0.95 }}
               href={channelUrl}
               target="_blank"
-              className="mt-2 flex items-center justify-between px-6 py-3.5 rounded-xl bg-slate-900 text-white hover:bg-amber-600 transition-all shadow-lg hover:shadow-xl group"
+              className="flex items-center justify-between gap-3 rounded-full bg-slate-900 px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-500 hover:text-black shadow-lg group mt-2"
             >
               <div className="flex items-center gap-3">
-                <Youtube size={18} className="text-red-500 group-hover:text-white transition-colors" />
-                <span className="text-[11px] font-black uppercase tracking-[0.2em]">Kunjungi Channel Kami</span>
+                <Youtube size={16} className="text-red-500 group-hover:text-black transition-colors" />
+                <span>Channel YouTube</span>
               </div>
-              <ArrowRight size={16} className="group-hover:translate-x-1.5 transition-transform" />
+              <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform" />
             </motion.a>
           </div>
         </div>

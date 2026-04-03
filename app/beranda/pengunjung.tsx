@@ -6,63 +6,46 @@ import { motion } from 'framer-motion';
 
 export default function VisitorCounter() {
     const [visitorCount, setVisitorCount] = useState<number | null>(null);
-    const [hasIncremented, setHasIncremented] = useState(false);
 
     useEffect(() => {
-        const fetchVisitorCount = async () => {
+        const fetchCount = async () => {
             try {
-                // Cek localStorage, apakah user sudah mengunjungi halaman ini sebelumnya
-                const visitedBefore = localStorage.getItem('hasVisitedHomepage');
+                // Fetch with POST to both increment (if new) and get count
+                const res = await fetch('/api/visitor', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ path: 'homepage' }),
+                    cache: 'no-store',
+                });
 
-                if (!visitedBefore) {
-                    // Jika belum, panggil API POST untuk menambah count
-                    const res = await fetch('/api/visitor', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ path: 'homepage' }),
-                    });
-
-                    if (res.ok) {
-                        const data = await res.json();
-                        setVisitorCount(data.count);
-                        localStorage.setItem('hasVisitedHomepage', 'true');
-                        setHasIncremented(true);
-                    }
-                } else {
-                    // Jika sudah pernah, cukup ambil (GET) count saat ini tanpa menambah
-                    const res = await fetch('/api/visitor?path=homepage');
-                    if (res.ok) {
-                        const data = await res.json();
-                        setVisitorCount(data.count);
-                    }
+                if (res.ok) {
+                    const data = await res.json();
+                    setVisitorCount(data.count);
                 }
             } catch (error) {
-                console.error('Error handling visitor count:', error);
+                console.error('Error fetching visitor count:', error);
             }
         };
 
-        fetchVisitorCount();
+        fetchCount();
+        const interval = setInterval(fetchCount, 10 * 60 * 1000);
+        return () => clearInterval(interval);
     }, []);
 
     if (visitorCount === null) return null;
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-2xl border border-slate-100 bg-white px-4 py-2.5 shadow-sm transition-all hover:border-yellow-300 hover:shadow-md"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-100 bg-white/80 backdrop-blur-sm px-3 py-1 shadow-sm transition-all hover:bg-white hover:shadow-md"
         >
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-50 text-slate-700">
-                <Users size={16} className={hasIncremented ? "text-yellow-500" : ""} />
-            </div>
-            <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                    Pengunjung
-                </p>
-                <p className="text-sm font-black text-slate-900 leading-tight">
+            <Users size={12} className="text-yellow-500" />
+            <div className="flex items-center gap-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">Visitors:</span>
+                <span className="text-[11px] font-black text-slate-800">
                     {visitorCount.toLocaleString('id-ID')}
-                </p>
+                </span>
             </div>
         </motion.div>
     );

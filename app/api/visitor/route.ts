@@ -7,28 +7,24 @@ export async function POST(request: Request) {
     const { path = 'homepage' } = await request.json();
     const headersList = await headers();
     const ip = headersList.get('x-forwarded-for') || 'unknown';
-    const country = headersList.get('cf-ipcountry') || 'ID'; // Fallback to ID
     
-    // Simple IP hash for semi-privacy
-    const ipHash = Buffer.from(ip).toString('base64').substring(0, 16);
-    
-    // Check if recorded today for this path
+    // Check if recorded today for this path using raw IP
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     const existingLog = await query(
       `SELECT id FROM "VisitorLog" 
        WHERE "ipHash" = $1 AND "path" = $2 AND "visitedAt" >= $3`,
-      [ipHash, path, today]
+      [ip, path, today]
     );
 
     if (existingLog.rows.length === 0) {
       // Create new log
       const logId = `log_${Math.random().toString(36).substring(2, 11)}`;
       await query(
-        `INSERT INTO "VisitorLog" (id, "ipHash", "path", "country", "visitedAt") 
-         VALUES ($1, $2, $3, $4, NOW())`,
-        [logId, ipHash, path, country]
+        `INSERT INTO "VisitorLog" (id, "ipHash", "path", "visitedAt") 
+         VALUES ($1, $2, $3, NOW())`,
+        [logId, ip, path]
       );
 
       // Increment total count
@@ -42,7 +38,11 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ success: true, country });
+    // Get total count for response
+    const countRes = await query(`SELECT count FROM "VisitorStatistic" WHERE path = $1`, [path]);
+    const count = countRes.rows[0]?.count || 0;
+
+    return NextResponse.json({ success: true, count });
   } catch (error: any) {
     console.error("VISITOR_POST_ERROR:", error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });

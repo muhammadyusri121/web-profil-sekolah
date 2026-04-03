@@ -27,14 +27,14 @@ export default async function Home() {
       <Header />
 
       <div className="grow">
-        <BetaNotice />
+        {/* <BetaNotice /> */}
         <Hero />
         <About />
 
         <Gallery teachers={teachers} />
-        <YouTubeSection videos={youtubeVideos} />
         <Ekstra />
         <PostSection posts={posts} />
+        <YouTubeSection videos={youtubeVideos} />
       </div>
 
       <StatistikPengunjung />

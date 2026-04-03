@@ -10,13 +10,13 @@ const NAV_CARDS = [
     href: "/profil/visi-misi",
     icon: Target,
     title: "Visi & Misi",
-    description: "Eksplorasi fokus strategis dan tujuan utama sekolah untuk masa depan siswa.",
+    description: "Eksplorasi fokus strategis dan tujuan utama sekolah.",
   },
   {
     href: "/profil/mars",
     icon: Music,
     title: "Mars SMANKA",
-    description: "Simbol semangat juang dan identitas sekolah dalam alunan nada yang inspiratif.",
+    description: "Simbol semangat juang dalam alunan nada inspiratif.",
   },
 ];
 
@@ -25,79 +25,91 @@ export default async function AboutSection() {
 
   const principalName = profile?.principalName || "Sulaiman, S.E., M.Pd.";
   const principalImage = profile?.principalImage || "/foto-kepsek.jpeg";
-  const welcomeMessage = profile?.welcomeMessage || "SMAN 1 Ketapang berkomitmen mencetak generasi yang santun dalam pekerti dan unggul dalam prestasi melalui lingkungan edukasi yang kondusif.";
+  const welcomeMessage = profile?.welcomeMessage || "<p>Selamat datang di SMAN 1 Ketapang...</p>";
 
   return (
-    <section id="about" className="py-12 md:py-20 bg-gray-100 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 items-center">
+    // 2. Menambahkan border-t sebagai pemisah section yang halus
+    <section id="about" className="relative py-4 md:py-6 bg-gray-100 border-t border-gray-200 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+        
+        {/* 1. Judul ditaruh di atas untuk hirarki yang lebih baik */}
+        <div className="mb-12 md:mb-16">
+          <AnimatedHeading className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-none">
+            Sambutan <span className="text-yellow-500">Kepala Sekolah</span>
+          </AnimatedHeading>
+        </div>
 
-          <div className="lg:col-span-4 flex justify-center lg:justify-start">
-            <div className="relative w-full max-w-[280px] lg:max-w-none rounded-[32px] overflow-hidden shadow-2xl bg-slate-100 border-4 border-white transform hover:scale-[1.02] transition-transform duration-500">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          
+          {/* Sisi Kiri: Foto Kepala Sekolah */}
+          <div className="lg:col-span-4 flex justify-center lg:sticky lg:top-24">
+            <div className="relative w-full max-w-[300px] lg:max-w-none rounded-2xl overflow-hidden shadow-sm border-2 border-white bg-white">
               <Image
                 src={principalImage}
                 alt={principalName}
                 width={400}
                 height={500}
                 priority
-                className="w-full aspect-4/5 object-cover"
+                className="w-full aspect-[4/5] object-cover"
               />
-
-              <div className="absolute bottom-0 inset-x-0 bg-linear-to-t from-slate-900 via-slate-900/40 to-transparent p-6 text-white text-center">
-                <h3 className="text-sm font-black uppercase tracking-wide">
+              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-6 text-white">
+                <h3 className="text-sm font-bold uppercase tracking-wide leading-tight">
                   {principalName}
                 </h3>
-                <p className="text-xs text-yellow-400 font-black uppercase tracking-widest mt-1">
-                  Kepala SMAN 1 Ketapang
+                <p className="text-[10px] text-yellow-500 font-bold uppercase tracking-[0.2em] mt-1">
+                  Kepala Sekolah
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-8 flex flex-col gap-8 md:gap-10">
-            <div className="space-y-5">
-              <div className="max-w-xl text-center sm:text-left">
-                <AnimatedHeading 
-                  className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight leading-none"
-                >
-                  Sambutan <span className="text-yellow-600">Kepala Sekolah</span>
-                </AnimatedHeading>
+          {/* Sisi Kanan: Konten Sambutan & Navigasi */}
+          <div className="lg:col-span-8 flex flex-col space-y-10">
+            
+            {/* Area Teks Sambutan */}
+            <div className="relative">
+              {/* Icon Kutipan sebagai pemanis desain clean */}
+              <div className="absolute -top-4 -left-4 text-gray-200 -z-10 select-none">
+                <span className="text-8xl font-serif">“</span>
               </div>
-              <p className="text-slate-600 font-medium text-[15px] md:text-base leading-relaxed max-w-2xl">
-                {welcomeMessage}
-              </p>
+              
+              <div 
+                className="text-slate-600 font-medium text-base md:text-lg leading-relaxed prose prose-slate line-clamp-[8] md:line-clamp-[10] lg:line-clamp-[12]"
+                dangerouslySetInnerHTML={{ __html: welcomeMessage }}
+              />
+              
               <Link
                 href="/profil/sambutan"
-                className="inline-flex items-center gap-2 text-xs font-black text-amber-600 hover:text-slate-900 transition-colors uppercase tracking-[0.2em]"
+                className="inline-flex items-center gap-2 text-[11px] font-black text-yellow-600 hover:text-slate-900 transition-all uppercase tracking-[0.3em] mt-6 border-b-2 border-yellow-500/20 pb-1 group"
               >
-                Baca Sambutan <ArrowRight size={14} />
+                Selengkapnya 
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+            {/* Nav Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4">
               {NAV_CARDS.map(({ href, icon: Icon, title, description }) => (
                 <Link
                   key={title}
                   href={href}
-                  className="group relative flex flex-col gap-4 p-6 bg-white rounded-2xl border border-slate-100 hover:border-yellow-400 hover:shadow-xl transition-all duration-300"
+                  className="group flex flex-col gap-3 p-6 bg-white rounded-xl border border-gray-200 hover:border-yellow-500 hover:shadow-md transition-all duration-300"
                 >
-                  <ArrowUpRight
-                    size={18}
-                    className="absolute top-5 right-5 text-slate-300 group-hover:text-yellow-500 transition-colors duration-300 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-yellow-50 rounded-lg text-yellow-600">
+                  <div className="flex items-center justify-between">
+                    <div className="p-2 bg-gray-50 rounded-lg text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors">
                       <Icon size={20} />
                     </div>
-                    <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest">
+                    <ArrowUpRight size={16} className="text-gray-300 group-hover:text-yellow-500 transition-colors" />
+                  </div>
+                  
+                  <div>
+                    <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-1">
                       {title}
                     </h4>
+                    <p className="text-[13px] text-slate-500 leading-snug line-clamp-2">
+                      {description}
+                    </p>
                   </div>
-
-                  <p className="text-[13px] font-bold text-slate-600 leading-relaxed group-hover:text-slate-800 transition-colors">
-                    {description}
-                  </p>
                 </Link>
               ))}
             </div>
