@@ -124,7 +124,7 @@ export default function SchoolHero() {
 
   return (
     <section
-      className="relative w-full bg-white lg:h-screen flex flex-col justify-center overflow-hidden"
+      className="relative w-full bg-white lg:min-h-screen lg:h-auto py-8 md:py-10 flex flex-col justify-center overflow-x-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -134,13 +134,13 @@ export default function SchoolHero() {
         )}
       />
 
-      <div className="relative z-10 container mx-auto px-4 text-center mt-20 mb-10 lg:mt-30 lg:mb-30">
+      <div className="relative z-10 container mx-auto px-4 text-center mt-10 mb-6 lg:mt-16 lg:mb-12">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <span className="text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase text-gray-400 mb-2 block">
+          <span className="text-[15px] md:text-xl font-bold tracking-[0.4em] uppercase text-gray-900 mb-2 block">
             Selamat Datang Di
           </span>
           <h1 className="text-3xl md:text-6xl font-black text-black uppercase tracking-tighter leading-none">
@@ -149,7 +149,7 @@ export default function SchoolHero() {
         </motion.div>
       </div>
 
-      <div className="relative z-10 px-4 h-[220px] sm:h-[300px] md:h-[400px] lg:h-[480px] flex items-center justify-center">
+      <div className="relative z-10 px-4 h-[220px] sm:h-[300px] md:h-[400px] lg:h-[600px] flex items-center justify-center">
         <div className="relative w-full max-w-5xl h-full flex items-center justify-center perspective-distant">
           {banners.map((banner, i) => {
             const style = getSlideStyle(i);
@@ -198,7 +198,7 @@ export default function SchoolHero() {
         </div>
       </div>
 
-      <div className="relative z-10 flex justify-center items-center gap-3 mt-8 lg:mt-16 pb-4">
+      <div className="relative z-10 flex justify-center items-center gap-3 mt-4 lg:mt-8 pb-2">
         {banners.map((_, i) => (
           <button
             key={i}

@@ -15,9 +15,62 @@ const poppins = localFont({
   display: "swap",
 });
 
+import GoogleSchema from "@/components/seo/GoogleSchema";
+
 export const metadata: Metadata = {
-  title: "SMAN 1 KETAPANG KABUPATEN SAMPANG - Santun dalam pekerti, unggul dalam prestasi, kondusif dalam edukasi",
-  description: "Santun dalam pekerti, unggul dalam prestasi, kondusif dalam edukasi",
+  metadataBase: new URL("https://sman1ketapang.sch.id"),
+  title: {
+    default: "SMAN 1 KETAPANG SAMPANG - Sekolah Penggerak Unggul",
+    template: "%s | SMAN 1 KETAPANG"
+  },
+  description: "Website resmi SMAN 1 Ketapang, Kabupaten Sampang. Santun dalam pekerti, unggul dalam prestasi, kondusif dalam edukasi.",
+  keywords: ["SMAN 1 Ketapang", "SMA Ketapang", "Sekolah Sampang", "SMA Terbaik Jawa Timur", "Sekolah Penggerak"],
+  authors: [{ name: "IT SMAN 1 Ketapang" }],
+  creator: "SMAN 1 Ketapang",
+  publisher: "SMAN 1 Ketapang",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: "SMAN 1 KETAPANG SAMPANG",
+    description: "Santun dalam pekerti, unggul dalam prestasi, kondusif dalam edukasi.",
+    url: "https://sman1ketapang.sch.id",
+    siteName: "SMAN 1 Ketapang Sampang",
+    images: [
+      {
+        url: "/login-logo.png",
+        width: 800,
+        height: 800,
+        alt: "Logo SMAN 1 Ketapang",
+      },
+    ],
+    locale: "id_ID",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SMAN 1 KETAPANG SAMPANG",
+    description: "Website resmi SMAN 1 Ketapang. Unggul dalam prestasi, santun dalam pekerti.",
+    images: ["/login-logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -30,6 +83,7 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} font-sans antialiased`}
       >
+        <GoogleSchema />
         {children}
       </body>
     </html>

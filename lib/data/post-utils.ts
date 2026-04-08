@@ -12,19 +12,22 @@ export interface PostItem {
   source: "post" | "ekskul";
   thumbnail?: string | null;
   createdAt?: string | Date | null;
+  authorName?: string | null;
 }
 
 export const CATEGORY_HREF: Record<string, string> = {
-  KARYA_SISWA: "/karya",
-  DOUBLE_TRACK: "/double-track",
-  OSIS_MPK: "/osis",
-  HUMAS: "/humas-komite",
-  KOMITE: "/humas-komite",
-  KEMITRAAN: "/humas-komite",
-  SUPERVISI_GURU: "/supervisi",
-  ASAS: "/asas",
-  ASAJ: "/asaj",
-  TKA: "/tka",
+  KARYA_SISWA: "/akademik/karya",
+  DOUBLE_TRACK: "/kesiswaan/double-track",
+  OSIS_MPK: "/kesiswaan/osis",
+  HUMAS: "/informasi/humas",
+  KOMITE: "/informasi/komite",
+  KEMITRAAN: "/informasi/kemitraan",
+  SUPERVISI_GURU: "/asesmen/supervisi",
+  ASAS: "/asesmen/asas",
+  ASAJ: "/asesmen/asaj",
+  TKA: "/asesmen/tka",
+  KEGIATAN: "/informasi/kegiatan",
+  PRESTASI: "/informasi/prestasi",
 };
 
 export const EKSKUL_HREF: Record<string, string> = {

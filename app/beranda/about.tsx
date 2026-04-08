@@ -69,7 +69,7 @@ export default async function AboutSection() {
               </div>
               
               <div 
-                className="text-slate-600 font-medium text-base md:text-lg leading-relaxed prose prose-slate text-justify hyphens-auto line-clamp-[5] md:line-clamp-[6] lg:line-clamp-[7]"
+                className="text-slate-600 font-medium text-base md:text-lg leading-relaxed prose prose-slate text-justify hyphens-auto line-clamp-[4] lg:line-clamp-[6]"
                 dangerouslySetInnerHTML={{ __html: welcomeMessage }}
               />
               

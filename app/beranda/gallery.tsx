@@ -27,7 +27,7 @@ export default function TeacherGallery({ teachers = [] }: { teachers: Teacher[] 
   if (!teachers || teachers.length === 0) return null;
 
   return (
-    <section id="gallery" className="relative overflow-hidden bg-gray-50 py-16 md:py-24 border-t border-gray-200">
+    <section id="gallery" className="relative overflow-hidden bg-gray-50 py-4 md:py-6 border-t border-gray-200">
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <div className="mb-12 text-left">
           <div className="space-y-2">
@@ -84,7 +84,7 @@ export default function TeacherGallery({ teachers = [] }: { teachers: Teacher[] 
         <div className="mt-12 flex justify-center">
           <Link
             href="/profil/struktur-gtk"
-            className="inline-flex items-center gap-3 rounded-full bg-slate-900 px-8 py-3.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-500 hover:text-black shadow-lg active:scale-95 group"
+            className="inline-flex items-center gap-3 rounded-xl bg-slate-900 px-8 py-3.5 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-yellow-500 hover:text-black shadow-lg active:scale-95 group"
           >
             Lihat Selengkapnya
             <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform" />

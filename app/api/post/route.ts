@@ -9,13 +9,30 @@ export async function GET(request: Request) {
 
     let result;
     if (slug) {
-      result = await query('SELECT * FROM "Post" WHERE slug = $1 AND is_published = true', [slug]);
+      result = await query(`
+        SELECT p.*, u.name AS author_name 
+        FROM "Post" p 
+        LEFT JOIN "User" u ON p."authorId" = u.id 
+        WHERE p.slug = $1 AND p.is_published = true
+      `, [slug]);
     } else if (kategori) {
       const categories = kategori.split(',');
       const placeholders = categories.map((_, i) => `$${i + 1}`).join(',');
-      result = await query(`SELECT * FROM "Post" WHERE category IN (${placeholders}) AND is_published = true ORDER BY "createdAt" DESC`, categories);
+      result = await query(`
+        SELECT p.*, u.name AS author_name 
+        FROM "Post" p 
+        LEFT JOIN "User" u ON p."authorId" = u.id 
+        WHERE p.category IN (${placeholders}) AND p.is_published = true 
+        ORDER BY p."createdAt" DESC
+      `, categories);
     } else {
-      result = await query('SELECT * FROM "Post" WHERE is_published = true ORDER BY "createdAt" DESC');
+      result = await query(`
+        SELECT p.*, u.name AS author_name 
+        FROM "Post" p 
+        LEFT JOIN "User" u ON p."authorId" = u.id 
+        WHERE p.is_published = true 
+        ORDER BY p."createdAt" DESC
+      `);
     }
 
     const transform = (item: any) => {

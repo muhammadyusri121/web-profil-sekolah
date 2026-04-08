@@ -7,20 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ==========================================
-// MODELS (sesuai dengan CMS Admin)
-// ==========================================
-
 model User {
+  id           String             @id @default(cuid())
+  email        String             @unique
+  nip          String?            @unique
+  password     String
+  name         String
+  role         Role               @default(OPERATOR)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  permissions  String[]           @default([])
+  posts        Post[]
+  documents    AcademicDocument[]
+  ekskuls      Extracurricular[]
+  activities   AuditLog[]
+}
+
+model AuditLog {
   id          String   @id @default(cuid())
-  email       String   @unique
-  nip         String?  @unique
-  password    String
-  name        String
-  role        Role     @default(OPERATOR)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  action      String
+  description String
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  permissions String[] @default([])
 }
 
 model EducationPersonnel {
@@ -45,6 +54,8 @@ model Post {
   is_published Boolean      @default(false)
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+  authorId     String?
+  author       User?        @relation(fields: [authorId], references: [id])
 }
 
 model Graduation {
@@ -65,6 +76,8 @@ model AcademicDocument {
   file_path String
   doc_type  DocType
   createdAt DateTime @default(now())
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id])
 }
 
 model Extracurricular {
@@ -77,6 +90,8 @@ model Extracurricular {
   is_published Boolean    @default(false)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+  authorId     String?
+  author       User?      @relation(fields: [authorId], references: [id])
 }
 
 model Facility {
@@ -137,6 +152,7 @@ model VisitorStatistic {
   updatedAt DateTime
 }
 
+// --- Modul: School Profile (khusus Website, tidak ada di CMS Admin) ---
 model SchoolProfile {
   id              String   @id @default(cuid())
   principalName   String
@@ -160,10 +176,6 @@ model HeroContent {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
-
-// ==========================================
-// ENUMS (sesuai dengan CMS Admin)
-// ==========================================
 
 enum DayOfWeek {
   Senin

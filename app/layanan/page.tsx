@@ -8,7 +8,9 @@ import {
     BookOpen,
     ArrowRight,
     ExternalLink,
-    AlbumIcon
+    User2,
+    Calendar1,
+    Calendar,
 } from "lucide-react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -19,7 +21,7 @@ const layananData = [
     {
         title: "Cek Kelulusan Murid",
         desc: "Layanan mandiri pengecekan status kelulusan siswa SMAN 1 Ketapang.",
-        icon: <AlbumIcon size={20} />,
+        icon: <User2 size={20} />,
         href: "/kelulusan",
         isExternal: false,
         color: "bg-yellow-50 text-yellow-600",
@@ -33,7 +35,7 @@ const layananData = [
     {
         title: "Cek SPMB Siswa",
         desc: "Layanan pendaftaran siswa SMAN 1 Ketapang.",
-        icon: <AlbumIcon size={20} />,
+        icon: <Calendar1 size={20} />,
         href: "https://spmbjatim.net/",
         isExternal: true,
         color: "bg-blue-50 text-blue-600",
@@ -41,7 +43,7 @@ const layananData = [
     {
         title: "Cek Hasil SNPMB",
         desc: "Layanan pengecekan SNPMB nasional siswa SMAN 1 Ketapang untuk hasil SNBP & SNBT.",
-        icon: <AlbumIcon size={20} />,
+        icon: <Calendar size={20} />,
         href: "https://pengumuman-snbp.snpmb.id/timer.html",
         isExternal: true,
         color: "bg-blue-50 text-blue-600",
@@ -119,7 +121,7 @@ export default function LayananPage() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: idx * 0.1 }}
-                                className={`overflow-hidden bg-white rounded-3xl border transition-all duration-300 ${
+                                className={`overflow-hidden bg-white rounded-2xl border transition-all duration-300 ${
                                     expandedIndex === idx 
                                     ? "border-[#F3C623] shadow-xl shadow-yellow-500/5 ring-1 ring-[#F3C623]/20" 
                                     : "border-slate-100 hover:border-slate-200 hover:shadow-lg hover:shadow-slate-200/50"
@@ -129,7 +131,7 @@ export default function LayananPage() {
                                     onClick={() => toggleExpand(idx)}
                                     className="w-full text-left flex items-center gap-4 p-5 md:p-6 transition-colors group"
                                 >
-                                    <div className={`shrink-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-2xl transition-all duration-500 ${
+                                    <div className={`shrink-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-xl transition-all duration-500 ${
                                         expandedIndex === idx ? "bg-[#F3C623] text-white rotate-6" : item.color
                                     }`}>
                                         {item.icon}
@@ -183,7 +185,7 @@ export default function LayananPage() {
                                                 <Link
                                                     href={item.href}
                                                     target={item.isExternal ? "_blank" : "_self"}
-                                                    className="inline-flex items-center justify-center gap-2 w-full md:w-auto px-8 py-3 bg-slate-900 text-white text-xs md:text-sm font-bold rounded-2xl hover:bg-[#F3C623] hover:text-slate-900 transition-all active:scale-95 group/btn"
+                                                    className="inline-flex items-center justify-center gap-2 w-full md:w-auto px-8 py-3 bg-slate-900 text-white text-xs md:text-sm font-bold rounded-xl hover:bg-[#F3C623] hover:text-slate-900 transition-all active:scale-95 group/btn"
                                                 >
                                                     Masuk Layanan
                                                     {item.isExternal ? <ExternalLink size={14} strokeWidth={3} /> : <ArrowRight size={14} strokeWidth={3} />}

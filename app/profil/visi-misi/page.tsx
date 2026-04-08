@@ -97,12 +97,15 @@ export default function VisiMisiPage() {
           {visionHtml && (
             <section className="mb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <div className="bg-white p-10 md:p-16 rounded-2xl border border-slate-100 shadow-sm text-center">
-                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mb-4 text-center">Visi Sekolah</p>
-                   <div 
-                      className="text-2xl md:text-4xl font-black text-slate-900 leading-tight uppercase italic tracking-tighter text-center"
-                      dangerouslySetInnerHTML={{ __html: visionHtml.replace(/"/g, '') }}
-                    />
-              </div>
+  <p className="text-5xl md:text-6xl font-bold text-slate-900 uppercase mb-6 text-center">
+    Visi Sekolah
+  </p>
+  
+  <div 
+    className="text-lg md:text-xl font-semibold text-slate-900 leading-relaxed tracking-normal text-center"
+    dangerouslySetInnerHTML={{ __html: visionHtml.replace(/"/g, '') }}
+  />
+</div>
             </section>
           )}
 
@@ -120,7 +123,7 @@ export default function VisiMisiPage() {
                     className="flex gap-5 items-start group"
                   >
                     <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 mt-2.5 shrink-0 group-hover:scale-150 transition-transform" />
-                    <p className="text-slate-600 text-base md:text-lg font-medium leading-relaxed text-justify hyphens-auto">
+                    <p className="text-slate-600 text-base md:text-lg font-medium">
                       {misi.desc}
                     </p>
                   </div>

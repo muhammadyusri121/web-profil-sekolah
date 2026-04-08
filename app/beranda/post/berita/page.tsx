@@ -15,7 +15,7 @@ export default async function BeritaPage() {
     <main className="min-h-screen flex flex-col bg-slate-50">
       <Header />
 
-      <div className="grow pt-8 pb-16 md:pt-12 md:pb-20">
+      <div className="grow pt-20 pb-16 md:pt-25 md:pb-20">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
 
           {/* Navigation & Header: Compact and Professional */}
@@ -47,17 +47,17 @@ export default async function BeritaPage() {
                 return (
                   <article
                     key={post.id}
-                    className="group relative flex flex-col bg-white rounded-xl overflow-hidden border border-slate-100 shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+                    className="group relative flex flex-col bg-white rounded-xl overflow-hidden border border-slate-100 transition-all duration-300 hover:bg-yellow-400 hover:border-yellow-500 hover:-translate-y-1"
                   >
                     <Link href={href} className="flex h-full flex-col">
                       {/* Thumbnail Container: Optimized with Next.js Image */}
-                      <div className="relative aspect-4/3 w-full overflow-hidden bg-slate-100">
+                      <div className="relative aspect-square w-full overflow-hidden bg-slate-100 border-b border-slate-100 group-hover:border-yellow-500">
                         <Image
                           src={post.thumbnail || "/login-logo.png"}
                           alt={post.title}
                           fill
                           sizes="(max-width: 768px) 50vw, 25vw"
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                          className="object-cover"
                           priority={false}
                         />
                       </div>
@@ -66,24 +66,24 @@ export default async function BeritaPage() {
                       <div className="flex flex-1 flex-col p-3.5 md:p-4">
                         {/* Metadata: High Contrast for Readability */}
                         <div className="mb-2 flex items-center gap-2">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-amber-700">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-amber-700 group-hover:text-amber-900 transition-colors">
                             {label}
                           </span>
-                          <span className="h-1 w-1 rounded-full bg-slate-300"></span>
-                          <span className="text-[10px] font-bold text-slate-400">
+                          <span className="h-1 w-1 rounded-full bg-slate-300 group-hover:bg-slate-900/10"></span>
+                          <span className="text-[10px] font-bold text-slate-400 group-hover:text-slate-700 transition-colors uppercase tracking-widest">
                             {formatDate(post.createdAt)}
                           </span>
                         </div>
 
                         {/* Title: Legible for all ages */}
-                        <h3 className="line-clamp-2 text-sm font-bold leading-tight text-slate-900 transition-colors group-hover:text-amber-600 md:text-[15px]">
+                        <h3 className="line-clamp-2 text-sm font-bold leading-tight text-slate-900 transition-colors group-hover:text-black md:text-[15px] uppercase tracking-tight">
                           {post.title}
                         </h3>
 
                         {/* Simple Action */}
-                        <div className="mt-auto pt-4">
-                          <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 transition-colors group-hover:text-slate-900 group-hover:translate-x-1 duration-300">
-                            Selengkapnya <ArrowRight size={10} className="text-amber-600" />
+                        <div className="mt-auto pt-4 border-t border-transparent group-hover:border-slate-900/10">
+                          <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 transition-all group-hover:text-slate-900 group-hover:gap-2 duration-300">
+                            Baca <ArrowRight size={10} className="text-amber-600 group-hover:text-slate-900" />
                           </div>
                         </div>
                       </div>

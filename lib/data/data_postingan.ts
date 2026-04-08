@@ -27,24 +27,28 @@ export async function getLatestPosts(): Promise<PostItem[]> {
   try {
     const result = await query(`
       SELECT
-        id, title, slug, category, 
+        p.id, p.title, p.slug, p.category, 
         NULL AS ekskul_name, 
         'post' AS source, 
-        images[1] AS raw_image, 
-        "createdAt"
-      FROM "Post"
-      WHERE is_published = true
+        p.images[1] AS raw_image, 
+        p."createdAt",
+        u.name AS author_name
+      FROM "Post" p
+      LEFT JOIN "User" u ON p."authorId" = u.id
+      WHERE p.is_published = true
 
       UNION ALL
 
       SELECT
-        id, title, slug, NULL AS category, 
-        ekskul_name, 
+        e.id, e.title, e.slug, NULL AS category, 
+        e.ekskul_name, 
         'ekskul' AS source, 
-        thumbnail AS raw_image, 
-        "createdAt"
-      FROM "Extracurricular"
-      WHERE is_published = true
+        e.thumbnail AS raw_image, 
+        e."createdAt",
+        u.name AS author_name
+      FROM "Extracurricular" e
+      LEFT JOIN "User" u ON e."authorId" = u.id
+      WHERE e.is_published = true
 
       ORDER BY "createdAt" DESC
       LIMIT 10
@@ -59,6 +63,7 @@ export async function getLatestPosts(): Promise<PostItem[]> {
       source: row.source,
       thumbnail: resolveImage(row.raw_image),
       createdAt: row.createdat ?? row.createdAt,
+      authorName: row.author_name ?? null,
     }));
   } catch (error) {
     console.error("Gagal mengambil postingan:", error);
@@ -73,24 +78,28 @@ export async function getAllPosts(): Promise<PostItem[]> {
   try {
     const result = await query(`
       SELECT
-        id, title, slug, category, 
+        p.id, p.title, p.slug, p.category, 
         NULL AS ekskul_name, 
         'post' AS source, 
-        images[1] AS raw_image, 
-        "createdAt"
-      FROM "Post"
-      WHERE is_published = true
+        p.images[1] AS raw_image, 
+        p."createdAt",
+        u.name AS author_name
+      FROM "Post" p
+      LEFT JOIN "User" u ON p."authorId" = u.id
+      WHERE p.is_published = true
 
       UNION ALL
 
       SELECT
-        id, title, slug, NULL AS category, 
-        ekskul_name, 
+        e.id, e.title, e.slug, NULL AS category, 
+        e.ekskul_name, 
         'ekskul' AS source, 
-        thumbnail AS raw_image, 
-        "createdAt"
-      FROM "Extracurricular"
-      WHERE is_published = true
+        e.thumbnail AS raw_image, 
+        e."createdAt",
+        u.name AS author_name
+      FROM "Extracurricular" e
+      LEFT JOIN "User" u ON e."authorId" = u.id
+      WHERE e.is_published = true
 
       ORDER BY "createdAt" DESC
     `);
@@ -104,6 +113,7 @@ export async function getAllPosts(): Promise<PostItem[]> {
       source: row.source,
       thumbnail: resolveImage(row.raw_image),
       createdAt: row.createdat ?? row.createdAt,
+      authorName: row.author_name ?? null,
     }));
   } catch (error) {
     console.error("Gagal mengambil semua postingan:", error);
