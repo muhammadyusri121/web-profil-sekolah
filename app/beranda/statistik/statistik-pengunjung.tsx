@@ -28,11 +28,11 @@ export default function StatistikPengunjung() {
                 await fetch('/api/visitor', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ path: 'homepage' }),
+                    body: JSON.stringify({}),
                     cache: 'no-store',
                 });
 
-                const getRes = await fetch('/api/visitor?path=homepage', {
+                const getRes = await fetch('/api/visitor', {
                     cache: 'no-store',
                 });
                 if (getRes.ok) {

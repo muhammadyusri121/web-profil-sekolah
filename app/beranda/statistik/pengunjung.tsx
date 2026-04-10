@@ -13,7 +13,7 @@ export default function VisitorCounter() {
                 const res = await fetch('/api/visitor', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ path: 'homepage' }),
+                    body: JSON.stringify({}),
                     cache: 'no-store',
                 });
 
