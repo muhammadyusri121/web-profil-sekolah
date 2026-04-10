@@ -1,5 +1,13 @@
+require('dotenv').config();
 const { Pool } = require('pg');
-const pool = new Pool({ connectionString: 'postgresql://smanka_database:Smanka297213@76.13.22.32:5431/profil_db?schema=public' });
+const pool = new Pool({ 
+  connectionString: process.env.DATABASE_URL 
+});
+
+if (!process.env.DATABASE_URL) {
+  console.error('Error: DATABASE_URL is not defined in .env file');
+  process.exit(1);
+}
 
 async function run() {
   try {
